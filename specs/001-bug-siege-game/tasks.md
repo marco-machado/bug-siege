@@ -23,10 +23,10 @@
 
 **Purpose**: Project initialization, build tooling, and entry points
 
-- [ ] T001 Initialize project with `package.json` (phaser, vite dependencies) and `vite.config.js` per research.md config in `package.json` and `vite.config.js`
-- [ ] T002 Create HTML entry point in `index.html` that loads `src/main.js` as ES module
-- [ ] T003 Create Phaser game initialization with Arcade Physics config in `src/main.js` (800x600 canvas, register all 5 scenes)
-- [ ] T004 Create `GameConfig.js` with all frozen config exports (GRID, TURRETS, BUGS, WAVES, ECONOMY, GAME) per game-config-contract.md in `src/config/GameConfig.js`
+- [x] T001 Initialize project with `package.json` (phaser, vite dependencies) and `vite.config.js` per research.md config in `package.json` and `vite.config.js`
+- [x] T002 Create HTML entry point in `index.html` that loads `src/main.js` as ES module
+- [x] T003 Create Phaser game initialization with Arcade Physics config in `src/main.js` (800x600 canvas, register all 5 scenes)
+- [x] T004 Create `GameConfig.js` with all frozen config exports (GRID, TURRETS, BUGS, WAVES, ECONOMY, GAME) per game-config-contract.md in `src/config/GameConfig.js`
 
 ---
 
@@ -36,10 +36,10 @@
 
 **⚠️ CRITICAL**: No user story work can begin until this phase is complete
 
-- [ ] T005 Implement Grid entity with 6x6 cell array, `gridToWorld()`/`worldToGrid()` coordinate conversion, initial layout (core + 4 starter positions), and placement validation in `src/entities/Grid.js`
-- [ ] T006 [P] Implement BootScene that generates all placeholder textures via Phaser Graphics API (turret rectangles with barrels, bug circles per type/size, bullet circles, core rectangle, grid tile outlines, wall block rectangle) in `src/scenes/BootScene.js`
-- [ ] T007 [P] Implement EconomyManager with credits tracking, spend/earn/canAfford methods, sell refund calculation (50%), wave bonus calculation (50 + wave×10), and event emission in `src/systems/EconomyManager.js`
-- [ ] T008 Implement Bullet entity class extending Phaser.Physics.Arcade.Sprite with pooled lifecycle (activate at position with velocity, despawn on hit or out-of-bounds, disable physics body on despawn) in `src/entities/Bullet.js`
+- [x] T005 Implement Grid entity with 6x6 cell array, `gridToWorld()`/`worldToGrid()` coordinate conversion, initial layout (core + 4 starter positions), and placement validation in `src/entities/Grid.js`
+- [x] T006 [P] Implement BootScene that generates all placeholder textures via Phaser Graphics API (turret rectangles with barrels, bug circles per type/size, bullet circles, core rectangle, grid tile outlines, wall block rectangle) in `src/scenes/BootScene.js`
+- [x] T007 [P] Implement EconomyManager with credits tracking, spend/earn/canAfford methods, sell refund calculation (50%), wave bonus calculation (50 + wave×10), and event emission in `src/systems/EconomyManager.js`
+- [x] T008 Implement Bullet entity class extending Phaser.Physics.Arcade.Sprite with pooled lifecycle (activate at position with velocity, despawn on hit or out-of-bounds, disable physics body on despawn) in `src/entities/Bullet.js`
 
 **Checkpoint**: Foundation ready — Grid, config, economy, projectiles, and placeholder assets all available
 
@@ -53,11 +53,11 @@
 
 ### Implementation for User Story 1
 
-- [ ] T009 [US1] Implement Turret entity class with targeting (nearest bug in range), fire rate timer, rotation toward target, and fire method that spawns a Bullet from pool in `src/entities/Turret.js`
-- [ ] T010 [US1] Implement Bug entity class with vector steering toward Command Core position, obstacle avoidance, damage-on-contact with core (deal damage + despawn to pool), and HP/damage tracking in `src/entities/Bug.js`
-- [ ] T011 [US1] Implement WaveManager with wave config reading, staggered bug spawning from random map edges (N/S/E/W), `bugsAlive` counter, wave completion detection, and wave bonus awarding in `src/systems/WaveManager.js`
-- [ ] T012 [US1] Implement BuildSystem with click-on-empty-tile to open build menu, structure selection, credit validation via EconomyManager, turret placement on grid, and menu close behavior in `src/systems/BuildSystem.js`
-- [ ] T013 [US1] Implement GameScene with grid rendering, physics groups (bugs pool maxSize:60, bullets pool maxSize:50), overlap detection (bullets↔bugs), collider (bugs↔core), phase management (build/wave), starter turret placement, and game loop (turret targeting + bug steering in update) in `src/scenes/GameScene.js`
+- [x] T009 [US1] Implement Turret entity class with targeting (nearest bug in range), fire rate timer, rotation toward target, and fire method that spawns a Bullet from pool in `src/entities/Turret.js`
+- [x] T010 [US1] Implement Bug entity class with vector steering toward Command Core position, obstacle avoidance, damage-on-contact with core (deal damage + despawn to pool), and HP/damage tracking in `src/entities/Bug.js`
+- [x] T011 [US1] Implement WaveManager with wave config reading, staggered bug spawning from random map edges (N/S/E/W), `bugsAlive` counter, wave completion detection, and wave bonus awarding in `src/systems/WaveManager.js`
+- [x] T012 [US1] Implement BuildSystem with click-on-empty-tile to open build menu, structure selection, credit validation via EconomyManager, turret placement on grid, and menu close behavior in `src/systems/BuildSystem.js`
+- [x] T013 [US1] Implement GameScene with grid rendering, physics groups (bugs pool maxSize:60, bullets pool maxSize:50), overlap detection (bullets↔bugs), collider (bugs↔core), phase management (build/wave), starter turret placement, and game loop (turret targeting + bug steering in update) in `src/scenes/GameScene.js`
 
 **Checkpoint**: Core game loop functional — place Blasters, start wave 1, turrets fire, bugs attack, credits earned
 
