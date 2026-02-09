@@ -180,8 +180,8 @@ export class GameScene extends Phaser.Scene {
     const bullet = _bullet;
     const bug = _bug;
     if (!bullet.active || !bug.active) return;
-    bug.takeDamage(bullet.damage);
     bullet.despawn();
+    bug.takeDamage(bullet.damage);
   }
 
   onSpitterBulletHitWall(_bullet, _wall) {
@@ -204,6 +204,8 @@ export class GameScene extends Phaser.Scene {
     const turret = wall.turretRef;
     if (!turret) return;
 
+    if (bug.wallAttackCooldown > 0) return;
+    bug.wallAttackCooldown = 1000;
     turret.takeDamage(bug.wallDamage);
   }
 

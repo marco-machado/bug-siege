@@ -110,6 +110,11 @@ export class BuildSystem {
     const { col, row } = this.selectedTile;
     const conf = TURRETS[type];
 
+    if (!this.scene.grid.canPlace(col, row)) {
+      this.closeMenus();
+      return;
+    }
+
     if (!this.scene.economy.spend(conf.cost)) return;
 
     const cellState = type === 'wall' ? 'wall' : 'turret';

@@ -165,10 +165,10 @@
 
 **Purpose**: Edge cases, performance, and final quality pass
 
-- [ ] T034 [P] Add edge case handling — deny build on core tile, deny build on occupied tile, handle all-tiles-filled state (menu opens but all placements invalid) in `src/systems/BuildSystem.js` and `src/entities/Grid.js`
-- [ ] T035 [P] Add bug-wall interaction — bugs attack nearest wall when path is blocked, deal wallDamage per hit, resume path to core when wall destroyed in `src/entities/Bug.js` and `src/scenes/GameScene.js`
-- [ ] T036 [P] Performance validation — verify 60fps with 50+ bugs on screen (wave 9 has 38 bugs), ensure object pools recycle correctly, verify no physics body leaks on bug/bullet despawn in `src/scenes/GameScene.js`
-- [ ] T037 Run quickstart.md validation — `npm install`, `npm run dev`, verify game loads and is playable through at least wave 3
+- [x] T034 [P] Add edge case handling — deny build on core tile, deny build on occupied tile, handle all-tiles-filled state (menu opens but all placements invalid) in `src/systems/BuildSystem.js` and `src/entities/Grid.js`
+- [x] T035 [P] Add bug-wall interaction — bugs attack nearest wall when path is blocked, deal wallDamage per hit, resume path to core when wall destroyed in `src/entities/Bug.js` and `src/scenes/GameScene.js`
+- [x] T036 [P] Performance validation — verify 60fps with 50+ bugs on screen (wave 9 has 38 bugs), ensure object pools recycle correctly, verify no physics body leaks on bug/bullet despawn in `src/scenes/GameScene.js`
+- [x] T037 Run quickstart.md validation — `npm install`, `npm run dev`, verify game loads and is playable through at least wave 3
 
 ---
 

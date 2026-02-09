@@ -14,6 +14,7 @@ export class Bug extends Phaser.Physics.Arcade.Sprite {
     this.slowed = false;
     this.baseSpeed = 0;
     this.attackTimer = 0;
+    this.wallAttackCooldown = 0;
   }
 
   spawn(x, y, type, corePos) {
@@ -28,6 +29,7 @@ export class Bug extends Phaser.Physics.Arcade.Sprite {
     this.reward = conf.reward;
     this.slowed = false;
     this.attackTimer = 0;
+    this.wallAttackCooldown = 0;
     this.corePos = corePos;
 
     this.setTexture(`bug-${type}`);
@@ -138,6 +140,8 @@ export class Bug extends Phaser.Physics.Arcade.Sprite {
   preUpdate(time, delta) {
     super.preUpdate(time, delta);
     if (!this.active) return;
+
+    if (this.wallAttackCooldown > 0) this.wallAttackCooldown -= delta;
 
     if (this.bugType === 'spitter') {
       this.updateSpitter(delta);
