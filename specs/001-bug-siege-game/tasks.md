@@ -138,9 +138,9 @@
 
 ### Implementation for User Story 6
 
-- [ ] T029 [US6] Implement GameOverScene with win/loss display — receive `{ won, wave, totalKills, credits, baseHp }` data from Game scene, show victory or defeat message, display stats, provide "Restart" and "Main Menu" buttons per scene-flow-contract.md in `src/scenes/GameOverScene.js`
-- [ ] T030 [US6] Add defeat trigger in GameScene — when `baseHp <= 0`, transition to GameOver with `won: false` and current stats. Add victory trigger — when wave 10 completed, transition to GameOver with `won: true` in `src/scenes/GameScene.js`
-- [ ] T031 [US6] Wire GameOverScene transitions — "Restart" calls `scene.start('Game')`, "Main Menu" calls `scene.start('MainMenu')`. Ensure UIScene is stopped on game over in `src/scenes/GameOverScene.js`
+- [x] T029 [US6] Implement GameOverScene with win/loss display — receive `{ won, wave, totalKills, credits, baseHp }` data from Game scene, show victory or defeat message, display stats, provide "Restart" and "Main Menu" buttons per scene-flow-contract.md in `src/scenes/GameOverScene.js`
+- [x] T030 [US6] Add defeat trigger in GameScene — when `baseHp <= 0`, transition to GameOver with `won: false` and current stats. Add victory trigger — when wave 10 completed, transition to GameOver with `won: true` in `src/scenes/GameScene.js`
+- [x] T031 [US6] Wire GameOverScene transitions — "Restart" calls `scene.start('Game')`, "Main Menu" calls `scene.start('MainMenu')`. Ensure UIScene is stopped on game over in `src/scenes/GameOverScene.js`
 
 **Checkpoint**: Complete win/lose flow with stats display and restart capability
 
