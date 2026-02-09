@@ -57,18 +57,27 @@ export class BuildSystem {
 
     this.menuContainer = this.scene.add.container(world.x + 40, world.y - 60);
 
+    const currentCredits = this.scene.economy.getCredits();
+    const headerHeight = 22;
     const lineHeight = 44;
-    const menuHeight = BUILD_OPTIONS.length * lineHeight + 12;
+    const menuHeight = headerHeight + BUILD_OPTIONS.length * lineHeight + 12;
     const bg = this.scene.add.rectangle(0, 0, 200, menuHeight, 0x111122, 0.95)
       .setOrigin(0, 0)
       .setStrokeStyle(1, 0x4488aa);
     this.menuContainer.add(bg);
 
+    const creditsHeader = this.scene.add.text(8, 4, `Credits: $${currentCredits}`, {
+      fontSize: '11px',
+      fontFamily: 'monospace',
+      color: '#ffdd00',
+    });
+    this.menuContainer.add(creditsHeader);
+
     BUILD_OPTIONS.forEach((opt, i) => {
       const conf = TURRETS[opt.type];
       const canAfford = this.scene.economy.canAfford(conf.cost);
       const color = canAfford ? '#ffffff' : '#555555';
-      const y = 8 + i * lineHeight;
+      const y = headerHeight + 8 + i * lineHeight;
 
       const label = this.scene.add.text(8, y, `${opt.label} ($${conf.cost})`, {
         fontSize: '13px',
@@ -123,6 +132,7 @@ export class BuildSystem {
 
     const world = this.scene.grid.gridToWorld(col, row);
     this.turretMenuContainer = this.scene.add.container(world.x + 40, world.y - 30);
+    const currentCredits = this.scene.economy.getCredits();
 
     const items = [];
     if (!turret.upgraded) {
@@ -159,14 +169,22 @@ export class BuildSystem {
       },
     });
 
+    const turretHeaderHeight = 22;
     const lineHeight = 36;
-    const bg = this.scene.add.rectangle(0, 0, 180, items.length * lineHeight + 12, 0x111122, 0.95)
+    const bg = this.scene.add.rectangle(0, 0, 180, turretHeaderHeight + items.length * lineHeight + 12, 0x111122, 0.95)
       .setOrigin(0, 0)
       .setStrokeStyle(1, 0x4488aa);
     this.turretMenuContainer.add(bg);
 
+    const creditsLabel = this.scene.add.text(8, 4, `Credits: $${currentCredits}`, {
+      fontSize: '11px',
+      fontFamily: 'monospace',
+      color: '#ffdd00',
+    });
+    this.turretMenuContainer.add(creditsLabel);
+
     items.forEach((item, i) => {
-      const y = 8 + i * lineHeight;
+      const y = turretHeaderHeight + 8 + i * lineHeight;
       const text = this.scene.add.text(8, y, item.label, {
         fontSize: '13px',
         fontFamily: 'monospace',

@@ -107,9 +107,9 @@
 
 ### Implementation for User Story 4
 
-- [ ] T024 [US4] Wire kill rewards in GameScene — on bug death, call EconomyManager.earn() with reward amount from bug type config, emit `credits-changed` event in `src/scenes/GameScene.js`
-- [ ] T025 [US4] Wire wave clear bonus in WaveManager — on wave completion, calculate 50 + (waveNumber × 10), call EconomyManager.earn(), emit `credits-changed` event in `src/systems/WaveManager.js`
-- [ ] T026 [US4] Add insufficient credits feedback in BuildSystem — flash red on denied build/upgrade attempts, show cost vs current credits in menu in `src/systems/BuildSystem.js`
+- [x] T024 [US4] Wire kill rewards in GameScene — on bug death, call EconomyManager.earn() with reward amount from bug type config, emit `credits-changed` event in `src/scenes/GameScene.js`
+- [x] T025 [US4] Wire wave clear bonus in WaveManager — on wave completion, calculate 50 + (waveNumber × 10), call EconomyManager.earn(), emit `credits-changed` event in `src/systems/WaveManager.js`
+- [x] T026 [US4] Add insufficient credits feedback in BuildSystem — flash red on denied build/upgrade attempts, show cost vs current credits in menu in `src/systems/BuildSystem.js`
 
 **Checkpoint**: Full economy loop — earn from kills and wave clears, spend on builds/upgrades, sell for refunds
 
