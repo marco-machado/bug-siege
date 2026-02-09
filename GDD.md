@@ -20,7 +20,7 @@
 
 ## The Base
 
-- Centered on screen, occupies a **4×4 tile grid**.
+- Centered on screen, occupies a **6×6 tile grid**.
 - The **Command Core** sits in one tile (center-right); it is the primary target for bugs.
 - Remaining grid tiles are **build slots** for turrets and utility structures.
 - The base has a **health bar** (e.g., 100 HP). When it hits 0, game over.
@@ -109,7 +109,7 @@
 | ---------------- | ---------------------------------- |
 | Canvas           | 800 × 600 px                       |
 | Grid tile size   | 64 × 64 px                         |
-| Build grid       | 6 × 6 tiles (384 × 384 px), centered |
+| Build grid       | 6×6 tiles (384×384 px), centered |
 | Command Core     | Occupies 1 tile (center of grid)   |
 | Map area outside grid | Bug spawning / movement zone  |
 

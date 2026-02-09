@@ -1,0 +1,17 @@
+{
+  "name": "bug-siege",
+  "version": "1.0.0",
+  "description": "A top-down tower defense game built with Phaser 3",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "phaser": "^3.80.0"
+  },
+  "devDependencies": {
+    "vite": "^5.4.0"
+  }
+}
