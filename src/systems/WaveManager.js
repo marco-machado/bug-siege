@@ -1,3 +1,4 @@
+import Phaser from 'phaser';
 import { WAVES, GAME } from '../config/GameConfig.js';
 
 export class WaveManager {

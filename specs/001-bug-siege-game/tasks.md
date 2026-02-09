@@ -89,9 +89,9 @@
 
 ### Implementation for User Story 3
 
-- [x] T019 [US3] Add Brute bug type behavior to Bug entity — slow speed (40px/sec), high HP (150), high damage (20 to core, 20 to walls), larger size (80px) in `src/entities/Bug.js`
+- [x] T019 [US3] Add Brute bug type behavior to Bug entity — slow speed (30px/sec), high HP (150), high damage (20 to core, 20 to walls), larger size (80px) in `src/entities/Bug.js`
 - [x] T020 [US3] Add Spitter bug type behavior to Bug entity — ranged attack on turrets/walls within 192px (stop advancing, fire SpitterBullet at 1 shot/sec dealing 15 damage, only Wall Blocks take actual damage), SpitterBullet pooling in `src/entities/Bug.js` and `src/scenes/GameScene.js`
-- [x] T021 [US3] Add Boss Brute variant — 1500 HP, 30px/sec speed, 40 damage, 100 reward, same behavior as Brute in `src/entities/Bug.js`
+- [x] T021 [US3] Add Boss Brute variant — 1500 HP, 15px/sec speed, 40 damage, 100 reward, same behavior as Brute in `src/entities/Bug.js`
 - [x] T022 [US3] Implement build phase countdown (20 seconds) with timer display, early wave start via Spacebar/"Start Wave" button granting 25 bonus credits, and auto-start when timer expires in `src/systems/WaveManager.js` and `src/scenes/GameScene.js`
 - [x] T023 [US3] Wire full 10-wave progression in WaveManager — read WAVES config for each wave number, spawn correct bug type mix, increment wave counter on completion in `src/systems/WaveManager.js`
 

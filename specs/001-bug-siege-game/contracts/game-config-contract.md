@@ -70,7 +70,7 @@ export const TURRETS = {
 ```javascript
 export const BUGS = {
   swarmer: {
-    speed: 120,
+    speed: 60,
     hp: 30,
     coreDamage: 5,
     wallDamage: 5,
@@ -78,7 +78,7 @@ export const BUGS = {
     size: 48,
   },
   brute: {
-    speed: 40,
+    speed: 30,
     hp: 150,
     coreDamage: 20,
     wallDamage: 20,
@@ -86,7 +86,7 @@ export const BUGS = {
     size: 80,
   },
   spitter: {
-    speed: 70,
+    speed: 35,
     hp: 60,
     coreDamage: 10,
     wallDamage: 15,
@@ -96,7 +96,7 @@ export const BUGS = {
     attackRate: 1.0,   // 1 shot/sec
   },
   boss: {
-    speed: 30,
+    speed: 15,
     hp: 1500,
     coreDamage: 40,
     wallDamage: 40,

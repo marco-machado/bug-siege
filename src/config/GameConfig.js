@@ -60,7 +60,7 @@ export const BUGS = Object.freeze({
     size: 48,
   }),
   brute: Object.freeze({
-    speed: 20,
+    speed: 30,
     hp: 150,
     coreDamage: 20,
     wallDamage: 20,

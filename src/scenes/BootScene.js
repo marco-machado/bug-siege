@@ -29,7 +29,7 @@ export class BootScene extends Phaser.Scene {
     g.fillStyle(color, 1);
     g.fillRect(0, 0, size - 4, size - 4);
     g.fillStyle(0xffffff, 0.8);
-    g.fillRect(size / 2 - 4, 0, 8, -16);
+    g.fillRect(size / 2 - 4, 0, 8, 16);
     g.generateTexture(key, size, size);
     g.destroy();
   }

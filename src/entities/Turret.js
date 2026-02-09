@@ -1,5 +1,5 @@
 import Phaser from 'phaser';
-import { TURRETS } from '../config/GameConfig.js';
+import { TURRETS, ECONOMY } from '../config/GameConfig.js';
 
 export class Turret {
   constructor(scene, col, row, type, worldX, worldY) {
@@ -209,6 +209,6 @@ export class Turret {
   }
 
   getSellValue() {
-    return Math.floor(this.cost * 0.5);
+    return Math.floor(this.cost * ECONOMY.sellReturnRate);
   }
 }

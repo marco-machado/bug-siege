@@ -199,10 +199,10 @@ A player launches the game and sees a main menu with an option to start the game
 
 | Bug Type | Speed (px/sec) | HP | Damage to Core | Damage to Walls | Kill Reward |
 |----------|---------------|-----|---------------|----------------|-------------|
-| Swarmer | 120 | 30 | 5 | 5 | 10 |
-| Brute | 40 | 150 | 20 | 20 | 25 |
-| Spitter | 70 | 60 | 10 | 15 (ranged, 3 tile range, 1 shot/sec) | 15 |
-| Boss Brute | 30 | 1500 | 40 | 40 | 100 |
+| Swarmer | 60 | 30 | 5 | 5 | 10 |
+| Brute | 30 | 150 | 20 | 20 | 25 |
+| Spitter | 35 | 60 | 10 | 15 (ranged, 3 tile range, 1 shot/sec) | 15 |
+| Boss Brute | 15 | 1500 | 40 | 40 | 100 |
 
 #### Wave Composition
 
