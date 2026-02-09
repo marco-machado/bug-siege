@@ -52,7 +52,7 @@ export const TURRETS = Object.freeze({
 
 export const BUGS = Object.freeze({
   swarmer: Object.freeze({
-    speed: 120,
+    speed: 60,
     hp: 30,
     coreDamage: 5,
     wallDamage: 5,
@@ -60,7 +60,7 @@ export const BUGS = Object.freeze({
     size: 48,
   }),
   brute: Object.freeze({
-    speed: 40,
+    speed: 20,
     hp: 150,
     coreDamage: 20,
     wallDamage: 20,
@@ -68,7 +68,7 @@ export const BUGS = Object.freeze({
     size: 80,
   }),
   spitter: Object.freeze({
-    speed: 70,
+    speed: 35,
     hp: 60,
     coreDamage: 10,
     wallDamage: 15,
@@ -78,7 +78,7 @@ export const BUGS = Object.freeze({
     attackRate: 1.0,
   }),
   boss: Object.freeze({
-    speed: 30,
+    speed: 15,
     hp: 1500,
     coreDamage: 40,
     wallDamage: 40,

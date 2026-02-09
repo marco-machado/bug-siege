@@ -1,5 +1,5 @@
 import Phaser from 'phaser';
-import { GRID, GAME } from '../config/GameConfig.js';
+import { GRID, GAME, ECONOMY } from '../config/GameConfig.js';
 import { Grid } from '../entities/Grid.js';
 import { Turret } from '../entities/Turret.js';
 import { Bug } from '../entities/Bug.js';
@@ -43,11 +43,18 @@ export class GameScene extends Phaser.Scene {
       runChildUpdate: true,
     });
 
+    this.spitterBullets = this.physics.add.group({
+      classType: Bullet,
+      maxSize: 20,
+      runChildUpdate: true,
+    });
+
     this.wallBodies = this.physics.add.staticGroup();
 
     this.placeStarterTurrets();
 
     this.physics.add.overlap(this.bullets, this.bugs, this.onBulletHitBug, null, this);
+    this.physics.add.overlap(this.spitterBullets, this.wallBodies, this.onSpitterBulletHitWall, null, this);
     this.physics.add.collider(this.bugs, this.wallBodies, this.onBugHitWall, null, this);
 
     this.coreZone = this.add.zone(
@@ -66,7 +73,10 @@ export class GameScene extends Phaser.Scene {
     });
 
     this.events.on('start-wave-early', () => {
-      if (this.phase === 'build' && this.waveManager.getCurrentWave() > 0) {
+      if (this.phase === 'build') {
+        if (this.buildCountdown > 0) {
+          this.economy.earn(ECONOMY.earlyStartBonus);
+        }
         this.startWavePhase();
       }
     });
@@ -169,6 +179,18 @@ export class GameScene extends Phaser.Scene {
     const bug = _bug;
     if (!bullet.active || !bug.active) return;
     bug.takeDamage(bullet.damage);
+    bullet.despawn();
+  }
+
+  onSpitterBulletHitWall(_bullet, _wall) {
+    const bullet = _bullet;
+    const wall = _wall;
+    if (!bullet.active || !wall.active) return;
+
+    const turret = wall.turretRef;
+    if (turret) {
+      turret.takeDamage(bullet.damage);
+    }
     bullet.despawn();
   }
 

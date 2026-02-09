@@ -13,6 +13,7 @@ export class Bug extends Phaser.Physics.Arcade.Sprite {
     this.reward = 0;
     this.slowed = false;
     this.baseSpeed = 0;
+    this.attackTimer = 0;
   }
 
   spawn(x, y, type, corePos) {
@@ -26,6 +27,7 @@ export class Bug extends Phaser.Physics.Arcade.Sprite {
     this.wallDamage = conf.wallDamage;
     this.reward = conf.reward;
     this.slowed = false;
+    this.attackTimer = 0;
     this.corePos = corePos;
 
     this.setTexture(`bug-${type}`);
@@ -82,9 +84,59 @@ export class Bug extends Phaser.Physics.Arcade.Sprite {
     this.setVelocity(0, 0);
   }
 
+  findAttackTarget() {
+    if (!this.scene || !this.scene.turrets) return null;
+    const range = BUGS[this.bugType].attackRange;
+    if (!range) return null;
+
+    let nearest = null;
+    let minDist = range;
+
+    for (const turret of this.scene.turrets) {
+      if (!turret.sprite || !turret.sprite.active) continue;
+      const dist = Phaser.Math.Distance.Between(this.x, this.y, turret.sprite.x, turret.sprite.y);
+      if (dist < minDist) {
+        minDist = dist;
+        nearest = turret;
+      }
+    }
+    return nearest;
+  }
+
+  fireSpitterBullet(target) {
+    if (!this.scene.spitterBullets) return;
+    if (!target.sprite || !target.sprite.active) return;
+    const bullet = this.scene.spitterBullets.get();
+    if (!bullet) return;
+    bullet.fire(this.x, this.y, target.sprite.x, target.sprite.y, this.wallDamage, 200, 'spitter-bullet');
+  }
+
+  updateSpitter(delta) {
+    const target = this.findAttackTarget();
+
+    if (target) {
+      this.setVelocity(0, 0);
+      const dx = target.sprite.x - this.x;
+      const dy = target.sprite.y - this.y;
+      this.setRotation(Math.atan2(dy, dx));
+
+      this.attackTimer -= delta;
+      if (this.attackTimer <= 0) {
+        this.fireSpitterBullet(target);
+        this.attackTimer = 1000 / BUGS.spitter.attackRate;
+      }
+    } else {
+      this.steer();
+    }
+  }
+
   preUpdate(time, delta) {
     super.preUpdate(time, delta);
-    if (this.active) {
+    if (!this.active) return;
+
+    if (this.bugType === 'spitter') {
+      this.updateSpitter(delta);
+    } else {
       this.steer();
     }
   }
