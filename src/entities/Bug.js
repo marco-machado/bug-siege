@@ -101,6 +101,7 @@ export class Bug extends Phaser.Physics.Arcade.Sprite {
 
     for (const turret of this.scene.turrets) {
       if (!turret.sprite || !turret.sprite.active) continue;
+      if (turret.type !== 'wall') continue;
       const dist = Phaser.Math.Distance.Between(this.x, this.y, turret.sprite.x, turret.sprite.y);
       if (dist < minDist) {
         minDist = dist;
