@@ -70,6 +70,7 @@ export class GameScene extends Phaser.Scene {
       this.economy.earn(data.reward);
       this.totalKills++;
       this.waveManager.onBugDied();
+      this.showBugDeathEffect(data.x, data.y, data.type);
     });
 
     this.events.on('start-wave-early', () => {
@@ -145,6 +146,7 @@ export class GameScene extends Phaser.Scene {
     this.buildSystem.closeMenus();
     this.events.emit('phase-changed', { phase: 'wave' });
     this.waveManager.startWave();
+    this.showWaveAnnouncement(this.waveManager.getCurrentWave());
   }
 
   onWaveComplete() {
@@ -231,6 +233,56 @@ export class GameScene extends Phaser.Scene {
       totalKills: this.totalKills,
       credits: this.economy.getCredits(),
       baseHp: this.baseHp,
+    });
+  }
+
+  showBugDeathEffect(x, y, type) {
+    const colors = { swarmer: 0x44ff44, brute: 0xff4444, spitter: 0xaa44ff, boss: 0xff8800 };
+    const color = colors[type] || 0xffffff;
+    const count = type === 'boss' ? 12 : 6;
+
+    for (let i = 0; i < count; i++) {
+      const angle = (Math.PI * 2 * i) / count;
+      const particle = this.add.circle(x, y, 3, color, 1);
+      this.tweens.add({
+        targets: particle,
+        x: x + Math.cos(angle) * 30,
+        y: y + Math.sin(angle) * 30,
+        alpha: 0,
+        scale: 0.2,
+        duration: 300,
+        onComplete: () => particle.destroy(),
+      });
+    }
+  }
+
+  showBuildFlash(x, y) {
+    const flash = this.add.rectangle(x, y, GRID.tileSize, GRID.tileSize, 0x00ff88, 0.5);
+    this.tweens.add({
+      targets: flash,
+      alpha: 0,
+      duration: 300,
+      onComplete: () => flash.destroy(),
+    });
+  }
+
+  showWaveAnnouncement(waveNum) {
+    const text = this.add.text(GAME.canvasWidth / 2, GAME.canvasHeight / 2 - 60, `WAVE ${waveNum}`, {
+      fontSize: '36px',
+      fontFamily: 'monospace',
+      color: '#ff8844',
+      fontStyle: 'bold',
+    }).setOrigin(0.5).setAlpha(0);
+
+    this.tweens.add({
+      targets: text,
+      alpha: 1,
+      y: text.y - 20,
+      duration: 400,
+      ease: 'Power2',
+      yoyo: true,
+      hold: 600,
+      onComplete: () => text.destroy(),
     });
   }
 

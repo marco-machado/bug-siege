@@ -123,6 +123,7 @@ export class BuildSystem {
       this.scene.wallBodies.add(turret.wallBody);
     }
 
+    this.scene.showBuildFlash(world.x, world.y);
     this.closeMenus();
   }
 

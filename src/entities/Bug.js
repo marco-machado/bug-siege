@@ -73,7 +73,12 @@ export class Bug extends Phaser.Physics.Arcade.Sprite {
   }
 
   die() {
-    this.scene.events.emit('bug-killed', { reward: this.reward, type: this.bugType });
+    this.scene.events.emit('bug-killed', {
+      reward: this.reward,
+      type: this.bugType,
+      x: this.x,
+      y: this.y,
+    });
     this.despawn();
   }
 

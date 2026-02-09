@@ -79,6 +79,7 @@ export class Turret {
     const bullet = this.scene.bullets.get();
     if (!bullet) return;
     bullet.fire(this.sprite.x, this.sprite.y, target.x, target.y, this.damage);
+    this.showMuzzleFlash();
   }
 
   fireZapper(primaryTarget, bugs) {
@@ -110,6 +111,7 @@ export class Turret {
     }
 
     this.drawLightningChain(targets);
+    this.showMuzzleFlash();
   }
 
   drawLightningChain(targets) {
@@ -145,6 +147,17 @@ export class Turret {
     this.auraGraphics.fillCircle(this.sprite.x, this.sprite.y, this.range);
     this.auraGraphics.lineStyle(1, 0x44ddff, 0.3);
     this.auraGraphics.strokeCircle(this.sprite.x, this.sprite.y, this.range);
+  }
+
+  showMuzzleFlash() {
+    const flash = this.scene.add.circle(this.sprite.x, this.sprite.y, 8, 0xffffaa, 0.9);
+    this.scene.tweens.add({
+      targets: flash,
+      alpha: 0,
+      scale: 2,
+      duration: 120,
+      onComplete: () => flash.destroy(),
+    });
   }
 
   upgrade() {

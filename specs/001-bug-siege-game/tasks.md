@@ -123,8 +123,8 @@
 
 ### Implementation for User Story 5
 
-- [ ] T027 [US5] Implement UIScene with HUD elements — wave counter ("Wave X/10"), credit balance display, base health bar (fill + background rectangles), and "Start Wave" button. Bind to Game scene events (`credits-changed`, `wave-changed`, `hp-changed`, `phase-changed`, `timer-tick`) per scene-flow-contract.md in `src/scenes/UIScene.js`
-- [ ] T028 [US5] Add visual feedback effects in GameScene — muzzle flash on turret fire, particle burst on bug death, build placement confirmation flash, wave start announcement text in `src/scenes/GameScene.js`
+- [x] T027 [US5] Implement UIScene with HUD elements — wave counter ("Wave X/10"), credit balance display, base health bar (fill + background rectangles), and "Start Wave" button. Bind to Game scene events (`credits-changed`, `wave-changed`, `hp-changed`, `phase-changed`, `timer-tick`) per scene-flow-contract.md in `src/scenes/UIScene.js`
+- [x] T028 [US5] Add visual feedback effects in GameScene — muzzle flash on turret fire, particle burst on bug death, build placement confirmation flash, wave start announcement text in `src/scenes/GameScene.js`
 
 **Checkpoint**: Full HUD overlay with real-time updates and visual feedback
 
