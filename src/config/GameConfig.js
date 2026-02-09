@@ -83,7 +83,7 @@ export const BUGS = Object.freeze({
     coreDamage: 40,
     wallDamage: 40,
     reward: 100,
-    size: 80,
+    size: 100,
   }),
 });
 

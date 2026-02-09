@@ -15,7 +15,7 @@ export class BootScene extends Phaser.Scene {
     this.generateBugTexture('bug-swarmer', BUGS.swarmer.size, 0x44ff44);
     this.generateBugTexture('bug-brute', BUGS.brute.size, 0xff4444);
     this.generateBugTexture('bug-spitter', BUGS.spitter.size, 0xffaa00);
-    this.generateBugTexture('bug-boss', BUGS.boss.size, 0xff0000);
+    this.generateBugTexture('bug-boss', BUGS.boss.size, 0x9900ff);
     this.generateBulletTexture('bullet', 8, 0xffff00);
     this.generateBulletTexture('spitter-bullet', 8, 0xff6600);
     this.generateTileTexture();
