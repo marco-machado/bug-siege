@@ -24,8 +24,9 @@ export class BuildSystem {
   }
 
   setup() {
-    this.scene.input.on('pointerdown', (pointer) => {
+    this.scene.input.on('pointerdown', (pointer, currentlyOver) => {
       if (this.scene.phase !== 'build') return;
+      if (currentlyOver.length > 0) return;
       this.handleClick(pointer);
     });
   }
