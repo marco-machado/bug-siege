@@ -48,6 +48,7 @@ export class GameScene extends Phaser.Scene {
     this.placeStarterTurrets();
 
     this.physics.add.overlap(this.bullets, this.bugs, this.onBulletHitBug, null, this);
+    this.physics.add.collider(this.bugs, this.wallBodies, this.onBugHitWall, null, this);
 
     this.coreZone = this.add.zone(
       this.grid.getCoreWorldPos().x,
@@ -171,6 +172,17 @@ export class GameScene extends Phaser.Scene {
     bullet.despawn();
   }
 
+  onBugHitWall(_bug, _wall) {
+    const bug = _bug;
+    const wall = _wall;
+    if (!bug.active || !wall.active) return;
+
+    const turret = wall.turretRef;
+    if (!turret) return;
+
+    turret.takeDamage(bug.wallDamage);
+  }
+
   onBugHitCore(_bug) {
     const bug = _bug;
     if (!bug.active) return;
@@ -201,6 +213,10 @@ export class GameScene extends Phaser.Scene {
   }
 
   update(time, delta) {
+    this.bugs.getChildren().forEach((bug) => {
+      if (bug.active) bug.slowed = false;
+    });
+
     for (const turret of this.turrets) {
       turret.update(time, delta, this.bugs);
     }

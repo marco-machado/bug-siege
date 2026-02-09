@@ -8,6 +8,13 @@ const BUILD_OPTIONS = [
   { type: 'wall', label: 'Wall Block', desc: 'Blocks path, 100 HP' },
 ];
 
+const UPGRADE_DESC = {
+  blaster: 'Damage 10→20',
+  zapper: 'Damage 15→30',
+  slowfield: 'Range +0.5 tiles',
+  wall: 'HP 100→200',
+};
+
 export class BuildSystem {
   constructor(scene) {
     this.scene = scene;
@@ -49,7 +56,10 @@ export class BuildSystem {
     const world = this.scene.grid.gridToWorld(col, row);
 
     this.menuContainer = this.scene.add.container(world.x + 40, world.y - 60);
-    const bg = this.scene.add.rectangle(0, 0, 180, BUILD_OPTIONS.length * 36 + 12, 0x111122, 0.95)
+
+    const lineHeight = 44;
+    const menuHeight = BUILD_OPTIONS.length * lineHeight + 12;
+    const bg = this.scene.add.rectangle(0, 0, 200, menuHeight, 0x111122, 0.95)
       .setOrigin(0, 0)
       .setStrokeStyle(1, 0x4488aa);
     this.menuContainer.add(bg);
@@ -58,21 +68,30 @@ export class BuildSystem {
       const conf = TURRETS[opt.type];
       const canAfford = this.scene.economy.canAfford(conf.cost);
       const color = canAfford ? '#ffffff' : '#555555';
-      const y = 8 + i * 36;
+      const y = 8 + i * lineHeight;
 
-      const text = this.scene.add.text(8, y, `${opt.label} ($${conf.cost})`, {
+      const label = this.scene.add.text(8, y, `${opt.label} ($${conf.cost})`, {
         fontSize: '13px',
         fontFamily: 'monospace',
         color,
-      }).setInteractive({ useHandCursor: canAfford });
+      }).setInteractive({ useHandCursor: true });
+
+      const desc = this.scene.add.text(8, y + 16, opt.desc, {
+        fontSize: '10px',
+        fontFamily: 'monospace',
+        color: canAfford ? '#88aacc' : '#444444',
+      });
 
       if (canAfford) {
-        text.on('pointerover', () => text.setColor('#00ff88'));
-        text.on('pointerout', () => text.setColor('#ffffff'));
-        text.on('pointerdown', () => this.placeTurret(opt.type));
+        label.on('pointerover', () => label.setColor('#00ff88'));
+        label.on('pointerout', () => label.setColor('#ffffff'));
+        label.on('pointerdown', () => this.placeTurret(opt.type));
+      } else {
+        label.on('pointerdown', () => this.flashDenied(label));
       }
 
-      this.menuContainer.add(text);
+      this.menuContainer.add(label);
+      this.menuContainer.add(desc);
     });
 
     this.menuContainer.setDepth(100);
@@ -105,25 +124,32 @@ export class BuildSystem {
     const world = this.scene.grid.gridToWorld(col, row);
     this.turretMenuContainer = this.scene.add.container(world.x + 40, world.y - 30);
 
-    let items = [];
+    const items = [];
     if (!turret.upgraded) {
       const upgCost = turret.getUpgradeCost();
       const canUpgrade = this.scene.economy.canAfford(upgCost);
+      const upgradeDesc = UPGRADE_DESC[turret.type] || '';
       items.push({
         label: `Upgrade ($${upgCost})`,
+        desc: upgradeDesc,
         color: canUpgrade ? '#ffffff' : '#555555',
         enabled: canUpgrade,
-        action: () => {
-          if (this.scene.economy.spend(upgCost)) {
-            turret.upgrade();
+        action: (textObj) => {
+          if (canUpgrade) {
+            if (this.scene.economy.spend(upgCost)) {
+              turret.upgrade();
+            }
+            this.closeMenus();
+          } else {
+            this.flashDenied(textObj);
           }
-          this.closeMenus();
         },
       });
     }
 
     items.push({
       label: `Sell ($${turret.getSellValue()})`,
+      desc: '',
       color: '#ffaa00',
       enabled: true,
       action: () => {
@@ -133,29 +159,45 @@ export class BuildSystem {
       },
     });
 
-    const bg = this.scene.add.rectangle(0, 0, 160, items.length * 32 + 12, 0x111122, 0.95)
+    const lineHeight = 36;
+    const bg = this.scene.add.rectangle(0, 0, 180, items.length * lineHeight + 12, 0x111122, 0.95)
       .setOrigin(0, 0)
       .setStrokeStyle(1, 0x4488aa);
     this.turretMenuContainer.add(bg);
 
     items.forEach((item, i) => {
-      const y = 8 + i * 32;
+      const y = 8 + i * lineHeight;
       const text = this.scene.add.text(8, y, item.label, {
         fontSize: '13px',
         fontFamily: 'monospace',
         color: item.color,
-      }).setInteractive({ useHandCursor: item.enabled });
+      }).setInteractive({ useHandCursor: true });
 
-      if (item.enabled) {
-        text.on('pointerover', () => text.setColor('#00ff88'));
-        text.on('pointerout', () => text.setColor(item.color));
-        text.on('pointerdown', () => item.action());
+      if (item.desc) {
+        const descText = this.scene.add.text(8, y + 16, item.desc, {
+          fontSize: '10px',
+          fontFamily: 'monospace',
+          color: '#88aacc',
+        });
+        this.turretMenuContainer.add(descText);
       }
+
+      text.on('pointerover', () => text.setColor('#00ff88'));
+      text.on('pointerout', () => text.setColor(item.color));
+      text.on('pointerdown', () => item.action(text));
 
       this.turretMenuContainer.add(text);
     });
 
     this.turretMenuContainer.setDepth(100);
+  }
+
+  flashDenied(textObj) {
+    const origColor = textObj.style.color;
+    textObj.setColor('#ff3333');
+    this.scene.time.delayedCall(300, () => {
+      if (textObj.active) textObj.setColor(origColor);
+    });
   }
 
   closeMenus() {

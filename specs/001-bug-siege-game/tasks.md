@@ -71,11 +71,11 @@
 
 ### Implementation for User Story 2
 
-- [ ] T014 [US2] Add Zapper firing behavior to Turret entity — chain lightning that hits primary target + up to 2 additional bugs within 96px, instantaneous damage with Graphics line flash (~200ms) in `src/entities/Turret.js`
-- [ ] T015 [US2] Add Slowfield aura behavior to Turret entity — continuous range check on all active bugs, apply/remove 0.5x speed multiplier, no stacking from multiple Slowfields in `src/entities/Turret.js`
-- [ ] T016 [US2] Add Wall Block behavior — static physics body, HP tracking (100 base / 200 upgraded), destruction on HP depletion (remove sprite, update grid to empty), bug-wall collision damage in `src/entities/Turret.js` and `src/scenes/GameScene.js`
-- [ ] T017 [US2] Add upgrade flow to BuildSystem — click existing turret opens turret menu with upgrade option (cost 1.5x base, doubles damage or enhances effect per type) and sell option (50% base cost refund), hide upgrade if already upgraded in `src/systems/BuildSystem.js`
-- [ ] T018 [US2] Update build menu in BuildSystem to show all 4 structure types with costs and descriptions, dim/disable structures the player cannot afford in `src/systems/BuildSystem.js`
+- [x] T014 [US2] Add Zapper firing behavior to Turret entity — chain lightning that hits primary target + up to 2 additional bugs within 96px, instantaneous damage with Graphics line flash (~200ms) in `src/entities/Turret.js`
+- [x] T015 [US2] Add Slowfield aura behavior to Turret entity — continuous range check on all active bugs, apply/remove 0.5x speed multiplier, no stacking from multiple Slowfields in `src/entities/Turret.js`
+- [x] T016 [US2] Add Wall Block behavior — static physics body, HP tracking (100 base / 200 upgraded), destruction on HP depletion (remove sprite, update grid to empty), bug-wall collision damage in `src/entities/Turret.js` and `src/scenes/GameScene.js`
+- [x] T017 [US2] Add upgrade flow to BuildSystem — click existing turret opens turret menu with upgrade option (cost 1.5x base, doubles damage or enhances effect per type) and sell option (50% base cost refund), hide upgrade if already upgraded in `src/systems/BuildSystem.js`
+- [x] T018 [US2] Update build menu in BuildSystem to show all 4 structure types with costs and descriptions, dim/disable structures the player cannot afford in `src/systems/BuildSystem.js`
 
 **Checkpoint**: All 4 turret types functional with unique behaviors, upgrade and sell working
 

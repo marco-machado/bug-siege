@@ -11,7 +11,7 @@ export class Turret {
 
     const conf = TURRETS[type];
     this.cost = conf.cost;
-    this.range = conf.range;
+    this.range = conf.range || 0;
     this.fireRate = conf.fireRate || 0;
     this.damage = conf.damage || 0;
     this.hp = conf.hp;
@@ -24,10 +24,20 @@ export class Turret {
       this.wallBody.setVisible(false);
       this.wallBody.turretRef = this;
     }
+
+    if (type === 'slowfield') {
+      this.auraGraphics = scene.add.graphics();
+      this.drawAura();
+    }
   }
 
   update(_time, delta, bugs) {
-    if (this.type === 'wall' || this.type === 'slowfield') return;
+    if (this.type === 'wall') return;
+
+    if (this.type === 'slowfield') {
+      this.updateSlowfieldAura(bugs);
+      return;
+    }
 
     this.fireTimer -= delta;
     if (this.fireTimer > 0) return;
@@ -39,7 +49,11 @@ export class Turret {
       Phaser.Math.Angle.Between(this.sprite.x, this.sprite.y, target.x, target.y)
     );
 
-    this.fire(target);
+    if (this.type === 'zapper') {
+      this.fireZapper(target, bugs);
+    } else {
+      this.fire(target);
+    }
     this.fireTimer = 1000 / this.fireRate;
   }
 
@@ -67,6 +81,72 @@ export class Turret {
     bullet.fire(this.sprite.x, this.sprite.y, target.x, target.y, this.damage);
   }
 
+  fireZapper(primaryTarget, bugs) {
+    const chainRange = 96;
+    const maxChains = TURRETS.zapper.chainTargets;
+    const targets = [primaryTarget];
+
+    let lastTarget = primaryTarget;
+    for (let i = 0; i < maxChains; i++) {
+      let nearest = null;
+      let minDist = chainRange;
+
+      bugs.getChildren().forEach((bug) => {
+        if (!bug.active || targets.includes(bug)) return;
+        const dist = Phaser.Math.Distance.Between(lastTarget.x, lastTarget.y, bug.x, bug.y);
+        if (dist < minDist) {
+          minDist = dist;
+          nearest = bug;
+        }
+      });
+
+      if (!nearest) break;
+      targets.push(nearest);
+      lastTarget = nearest;
+    }
+
+    for (const target of targets) {
+      target.takeDamage(this.damage);
+    }
+
+    this.drawLightningChain(targets);
+  }
+
+  drawLightningChain(targets) {
+    const g = this.scene.add.graphics();
+    g.lineStyle(2, 0xaa44ff, 1);
+
+    g.beginPath();
+    g.moveTo(this.sprite.x, this.sprite.y);
+    for (const t of targets) {
+      g.lineTo(t.x, t.y);
+    }
+    g.strokePath();
+
+    this.scene.time.delayedCall(200, () => g.destroy());
+  }
+
+  updateSlowfieldAura(bugs) {
+    bugs.getChildren().forEach((bug) => {
+      if (!bug.active) return;
+      const dist = Phaser.Math.Distance.Between(
+        this.sprite.x, this.sprite.y, bug.x, bug.y
+      );
+      if (dist <= this.range) {
+        bug.slowed = true;
+      }
+    });
+  }
+
+  drawAura() {
+    if (!this.auraGraphics) return;
+    this.auraGraphics.clear();
+    this.auraGraphics.fillStyle(0x44ddff, 0.12);
+    this.auraGraphics.fillCircle(this.sprite.x, this.sprite.y, this.range);
+    this.auraGraphics.lineStyle(1, 0x44ddff, 0.3);
+    this.auraGraphics.strokeCircle(this.sprite.x, this.sprite.y, this.range);
+  }
+
   upgrade() {
     if (this.upgraded) return false;
     this.upgraded = true;
@@ -77,13 +157,13 @@ export class Turret {
     }
     if (this.type === 'slowfield' && conf.upgradedRange) {
       this.range = conf.upgradedRange;
+      this.drawAura();
     }
     if (this.type === 'wall' && conf.upgradedHp) {
       this.hp = conf.upgradedHp;
     }
 
-    this.sprite.setAlpha(1);
-    this.sprite.setTint(0xffffff);
+    this.sprite.setTint(0xffdd44);
 
     return true;
   }
@@ -102,6 +182,9 @@ export class Turret {
     this.sprite.destroy();
     if (this.wallBody) {
       this.wallBody.destroy();
+    }
+    if (this.auraGraphics) {
+      this.auraGraphics.destroy();
     }
     this.scene.grid.setCell(this.gridCol, this.gridRow, 'empty');
     const idx = this.scene.turrets.indexOf(this);
