@@ -209,9 +209,10 @@ export class GameScene extends Phaser.Scene {
     turret.takeDamage(bug.wallDamage);
   }
 
-  onBugHitCore(_bug) {
+  onBugHitCore(_core, _bug) {
     const bug = _bug;
     if (!bug.active) return;
+    if (this.phase === 'gameover') return;
 
     this.baseHp -= bug.coreDamage;
     if (this.baseHp < 0) this.baseHp = 0;
@@ -219,14 +220,17 @@ export class GameScene extends Phaser.Scene {
     this.events.emit('hp-changed', { hp: this.baseHp, maxHp: GAME.baseHp });
 
     bug.despawn();
-    this.waveManager.onBugDied();
 
     if (this.baseHp <= 0) {
       this.gameOver(false);
+      return;
     }
+
+    this.waveManager.onBugDied();
   }
 
   gameOver(won) {
+    if (this.phase === 'gameover') return;
     this.phase = 'gameover';
     this.scene.stop('UIScene');
     this.scene.start('GameOver', {
