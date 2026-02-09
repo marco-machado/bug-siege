@@ -154,8 +154,8 @@
 
 ### Implementation for User Story 7
 
-- [ ] T032 [US7] Implement MainMenuScene with game title ("Bug Siege"), "Start Game" button that calls `scene.start('Game')`, and styled background in `src/scenes/MainMenuScene.js`
-- [ ] T033 [US7] Wire complete scene flow in BootScene — after texture generation, call `scene.start('MainMenu')`. Verify full cycle: Boot → MainMenu → Game (+UIScene) → GameOver → MainMenu in `src/scenes/BootScene.js`
+- [x] T032 [US7] Implement MainMenuScene with game title ("Bug Siege"), "Start Game" button that calls `scene.start('Game')`, and styled background in `src/scenes/MainMenuScene.js`
+- [x] T033 [US7] Wire complete scene flow in BootScene — after texture generation, call `scene.start('MainMenu')`. Verify full cycle: Boot → MainMenu → Game (+UIScene) → GameOver → MainMenu in `src/scenes/BootScene.js`
 
 **Checkpoint**: Full game navigation from boot to menu to game to game-over and back
 

@@ -1,6 +1,5 @@
 import Phaser from 'phaser';
 
-
 export class UIScene extends Phaser.Scene {
   constructor() {
     super('UIScene');
@@ -59,22 +58,22 @@ export class UIScene extends Phaser.Scene {
       }
     });
 
-    this.gameScene.events.on('credits-changed', (data) => {
+    this.onCreditsChanged = (data) => {
       this.creditsText.setText(`Credits: ${data.credits}`);
-    });
+    };
 
-    this.gameScene.events.on('wave-changed', (data) => {
+    this.onWaveChanged = (data) => {
       this.waveText.setText(`Wave: ${data.wave}/${data.total}`);
-    });
+    };
 
-    this.gameScene.events.on('hp-changed', (data) => {
+    this.onHpChanged = (data) => {
       const pct = data.hp / data.maxHp;
       this.hpBarFill.setDisplaySize(160 * pct, 16);
       this.hpBarFill.setFillStyle(pct > 0.5 ? 0x00ff44 : pct > 0.25 ? 0xffaa00 : 0xff3333);
       this.hpLabel.setText(`HP: ${data.hp}/${data.maxHp}`);
-    });
+    };
 
-    this.gameScene.events.on('phase-changed', (data) => {
+    this.onPhaseChanged = (data) => {
       if (data.phase === 'build') {
         this.startWaveBtn.setVisible(true);
         this.phaseText.setText('BUILD PHASE');
@@ -82,10 +81,24 @@ export class UIScene extends Phaser.Scene {
         this.startWaveBtn.setVisible(false);
         this.phaseText.setText('');
       }
-    });
+    };
 
-    this.gameScene.events.on('timer-tick', (data) => {
+    this.onTimerTick = (data) => {
       this.phaseText.setText(`BUILD PHASE — ${data.seconds}s`);
+    };
+
+    this.gameScene.events.on('credits-changed', this.onCreditsChanged);
+    this.gameScene.events.on('wave-changed', this.onWaveChanged);
+    this.gameScene.events.on('hp-changed', this.onHpChanged);
+    this.gameScene.events.on('phase-changed', this.onPhaseChanged);
+    this.gameScene.events.on('timer-tick', this.onTimerTick);
+
+    this.events.once('shutdown', () => {
+      this.gameScene.events.off('credits-changed', this.onCreditsChanged);
+      this.gameScene.events.off('wave-changed', this.onWaveChanged);
+      this.gameScene.events.off('hp-changed', this.onHpChanged);
+      this.gameScene.events.off('phase-changed', this.onPhaseChanged);
+      this.gameScene.events.off('timer-tick', this.onTimerTick);
     });
   }
 }
