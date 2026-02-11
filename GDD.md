@@ -192,6 +192,35 @@
 
 **Total unique image assets: ~20.** Most can be simple geometric placeholders initially, then swapped for polished art later.
 
+### Asset Generation Workflow
+
+Sprites are generated using **Retro Diffusion Core** via [Poe.com](https://poe.com/Retro-Diffusion-Core).
+
+**Prompt format:**
+
+```
+<subject description>, top-down view, <style/material keywords>, game building/creature --ar 64:64 --style rd_plus__topdown_asset --removebg --native --seed 123 --bypass_prompt_expansion
+```
+
+- `--seed 123` — keeps generations consistent while testing different styles/params
+- `--bypass_prompt_expansion` — prevents the model from rewriting your prompt
+- `--native` — returns the image at its generated resolution (no upscaling)
+
+**Example (Command Core):**
+
+```
+A glowing blue-white sci-fi energy reactor core, octagonal metallic base with cyan energy orb in the center, top-down view, dark metal plating, game building --ar 64:64 --style rd_plus__topdown_asset --removebg --native --seed 123 --bypass_prompt_expansion
+```
+
+**Post-processing:** Retro Diffusion outputs 256×256 PNGs with transparent padding. Run the trim script to crop to content and resize to 64×64:
+
+```bash
+./scripts/trim-sprite.sh assets/sprites/core.png       # single file
+./scripts/trim-sprite.sh assets/sprites/*.png           # batch
+```
+
+Generated assets go in `assets/sprites/` and are loaded in `BootScene.preload()`.
+
 ---
 
 ## Scope Constraints

@@ -6,12 +6,18 @@ export class BootScene extends Phaser.Scene {
     super('Boot');
   }
 
+  preload() {
+    this.load.spritesheet('core', 'assets/sprites/core_spritesheet.png', {
+      frameWidth: 128,
+      frameHeight: 128,
+    });
+  }
+
   create() {
     this.generateTurretTexture('turret-blaster', 0x3388ff);
     this.generateTurretTexture('turret-zapper', 0xaa44ff);
     this.generateTurretTexture('turret-slowfield', 0x44ddff);
     this.generateWallTexture();
-    this.generateCoreTexture();
     this.generateBugTexture('bug-swarmer', BUGS.swarmer.size, 0x44ff44);
     this.generateBugTexture('bug-brute', BUGS.brute.size, 0xff4444);
     this.generateBugTexture('bug-spitter', BUGS.spitter.size, 0xffaa00);
@@ -19,6 +25,13 @@ export class BootScene extends Phaser.Scene {
     this.generateBulletTexture('bullet', 8, 0xffff00);
     this.generateBulletTexture('spitter-bullet', 8, 0xff6600);
     this.generateTileTexture();
+
+    this.anims.create({
+      key: 'core-pulse',
+      frames: this.anims.generateFrameNumbers('core', { start: 0, end: 28 }),
+      frameRate: 6,
+      repeat: -1,
+    });
 
     this.scene.start('MainMenu');
   }
@@ -45,16 +58,6 @@ export class BootScene extends Phaser.Scene {
     g.destroy();
   }
 
-  generateCoreTexture() {
-    const size = GRID.tileSize;
-    const g = this.add.graphics();
-    g.fillStyle(0xff8800, 1);
-    g.fillRect(0, 0, size - 4, size - 4);
-    g.fillStyle(0xffcc00, 1);
-    g.fillRect(12, 12, size - 28, size - 28);
-    g.generateTexture('core', size, size);
-    g.destroy();
-  }
 
   generateBugTexture(key, diameter, color) {
     const g = this.add.graphics();

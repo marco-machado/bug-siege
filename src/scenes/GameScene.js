@@ -104,6 +104,8 @@ export class GameScene extends Phaser.Scene {
   renderCore() {
     const pos = this.grid.getCoreWorldPos();
     this.coreSprite = this.add.sprite(pos.x, pos.y, 'core');
+    this.coreSprite.setScale(GRID.tileSize / 128);
+    this.coreSprite.play('core-pulse');
   }
 
   placeStarterTurrets() {
