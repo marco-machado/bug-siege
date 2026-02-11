@@ -57,7 +57,7 @@ export class Bug extends Phaser.Physics.Arcade.Sprite {
       (dy / dist) * speed,
     );
 
-    this.setRotation(Math.atan2(dy, dx));
+    this.setRotation(Math.atan2(dy, dx) + Math.PI / 2);
   }
 
   takeDamage(amount) {
@@ -126,7 +126,7 @@ export class Bug extends Phaser.Physics.Arcade.Sprite {
       this.setVelocity(0, 0);
       const dx = target.sprite.x - this.x;
       const dy = target.sprite.y - this.y;
-      this.setRotation(Math.atan2(dy, dx));
+      this.setRotation(Math.atan2(dy, dx) + Math.PI / 2);
 
       this.attackTimer -= delta;
       if (this.attackTimer <= 0) {

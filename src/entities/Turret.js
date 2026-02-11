@@ -46,7 +46,7 @@ export class Turret {
     if (!target) return;
 
     this.sprite.setRotation(
-      Phaser.Math.Angle.Between(this.sprite.x, this.sprite.y, target.x, target.y)
+      Phaser.Math.Angle.Between(this.sprite.x, this.sprite.y, target.x, target.y) + Math.PI / 2
     );
 
     if (this.type === 'zapper') {

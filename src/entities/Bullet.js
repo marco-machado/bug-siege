@@ -21,7 +21,7 @@ export class Bullet extends Phaser.Physics.Arcade.Sprite {
       Math.cos(angle) * this.speed,
       Math.sin(angle) * this.speed,
     );
-    this.setRotation(angle);
+    this.setRotation(angle + Math.PI / 2);
   }
 
   despawn() {
