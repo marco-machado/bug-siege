@@ -58,3 +58,10 @@ src/
 
 <!-- MANUAL ADDITIONS START -->
 <!-- MANUAL ADDITIONS END -->
+
+## Active Technologies
+- JavaScript (ES modules), no transpilation + Phaser 3 (Arcade Physics), Vite (003-hd-photorealistic)
+- Local PNG/JPEG files in `assets/` directory tree (003-hd-photorealistic)
+
+## Recent Changes
+- 003-hd-photorealistic: Added JavaScript (ES modules), no transpilation + Phaser 3 (Arcade Physics), Vite
