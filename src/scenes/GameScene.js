@@ -28,6 +28,8 @@ export class GameScene extends Phaser.Scene {
     this.waveManager = new WaveManager(this);
     this.buildSystem = new BuildSystem(this);
 
+    this.add.image(GAME.canvasWidth / 2, GAME.canvasHeight / 2, 'background');
+
     this.renderGrid();
     this.renderCore();
 
