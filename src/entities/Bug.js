@@ -116,7 +116,7 @@ export class Bug extends Phaser.Physics.Arcade.Sprite {
     if (!target.sprite || !target.sprite.active) return;
     const bullet = this.scene.spitterBullets.get();
     if (!bullet) return;
-    bullet.fire(this.x, this.y, target.sprite.x, target.sprite.y, this.wallDamage, 200, 'spitter-bullet');
+    bullet.fire(this.x, this.y, target.sprite.x, target.sprite.y, this.wallDamage, 450, 'spitter-bullet');
   }
 
   updateSpitter(delta) {

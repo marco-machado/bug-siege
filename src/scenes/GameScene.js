@@ -249,11 +249,11 @@ export class GameScene extends Phaser.Scene {
 
     for (let i = 0; i < count; i++) {
       const angle = (Math.PI * 2 * i) / count;
-      const particle = this.add.circle(x, y, 3, color, 1);
+      const particle = this.add.circle(x, y, 7, color, 1);
       this.tweens.add({
         targets: particle,
-        x: x + Math.cos(angle) * 30,
-        y: y + Math.sin(angle) * 30,
+        x: x + Math.cos(angle) * 68,
+        y: y + Math.sin(angle) * 68,
         alpha: 0,
         scale: 0.2,
         duration: 300,

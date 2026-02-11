@@ -83,7 +83,7 @@ export class Turret {
   }
 
   fireZapper(primaryTarget, bugs) {
-    const chainRange = 96;
+    const chainRange = 216;
     const maxChains = TURRETS.zapper.chainTargets;
     const targets = [primaryTarget];
 
@@ -116,7 +116,7 @@ export class Turret {
 
   drawLightningChain(targets) {
     const g = this.scene.add.graphics();
-    g.lineStyle(2, 0xaa44ff, 1);
+    g.lineStyle(4, 0xaa44ff, 1);
 
     g.beginPath();
     g.moveTo(this.sprite.x, this.sprite.y);
@@ -150,7 +150,7 @@ export class Turret {
   }
 
   showMuzzleFlash() {
-    const flash = this.scene.add.circle(this.sprite.x, this.sprite.y, 8, 0xffffaa, 0.9);
+    const flash = this.scene.add.circle(this.sprite.x, this.sprite.y, 18, 0xffffaa, 0.9);
     this.scene.tweens.add({
       targets: flash,
       alpha: 0,

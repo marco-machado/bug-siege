@@ -4,12 +4,12 @@ export class Bullet extends Phaser.Physics.Arcade.Sprite {
   constructor(scene, x, y) {
     super(scene, x, y, 'bullet');
     this.damage = 0;
-    this.speed = 400;
+    this.speed = 900;
   }
 
   fire(x, y, targetX, targetY, damage, speed, texture) {
     this.damage = damage;
-    this.speed = speed !== undefined ? speed : 400;
+    this.speed = speed !== undefined ? speed : 900;
     this.setTexture(texture || 'bullet');
     this.setPosition(x, y);
     this.setActive(true);
@@ -37,10 +37,10 @@ export class Bullet extends Phaser.Physics.Arcade.Sprite {
 
     const bounds = this.scene.physics.world.bounds;
     if (
-      this.x < bounds.x - 50 ||
-      this.x > bounds.x + bounds.width + 50 ||
-      this.y < bounds.y - 50 ||
-      this.y > bounds.y + bounds.height + 50
+      this.x < bounds.x - 113 ||
+      this.x > bounds.x + bounds.width + 113 ||
+      this.y < bounds.y - 113 ||
+      this.y > bounds.y + bounds.height + 113
     ) {
       this.despawn();
     }
