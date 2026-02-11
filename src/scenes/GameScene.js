@@ -58,6 +58,7 @@ export class GameScene extends Phaser.Scene {
     this.physics.add.overlap(this.bullets, this.bugs, this.onBulletHitBug, null, this);
     this.physics.add.overlap(this.spitterBullets, this.wallBodies, this.onSpitterBulletHitWall, null, this);
     this.physics.add.collider(this.bugs, this.wallBodies, this.onBugHitWall, null, this);
+    this.physics.add.overlap(this.bugs, this.wallBodies, this.onBugHitWall, null, this);
 
     this.coreZone = this.add.zone(
       this.grid.getCoreWorldPos().x,
@@ -85,6 +86,7 @@ export class GameScene extends Phaser.Scene {
     });
 
     this.buildSystem.setup();
+    this.setupDebugKeys();
 
     this.scene.launch('UIScene');
 
@@ -113,6 +115,25 @@ export class GameScene extends Phaser.Scene {
       const world = this.grid.gridToWorld(s.col, s.row);
       const turret = new Turret(this, s.col, s.row, s.type, world.x, world.y);
       this.turrets.push(turret);
+      if (turret.wallBody) {
+        this.wallBodies.add(turret.wallBody);
+      }
+    }
+  }
+
+  setupDebugKeys() {
+    const types = { ONE: 'swarmer', TWO: 'brute', THREE: 'spitter', FOUR: 'boss' };
+    for (const [key, type] of Object.entries(types)) {
+      this.input.keyboard.on(`keydown-${key}`, () => {
+        if (this.phase !== 'wave') return;
+        const pos = this.waveManager.getRandomEdgePosition();
+        const corePos = this.grid.getCoreWorldPos();
+        const bug = this.bugs.get();
+        if (bug) {
+          bug.spawn(pos.x, pos.y, type, corePos);
+          this.waveManager.bugsAlive++;
+        }
+      });
     }
   }
 

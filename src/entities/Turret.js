@@ -19,13 +19,11 @@ export class Turret {
     this.fireTimer = 0;
     this.sprite = scene.add.sprite(worldX, worldY, `turret-${type}`).setDisplaySize(GRID.tileSize, GRID.tileSize);
 
-    if (type === 'wall') {
-      this.wallBody = scene.physics.add.staticImage(worldX, worldY, `turret-${type}`);
-      this.wallBody.setDisplaySize(GRID.tileSize, GRID.tileSize);
-      this.wallBody.refreshBody();
-      this.wallBody.setVisible(false);
-      this.wallBody.turretRef = this;
-    }
+    this.wallBody = scene.physics.add.staticImage(worldX, worldY, `turret-${type}`);
+    this.wallBody.setDisplaySize(GRID.tileSize, GRID.tileSize);
+    this.wallBody.refreshBody();
+    this.wallBody.setVisible(false);
+    this.wallBody.turretRef = this;
 
     if (type === 'slowfield') {
       this.auraGraphics = scene.add.graphics();
