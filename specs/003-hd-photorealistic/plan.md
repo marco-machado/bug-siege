@@ -26,7 +26,7 @@ Upgrade Bug Siege from 800×600 to 1920×1080 resolution and replace all runtime
 | Principle | Status | Notes |
 |-----------|--------|-------|
 | I. Phaser 3 Native | **PASS** | Scale Manager, Loader, all APIs are Phaser-native. No third-party libraries added. |
-| II. Grid-Authoritative | **PASS** | Grid remains 6×6. All world positions still derive from grid coordinates via `gridToWorld()`. Only the tileSize/offset config values change. |
+| II. Grid-Authoritative | **PASS** | Grid is 7×7 with core at exact center (3,3). All world positions still derive from grid coordinates via `gridToWorld()`. Only the tileSize/offset config values change. |
 | III. Data-Driven Configuration | **PASS** | All scaled pixel values (ranges, sizes, speeds) remain in GameConfig.js. No values inlined in logic. |
 | IV. Object Pooling | **PASS** | Pool sizes unchanged (60 bugs, 50 bullets, 20 spitter bullets). Only visual representation changes. |
 | V. Scope Lock | **VIOLATION — JUSTIFIED** | Feature spec explicitly amends resolution (800×600→1920×1080), tile size (64→144), and asset pipeline (geometric→loaded PNGs). These are authorized GDD amendments per the feature request. |
@@ -44,10 +44,9 @@ Upgrade Bug Siege from 800×600 to 1920×1080 resolution and replace all runtime
 
 **Uniform scale factor: 2.25×** (derived from tileSize: 64 → 144)
 
-The canvas changes aspect ratio (4:3 → 16:9), so width and height scale differently (2.4× and 1.8×). However, the 6×6 square grid is the gameplay anchor. We scale uniformly by 2.25× (producing 144px tiles that divide cleanly), which:
-- Keeps the grid square (864×864 px)
-- Preserves identical top/bottom margins (108px — same as current!)
-- Creates wide side margins (528px) for future UI expansion
+The canvas changes aspect ratio (4:3 → 16:9), so width and height scale differently (2.4× and 1.8×). However, the 7×7 square grid is the gameplay anchor. We scale uniformly by 2.25× (producing 144px tiles that divide cleanly), which:
+- Keeps the grid square (1008×1008 px)
+- Creates compact margins (36px top/bottom, 456px sides) for future UI expansion
 - Produces clean integer values for most scaled quantities
 
 **All pixel-unit values** in config and hardcoded constants get multiplied by 2.25×. Non-pixel values (HP, damage, costs, fire rates, wave compositions) remain unchanged.

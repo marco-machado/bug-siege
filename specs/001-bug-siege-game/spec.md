@@ -144,7 +144,7 @@ A player launches the game and sees a main menu with an option to start the game
 
 ### Functional Requirements
 
-- **FR-001**: System MUST display a grid-based play area with a centered 6x6 build grid containing a Command Core and four pre-placed Blaster turrets at the corners (standard Blaster stats, upgradeable and sellable).
+- **FR-001**: System MUST display a grid-based play area with a centered 7x7 build grid containing a Command Core at the exact center and four pre-placed Blaster turrets at the corners (standard Blaster stats, upgradeable and sellable).
 - **FR-002**: System MUST allow the player to place structures (Blaster, Zapper, Slowfield, Wall Block) on empty grid tiles by clicking and selecting from a build menu.
 - **FR-003**: System MUST prevent placement on occupied tiles, the Command Core tile, and tiles outside the build grid.
 - **FR-004**: System MUST deduct the correct credit cost when a structure is placed and prevent placement when the player has insufficient credits.
@@ -182,7 +182,7 @@ A player launches the game and sees a main menu with an option to start the game
 - **Bug**: Enemy unit that spawns from map edges and moves toward the Command Core. Has a type (Swarmer, Brute, Spitter), speed, HP, damage value, and kill reward.
 - **Wave**: A timed enemy spawn event defining which bug types and quantities appear. 10 waves total with escalating composition.
 - **Credits**: The player's currency used to build and upgrade structures. Earned from kills and wave bonuses.
-- **Build Grid**: A 6x6 tile grid centered on screen. Contains the Command Core, four starter turrets, and empty slots for player construction.
+- **Build Grid**: A 7x7 tile grid centered on screen. Contains the Command Core at the exact center, four starter turrets at the corners, and empty slots for player construction.
 
 ### Balance Tables
 
@@ -236,7 +236,7 @@ A player launches the game and sees a main menu with an option to start the game
 
 ### Session 2026-02-08
 
-- Q: Grid size discrepancy — GDD says 4x4, spec says 6x6. Which is correct? → A: 6x6 grid (31 open build slots for strategic depth).
+- Q: Grid size discrepancy — GDD says 4x4, spec says 6x6. Which is correct? → A: 7x7 grid (44 open build slots for strategic depth, core at exact center).
 - Q: Can Spitters destroy turrets? Do all structures have HP? → A: Only Wall Blocks are destructible; turrets are indestructible.
 - Q: Concrete numeric balance values for turrets and bugs? → A: Derive reasonable defaults (balance table added to spec).
 - Q: What type are the four pre-placed starter turrets? → A: Starters are Blasters (same stats as player-built Blasters, upgradeable and sellable).

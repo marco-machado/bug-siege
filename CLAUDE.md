@@ -31,7 +31,7 @@ src/
 ├── main.js                  # Phaser game config + scene registration
 ├── config/GameConfig.js     # All tuning constants (GRID, TURRETS, BUGS, WAVES, ECONOMY, GAME)
 ├── entities/
-│   ├── Grid.js              # 6×6 tile grid — placement validation, coord conversion
+│   ├── Grid.js              # 7×7 tile grid — placement validation, coord conversion
 │   ├── Turret.js            # Composite class (NOT a Phaser Sprite) — holds sprite + optional physics body
 │   ├── Bug.js               # Extends Phaser.Physics.Arcade.Sprite — steering, damage, type behaviors
 │   └── Bullet.js            # Extends Phaser.Physics.Arcade.Sprite — pooled projectiles

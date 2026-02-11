@@ -62,8 +62,8 @@ Recalculate all absolute pixel positions in:
 
 Run `npm run dev` and verify:
 - [ ] Canvas renders at 1920×1080
-- [ ] Grid is centered with 528px side margins, 108px top/bottom margins
-- [ ] Turrets can be placed on all 6×6 grid cells
+- [ ] Grid is centered with 456px side margins, 36px top/bottom margins
+- [ ] Turrets can be placed on all 7×7 grid cells
 - [ ] Bugs spawn from edges and path to core correctly
 - [ ] Turret firing ranges feel correct (not too short/long)
 - [ ] Build menu appears at correct position next to clicked tile

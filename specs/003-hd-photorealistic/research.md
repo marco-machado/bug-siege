@@ -6,11 +6,11 @@
 
 **Decision**: Uniform 2.25× scale factor (tileSize: 64 → 144)
 
-**Rationale**: The aspect ratio changes from 4:3 to 16:9, so width and height cannot share a single scale factor. The 6×6 square grid is the gameplay anchor. Scaling uniformly by the grid preserves gameplay balance. tileSize=144 was chosen because:
+**Rationale**: The aspect ratio changes from 4:3 to 16:9, so width and height cannot share a single scale factor. The 7×7 square grid is the gameplay anchor. Scaling uniformly by the grid preserves gameplay balance. tileSize=144 was chosen because:
 - 144/64 = 2.25 — clean factor
 - 144 has many divisors (2,3,4,6,8,9,12,16,18,24,36,48,72) enabling clean sub-pixel math
-- Grid at 144px: 864×864px total. Vertical margin: (1080-864)/2 = 108px — identical to current 800×600 layout
-- Horizontal margin: (1920-864)/2 = 528px — wide but suitable for side HUD expansion
+- Grid at 144px: 1008×1008px total. Vertical margin: (1080-1008)/2 = 36px
+- Horizontal margin: (1920-1008)/2 = 456px — suitable for side HUD expansion
 - Most scaled values produce clean integers or near-integers (max rounding error: 0.75px)
 
 **Alternatives considered**:

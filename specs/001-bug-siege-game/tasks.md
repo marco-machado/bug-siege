@@ -36,7 +36,7 @@
 
 **⚠️ CRITICAL**: No user story work can begin until this phase is complete
 
-- [x] T005 Implement Grid entity with 6x6 cell array, `gridToWorld()`/`worldToGrid()` coordinate conversion, initial layout (core + 4 starter positions), and placement validation in `src/entities/Grid.js`
+- [x] T005 Implement Grid entity with 7x7 cell array, `gridToWorld()`/`worldToGrid()` coordinate conversion, initial layout (core at center + 4 starter positions at corners), and placement validation in `src/entities/Grid.js`
 - [x] T006 [P] Implement BootScene that generates all placeholder textures via Phaser Graphics API (turret rectangles with barrels, bug circles per type/size, bullet circles, core rectangle, grid tile outlines, wall block rectangle) in `src/scenes/BootScene.js`
 - [x] T007 [P] Implement EconomyManager with credits tracking, spend/earn/canAfford methods, sell refund calculation (50%), wave bonus calculation (50 + wave×10), and event emission in `src/systems/EconomyManager.js`
 - [x] T008 Implement Bullet entity class extending Phaser.Physics.Arcade.Sprite with pooled lifecycle (activate at position with velocity, despawn on hit or out-of-bounds, disable physics body on despawn) in `src/entities/Bullet.js`

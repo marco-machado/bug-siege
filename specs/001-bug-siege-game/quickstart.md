@@ -55,7 +55,7 @@ bug-siege/
 │   │   ├── UIScene.js      # HUD overlay (parallel scene)
 │   │   └── GameOverScene.js
 │   ├── entities/
-│   │   ├── Grid.js         # 6x6 grid logic + coordinate conversion
+│   │   ├── Grid.js         # 7x7 grid logic + coordinate conversion
 │   │   ├── Turret.js       # Turret base class (targeting, firing)
 │   │   ├── Bug.js          # Bug base class (steering, damage)
 │   │   └── Bullet.js       # Projectile (pooled)
@@ -83,6 +83,6 @@ bug-siege/
 - **Scenes**: Boot → MainMenu → Game (+UIScene parallel) → GameOver
 - **Physics**: Arcade Physics only. Overlap for projectile hits, collider for bug-wall interactions.
 - **Pooling**: Bugs and bullets use Phaser Physics Group pooling (`get()` / `setActive(false)`).
-- **Grid**: 6x6 tile grid (64px tiles), centered on 800x600 canvas at offset (208, 108). All positions derive from grid coordinates.
+- **Grid**: 7x7 tile grid (144px tiles), centered on 1920x1080 canvas at offset (456, 36). Core at exact center (col 3, row 3). All positions derive from grid coordinates.
 - **Config-driven**: All numeric values (costs, damage, HP, speeds, rewards) live in `GameConfig.js`. No magic numbers in game logic.
 - **No pathfinding**: Bugs use vector steering toward the Command Core with obstacle avoidance.

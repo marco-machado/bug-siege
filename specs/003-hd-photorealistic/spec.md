@@ -92,7 +92,7 @@ A player sees polished, HD-resolution UI across all screens: main menu, HUD over
 ### Functional Requirements
 
 - **FR-001**: The game canvas MUST render at 1920×1080 resolution.
-- **FR-002**: The gameplay grid MUST scale proportionally from the current 6×6 layout to fill an appropriate area of the 1920×1080 canvas, with larger tile sizes.
+- **FR-002**: The gameplay grid MUST scale proportionally from the current 7×7 layout to fill an appropriate area of the 1920×1080 canvas, with larger tile sizes.
 - **FR-003**: All turret types (blaster, zapper, slowfield, wall) MUST display unique photorealistic sprite images instead of runtime-generated geometric shapes.
 - **FR-004**: All bug types (swarmer, brute, spitter, boss) MUST display unique photorealistic sprite images instead of runtime-generated colored circles.
 - **FR-005**: The core MUST display a photorealistic sprite image instead of a runtime-generated colored rectangle.
@@ -128,6 +128,6 @@ A player sees polished, HD-resolution UI across all screens: main menu, HUD over
 - **Art style**: "Photorealistic" means detailed, high-fidelity 2D sprites with lighting, shading, and texture — not 3D-rendered models. Think stylized realism suitable for a top-down tower defense game.
 - **No animation frames initially**: Static sprites per entity are sufficient for this feature. Animated sprite sheets (walk cycles, attack animations) are out of scope but could be added later.
 - **Fixed resolution**: The game canvas renders at a fixed 1920×1080 internally. Phaser's Scale Manager (Scale.FIT) handles fitting the canvas to smaller viewports while preserving aspect ratio. Full responsive/adaptive layout redesign is out of scope.
-- **Grid remains 6×6**: The grid layout (number of rows/columns) does not change — only the visual size of each tile increases proportionally.
+- **Grid is 7×7**: The grid uses a 7×7 layout with the Command Core at the exact center (col 3, row 3). Tile sizes scale proportionally with resolution.
 - **Asset format**: Individual PNG files with transparency for entities, JPEG or PNG for backgrounds. No sprite sheet atlases — each entity has its own file for easy drop-in replacement.
 - **No gameplay balance changes**: Turret stats, bug stats, wave compositions, and economy values remain the same (only pixel-unit values like ranges, positions, and sizes scale proportionally with the resolution increase).

@@ -7,30 +7,31 @@
 
 ### Grid
 
-The 6x6 tile grid is the authoritative spatial data structure.
+The 7x7 tile grid is the authoritative spatial data structure.
 
 | Field | Type | Description |
 |-------|------|-------------|
-| `cells` | `CellState[][]` | 6x6 2D array |
-| `offsetX` | `number` | World X of grid top-left (208) |
-| `offsetY` | `number` | World Y of grid top-left (108) |
-| `tileSize` | `number` | 64px |
-| `cols` | `number` | 6 |
-| `rows` | `number` | 6 |
+| `cells` | `CellState[][]` | 7x7 2D array |
+| `offsetX` | `number` | World X of grid top-left (456) |
+| `offsetY` | `number` | World Y of grid top-left (36) |
+| `tileSize` | `number` | 144px |
+| `cols` | `number` | 7 |
+| `rows` | `number` | 7 |
 
 **CellState enum**: `'empty'` | `'core'` | `'turret'` | `'wall'`
 
-**Initial Layout** (6x6, row-major):
+**Initial Layout** (7x7, row-major):
 ```
-[ turret, empty, empty, empty, empty, turret ]
-[ empty,  empty, empty, empty, empty, empty  ]
-[ empty,  empty, empty, core,  empty, empty  ]
-[ empty,  empty, empty, empty, empty, empty  ]
-[ empty,  empty, empty, empty, empty, empty  ]
-[ turret, empty, empty, empty, empty, turret ]
+[ turret, empty, empty, empty, empty, empty, turret ]
+[ empty,  empty, empty, empty, empty, empty, empty  ]
+[ empty,  empty, empty, empty, empty, empty, empty  ]
+[ empty,  empty, empty, core,  empty, empty, empty  ]
+[ empty,  empty, empty, empty, empty, empty, empty  ]
+[ empty,  empty, empty, empty, empty, empty, empty  ]
+[ turret, empty, empty, empty, empty, empty, turret ]
 ```
 
-Core at row 2, col 3 (center of 6x6). Starter Blasters at four corners: (0,0), (0,5), (5,0), (5,5).
+Core at row 3, col 3 (exact center of 7x7). Starter Blasters at four corners: (0,0), (6,0), (0,6), (6,6).
 
 ### Turret
 

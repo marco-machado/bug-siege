@@ -1,16 +1,16 @@
 export const GRID = Object.freeze({
-  cols: 6,
-  rows: 6,
+  cols: 7,
+  rows: 7,
   tileSize: 144,
-  offsetX: 528,
-  offsetY: 108,
+  offsetX: 456,
+  offsetY: 36,
   coreCol: 3,
-  coreRow: 2,
+  coreRow: 3,
   starterTurrets: Object.freeze([
     Object.freeze({ col: 0, row: 0, type: 'blaster' }),
-    Object.freeze({ col: 5, row: 0, type: 'blaster' }),
-    Object.freeze({ col: 0, row: 5, type: 'blaster' }),
-    Object.freeze({ col: 5, row: 5, type: 'blaster' }),
+    Object.freeze({ col: 6, row: 0, type: 'blaster' }),
+    Object.freeze({ col: 0, row: 6, type: 'blaster' }),
+    Object.freeze({ col: 6, row: 6, type: 'blaster' }),
   ]),
 });
 
