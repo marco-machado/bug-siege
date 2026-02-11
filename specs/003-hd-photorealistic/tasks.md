@@ -27,7 +27,7 @@
 
 **⚠️ CRITICAL**: No user story work can begin until this phase is complete.
 
-- [x] T002 Scale all pixel-unit values in `src/config/GameConfig.js` per the complete scaling table: GAME (canvasWidth 800→1920, canvasHeight 600→1080), GRID (tileSize 64→144, offsetX 208→528), TURRETS (blaster.range 192→432, zapper.range 160→360, slowfield.range 128→288, slowfield.upgradedRange 160→360), BUGS (swarmer speed 60→135/size 48→108, brute speed 30→68/size 80→180, spitter speed 35→79/size 56→126/attackRange 192→432, boss speed 15→34/size 100→225). Leave all non-pixel values unchanged (HP, damage, costs, fire rates, wave compositions, economy).
+- [x] T002 Update canvas dimensions and grid offsets in `src/config/GameConfig.js`: GAME (canvasWidth 800→1920, canvasHeight 600→1080), GRID (offsetX 208→736, offsetY 108→316). All other values (tileSize, turret ranges, bug speeds/sizes, economy) remain unchanged — visual sizing handled by `setDisplaySize()` on loaded textures.
 - [x] T003 Add Phaser Scale Manager configuration to `src/main.js`: add `scale: { mode: Phaser.Scale.FIT, autoCenter: Phaser.Scale.CENTER_BOTH }` to the Phaser game config object; update width/height to reference `GAME.canvasWidth` and `GAME.canvasHeight` if not already.
 
 **Checkpoint**: Game config is at HD resolution — source file modifications can now begin.
@@ -36,18 +36,18 @@
 
 ## Phase 3: User Story 1 — Full HD Game Canvas (Priority: P1) 🎯 MVP
 
-**Goal**: Game runs at 1920×1080 with correctly scaled grid, physics, VFX, and geometric textures. All game systems function identically to 800×600 but at 2.25× scale.
+**Goal**: Game runs at 1920×1080 with correctly centered grid and geometric textures. All game systems function identically to 800×600 — no config value changes, only canvas size and grid offsets updated.
 
-**Independent Test**: Launch the game, verify 1920×1080 canvas, play through waves 1–2 with geometric textures, confirm grid is centered (528px side margins, 108px top/bottom), turrets fire at correct ranges, bugs path to core, build menu appears at correct cell positions, and Scale.FIT works on smaller windows.
+**Independent Test**: Launch the game, verify 1920×1080 canvas, play through waves 1–2 with geometric textures, confirm grid is centered (736px side margins, 316px top/bottom), turrets fire at correct ranges, bugs path to core, build menu appears at correct cell positions, and Scale.FIT works on smaller windows.
 
 ### Implementation for User Story 1
 
-- [x] T004 [P] [US1] Scale 3 hardcoded pixel values in `src/entities/Turret.js`: chainRange 96→216 (line ~86), lightning lineWidth 2→4 (line ~119), muzzle flash radius 8→18 (line ~153)
-- [x] T005 [P] [US1] Scale 1 hardcoded pixel value in `src/entities/Bug.js`: spitter bullet speed 200→450 (line ~119)
-- [x] T006 [P] [US1] Scale 2 hardcoded pixel values in `src/entities/Bullet.js`: default speed 400→900 (line ~7), out-of-bounds margin 50→113 (lines ~40–44)
-- [x] T007 [P] [US1] Scale 1 hardcoded pixel value in `src/systems/WaveManager.js`: spawn margin 20→45 (line ~62)
-- [x] T008 [P] [US1] Scale death particle VFX in `src/scenes/GameScene.js`: particle radius 3→7 (line ~252), particle spread 30→68 (line ~255)
-- [x] T009 [US1] Update all geometric texture generation in `src/scenes/BootScene.js` to produce correctly sized textures for 1920×1080 — update bullet diameter 8→18 and ensure all generated textures reference scaled sizes from GameConfig (turret textures 144×144, bug textures at their respective sizes, core 144×144, tile 144×144)
+- [x] T004 [P] [US1] No hardcoded value changes needed in `src/entities/Turret.js` — original values preserved
+- [x] T005 [P] [US1] Update `src/entities/Bug.js`: use `this.width / 2` for physics body circle instead of `conf.size / 2`
+- [x] T006 [P] [US1] Update `src/entities/Bullet.js`: derive `BULLET_SIZE` from `GRID.tileSize / 8`, add `setDisplaySize()` and `body.setCircle()` in `fire()`
+- [x] T007 [P] [US1] No hardcoded value changes needed in `src/systems/WaveManager.js` — original values preserved
+- [x] T008 [P] [US1] Add `setDisplaySize(GRID.tileSize, GRID.tileSize)` to tile and core sprites in `src/scenes/GameScene.js`
+- [x] T009 [US1] Update geometric texture fallback generation in `src/scenes/BootScene.js` to use config sizes from GameConfig
 
 **Checkpoint**: Game is fully playable at 1920×1080 with geometric textures. Physics, VFX, and spawning all correct.
 
@@ -63,9 +63,9 @@
 
 ### Implementation for User Story 2
 
-- [x] T010 [P] [US2] Create 4 placeholder turret PNG assets with cyberpunk neon defense theme (transparent backgrounds, top-down perspective): `assets/turrets/blaster.png` (144×144), `assets/turrets/zapper.png` (144×144), `assets/turrets/slowfield.png` (144×144), `assets/turrets/wall.png` (144×144)
-- [x] T011 [P] [US2] Create 4 placeholder bug PNG assets with corrupted digital organism theme (transparent backgrounds, top-down perspective): `assets/bugs/swarmer.png` (108×108), `assets/bugs/brute.png` (180×180), `assets/bugs/spitter.png` (126×126), `assets/bugs/boss.png` (225×225)
-- [x] T012 [P] [US2] Create 3 placeholder PNG assets for projectiles and core: `assets/environment/bullet.png` (18×18, turret projectile), `assets/environment/spitter-bullet.png` (18×18, spitter projectile), `assets/environment/core.png` (144×144, command core with cyberpunk theme)
+- [x] T010 [P] [US2] Create 4 placeholder turret PNG assets with cyberpunk neon defense theme (transparent backgrounds, top-down perspective): `assets/turrets/blaster.png`, `assets/turrets/zapper.png`, `assets/turrets/slowfield.png`, `assets/turrets/wall.png` (any square dimensions — displayed at tileSize via setDisplaySize)
+- [x] T011 [P] [US2] Create 4 placeholder bug PNG assets with corrupted digital organism theme (transparent backgrounds, top-down perspective): `assets/bugs/swarmer.png`, `assets/bugs/brute.png`, `assets/bugs/spitter.png`, `assets/bugs/boss.png` (any square dimensions — displayed at config sizes via setDisplaySize)
+- [x] T012 [P] [US2] Create 3 placeholder PNG assets for projectiles and core: `assets/environment/bullet.png`, `assets/environment/spitter-bullet.png`, `assets/environment/core.png` (any square dimensions — displayed at config sizes via setDisplaySize)
 - [x] T013 [US2] Rewrite `src/scenes/BootScene.js` from geometric texture generation to asset preloading: add `preload()` method with `this.load.image()` calls for all 13 assets (4 turrets, 4 bugs, bullet, spitter-bullet, core, background, tile); add loading progress bar (centered on canvas); add `loaderror` event handler that tracks failed keys in a Set and logs console warnings; in `create()`, generate bright magenta (#ff00ff) geometric fallback textures for any failed keys (rectangles for turrets/core/tiles, circles for bugs/bullets), then transition to MainMenu. Reference texture keys from data-model.md.
 
 **Checkpoint**: All entity sprites are photorealistic. BootScene loads assets with progress bar. Fallback handling works for missing files.
@@ -82,7 +82,7 @@
 
 ### Implementation for User Story 3
 
-- [x] T014 [P] [US3] Create 2 placeholder environment assets with cyberpunk PCB/circuit board theme: `assets/environment/background.jpg` (1920×1080, cyberpunk motherboard landscape), `assets/environment/tile.png` (144×144, circuit board trace pattern, transparent or semi-transparent)
+- [x] T014 [P] [US3] Create 2 placeholder environment assets with cyberpunk PCB/circuit board theme: `assets/environment/background.jpg` (1920×1080, cyberpunk motherboard landscape), `assets/environment/tile.png` (any square, circuit board trace pattern, transparent or semi-transparent — displayed at tileSize via setDisplaySize)
 - [x] T015 [US3] Add background image and textured grid tiles in `src/scenes/GameScene.js`: render `background` texture as a full-canvas image behind the grid (at canvas center), update `renderGrid()` to use `tile` texture for each grid cell instead of drawing filled rectangles
 
 **Checkpoint**: Environment is visually complete — background and tiles match the cyberpunk theme.

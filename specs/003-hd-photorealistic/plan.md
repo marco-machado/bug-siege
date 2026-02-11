@@ -5,7 +5,7 @@
 
 ## Summary
 
-Upgrade Bug Siege from 800×600 to 1920×1080 resolution and replace all runtime-generated geometric textures with preloaded photorealistic PNG assets. A uniform 2.25× scale factor (tileSize 64→144) applied to all pixel-unit values preserves gameplay balance exactly. Phaser's Scale Manager (FIT mode) handles sub-1080p viewports. BootScene is converted from texture generation to asset preloading with a progress bar and error fallback.
+Upgrade Bug Siege from 800×600 to 1920×1080 resolution and replace all runtime-generated geometric textures with preloaded photorealistic PNG assets. All game-logic config values (tileSize, speeds, ranges, sizes) stay at their original values — only grid offsets change to center the grid on the larger canvas. HD textures are displayed at game-logic sizes via `setDisplaySize()`. Phaser's Scale Manager (FIT mode) handles sub-1080p viewports. BootScene is converted from texture generation to asset preloading with a progress bar and error fallback.
 
 ## Technical Context
 
@@ -29,78 +29,57 @@ Upgrade Bug Siege from 800×600 to 1920×1080 resolution and replace all runtime
 | II. Grid-Authoritative | **PASS** | Grid is 7×7 with core at exact center (3,3). All world positions still derive from grid coordinates via `gridToWorld()`. Only the tileSize/offset config values change. |
 | III. Data-Driven Configuration | **PASS** | All scaled pixel values (ranges, sizes, speeds) remain in GameConfig.js. No values inlined in logic. |
 | IV. Object Pooling | **PASS** | Pool sizes unchanged (60 bugs, 50 bullets, 20 spitter bullets). Only visual representation changes. |
-| V. Scope Lock | **VIOLATION — JUSTIFIED** | Feature spec explicitly amends resolution (800×600→1920×1080), tile size (64→144), and asset pipeline (geometric→loaded PNGs). These are authorized GDD amendments per the feature request. |
+| V. Scope Lock | **VIOLATION — JUSTIFIED** | Feature spec explicitly amends resolution (800×600→1920×1080) and asset pipeline (geometric→loaded PNGs). Tile size stays at 64. These are authorized GDD amendments per the feature request. |
 
 **Technical Constraints amended by this feature:**
 
 | Constraint | Old Value | New Value | Justification |
 |------------|-----------|-----------|---------------|
 | Canvas | 800×600 px, fixed | 1920×1080 px, fixed (Scale.FIT for smaller displays) | FR-001 |
-| Tile size | 64×64 px | 144×144 px (2.25× scale) | FR-002 |
+| Tile size | 64×64 px | 64×64 px (unchanged) | Game logic unchanged; visual sizing via setDisplaySize |
+| Grid offsets | offsetX=208, offsetY=108 | offsetX=736, offsetY=316 | Center 7×7 grid on 1920×1080 canvas |
 | Asset Pipeline | Runtime geometric shapes | Preloaded PNG files per entity | FR-003 through FR-008, FR-011 |
-| Sprite dimensions | GDD asset table (64/48/80/56/16 px) | Scaled 2.25× (144/108/180/126/18 px) | FR-002, FR-009 |
 
 ## Scaling Strategy
 
-**Uniform scale factor: 2.25×** (derived from tileSize: 64 → 144)
+**No config value scaling.** All game-logic values (tileSize, speeds, ranges, sizes) remain at their original values.
 
-The canvas changes aspect ratio (4:3 → 16:9), so width and height scale differently (2.4× and 1.8×). However, the 7×7 square grid is the gameplay anchor. We scale uniformly by 2.25× (producing 144px tiles that divide cleanly), which:
-- Keeps the grid square (1008×1008 px)
-- Creates compact margins (36px top/bottom, 456px sides) for future UI expansion
-- Produces clean integer values for most scaled quantities
+The canvas upgrades from 800×600 to 1920×1080. The 7×7 grid of 64px tiles (448×448px) is centered on the larger canvas by recalculating offsets:
+- offsetX = (1920 − 448) / 2 = 736
+- offsetY = (1080 − 448) / 2 = 316
+- Horizontal margins: 736px each side — suitable for HUD expansion
+- Vertical margins: 316px each side
 
-**All pixel-unit values** in config and hardcoded constants get multiplied by 2.25×. Non-pixel values (HP, damage, costs, fire rates, wave compositions) remain unchanged.
+HD texture assets are loaded at their native resolution and displayed at game-logic sizes via `setDisplaySize()`. This preserves all gameplay balance without touching any speed, range, or size values.
 
-### Complete Scaling Table
+### Config Changes Table
 
-| Location | Property | Old | New (×2.25) | Notes |
-|----------|----------|-----|-------------|-------|
-| **GameConfig GAME** | canvasWidth | 800 | 1920 | Fixed |
-| | canvasHeight | 600 | 1080 | Fixed |
-| **GameConfig GRID** | tileSize | 64 | 144 | |
-| | offsetX | 208 | 528 | (1920−864)/2 |
-| | offsetY | 108 | 108 | (1080−864)/2 — unchanged! |
-| **GameConfig TURRETS** | blaster.range | 192 | 432 | |
-| | zapper.range | 160 | 360 | |
-| | slowfield.range | 128 | 288 | |
-| | slowfield.upgradedRange | 160 | 360 | |
-| **GameConfig BUGS** | swarmer.speed | 60 | 135 | Preserves tiles/sec |
-| | swarmer.size | 48 | 108 | |
-| | brute.speed | 30 | 68 | Rounded from 67.5 |
-| | brute.size | 80 | 180 | |
-| | spitter.speed | 35 | 79 | Rounded from 78.75 |
-| | spitter.size | 56 | 126 | |
-| | spitter.attackRange | 192 | 432 | |
-| | boss.speed | 15 | 34 | Rounded from 33.75 |
-| | boss.size | 100 | 225 | |
-| **Bullet.js** | default speed | 400 | 900 | |
-| **Bug.js** | spitter bullet speed | 200 | 450 | Line 119 |
-| **BootScene.js** | bullet diameter | 8 | 18 | |
-| **Turret.js** | chainRange | 96 | 216 | Line 86 |
-| | muzzle flash radius | 8 | 18 | Line 153 |
-| | lightning lineWidth | 2 | 4 | Line 119 |
-| **GameScene.js** | death particle radius | 3 | 7 | Line 252 |
-| | death particle spread | 30 | 68 | Line 255 |
-| **WaveManager.js** | spawn margin | 20 | 45 | Line 62 |
-| **Bullet.js** | out-of-bounds margin | 50 | 113 | Lines 40-44 |
+| Location | Property | Old | New | Notes |
+|----------|----------|-----|-----|-------|
+| **GameConfig GAME** | canvasWidth | 800 | 1920 | |
+| | canvasHeight | 600 | 1080 | |
+| **GameConfig GRID** | offsetX | 208 | 736 | Center 448px grid on 1920px |
+| | offsetY | 108 | 316 | Center 448px grid on 1080px |
+
+All other config values (tileSize, turret ranges, bug speeds/sizes, bullet speeds, hardcoded pixel values) remain unchanged.
 
 ### Asset Dimensions Table
 
 | Texture Key | Category | Dimensions (px) | Format | File Path |
 |-------------|----------|-----------------|--------|-----------|
-| turret-blaster | turrets | 144×144 | PNG (transparent) | assets/turrets/blaster.png |
-| turret-zapper | turrets | 144×144 | PNG (transparent) | assets/turrets/zapper.png |
-| turret-slowfield | turrets | 144×144 | PNG (transparent) | assets/turrets/slowfield.png |
-| turret-wall | turrets | 144×144 | PNG (transparent) | assets/turrets/wall.png |
-| bug-swarmer | bugs | 108×108 | PNG (transparent) | assets/bugs/swarmer.png |
-| bug-brute | bugs | 180×180 | PNG (transparent) | assets/bugs/brute.png |
-| bug-spitter | bugs | 126×126 | PNG (transparent) | assets/bugs/spitter.png |
-| bug-boss | bugs | 225×225 | PNG (transparent) | assets/bugs/boss.png |
-| core | environment | 144×144 | PNG (transparent) | assets/environment/core.png |
+| turret-blaster | turrets | any square (e.g. 256×256) | PNG (transparent) | assets/turrets/blaster.png |
+| turret-zapper | turrets | any square | PNG (transparent) | assets/turrets/zapper.png |
+| turret-slowfield | turrets | any square | PNG (transparent) | assets/turrets/slowfield.png |
+| turret-wall | turrets | any square | PNG (transparent) | assets/turrets/wall.png |
+| bug-swarmer | bugs | any square | PNG (transparent) | assets/bugs/swarmer.png |
+| bug-brute | bugs | any square | PNG (transparent) | assets/bugs/brute.png |
+| bug-spitter | bugs | any square | PNG (transparent) | assets/bugs/spitter.png |
+| bug-boss | bugs | any square | PNG (transparent) | assets/bugs/boss.png |
+| core | environment | any square | PNG (transparent) | assets/environment/core.png |
 | background | environment | 1920×1080 | JPEG or PNG | assets/environment/background.jpg |
-| tile | environment | 144×144 | PNG (transparent) | assets/environment/tile.png |
-| bullet | environment | 18×18 | PNG (transparent) | assets/environment/bullet.png |
-| spitter-bullet | environment | 18×18 | PNG (transparent) | assets/environment/spitter-bullet.png |
+| tile | environment | any square | PNG (transparent) | assets/environment/tile.png |
+| bullet | environment | any square | PNG (transparent) | assets/environment/bullet.png |
+| spitter-bullet | environment | any square | PNG (transparent) | assets/environment/spitter-bullet.png |
 
 **Total: 13 files (4 turrets + 4 bugs + 1 core + 1 background + 1 tile + 2 projectiles)**
 
@@ -122,21 +101,21 @@ specs/003-hd-photorealistic/
 ```text
 assets/                          # NEW — all game art assets
 ├── turrets/
-│   ├── blaster.png              # 144×144, cyberpunk blaster turret
-│   ├── zapper.png               # 144×144, cyberpunk zapper turret
-│   ├── slowfield.png            # 144×144, cyberpunk slowfield turret
-│   └── wall.png                 # 144×144, cyberpunk wall block
+│   ├── blaster.png              # cyberpunk blaster turret
+│   ├── zapper.png               # cyberpunk zapper turret
+│   ├── slowfield.png            # cyberpunk slowfield turret
+│   └── wall.png                 # cyberpunk wall block
 ├── bugs/
-│   ├── swarmer.png              # 108×108, corrupted digital swarmer
-│   ├── brute.png                # 180×180, corrupted digital brute
-│   ├── spitter.png              # 126×126, corrupted digital spitter
-│   └── boss.png                 # 225×225, corrupted digital boss
+│   ├── swarmer.png              # corrupted digital swarmer
+│   ├── brute.png                # corrupted digital brute
+│   ├── spitter.png              # corrupted digital spitter
+│   └── boss.png                 # corrupted digital boss
 └── environment/
-    ├── core.png                 # 144×144, command core
+    ├── core.png                 # command core
     ├── background.jpg           # 1920×1080, cyberpunk PCB landscape
-    ├── tile.png                 # 144×144, circuit board trace tile
-    ├── bullet.png               # 18×18, turret projectile
-    └── spitter-bullet.png       # 18×18, spitter projectile
+    ├── tile.png                 # circuit board trace tile
+    ├── bullet.png               # turret projectile
+    └── spitter-bullet.png       # spitter projectile
 
 src/                             # EXISTING — files to modify
 ├── main.js                      # Add Scale Manager config
@@ -164,16 +143,13 @@ src/                             # EXISTING — files to modify
 
 **Goal**: Game runs at 1920×1080 with correctly scaled grid and physics. All textures still runtime-generated but at new sizes.
 
-1. **GameConfig.js** — Update all pixel-unit values per scaling table
+1. **GameConfig.js** — Update canvas dimensions (800→1920, 600→1080) and grid offsets (offsetX→736, offsetY→316). All other values unchanged.
 2. **main.js** — Add `scale: { mode: Phaser.Scale.FIT, autoCenter: Phaser.Scale.CENTER_BOTH }` to Phaser config; update width/height to use new GAME values
-3. **BootScene.js** — Texture generation now uses new sizes from config (still generates geometric shapes); update bullet diameters from 8→18
-4. **WaveManager.js** — Update spawn margin 20→45
-5. **Turret.js** — Update hardcoded chainRange 96→216, muzzle flash 8→18, lightning lineWidth 2→4
-6. **Bug.js** — Update spitter bullet speed 200→450
-7. **Bullet.js** — Update default speed 400→900, out-of-bounds margin 50→113
-8. **GameScene.js** — Update death particle radius 3→7, spread 30→68; wave announcement font sizes
-9. **All UI scenes** — Reposition for 1920×1080 (MainMenuScene, UIScene, GameOverScene)
-10. **BuildSystem.js** — Scale menu offsets and dimensions
+3. **GameScene.js** — Add `setDisplaySize(GRID.tileSize, GRID.tileSize)` to tile and core sprite creation
+4. **Bullet.js** — Derive bullet display size from `GRID.tileSize / 8`, add `setDisplaySize()` and `body.setCircle()` in fire()
+5. **Bug.js** — Use `this.width / 2` for physics body circle instead of `conf.size / 2`
+6. **All UI scenes** — Reposition for 1920×1080 (MainMenuScene, UIScene, GameOverScene)
+7. **BuildSystem.js** — Scale menu offsets and dimensions
 
 **Verification**: Launch game, verify 1920×1080 canvas, play through wave 1-2 with geometric textures, confirm grid/physics/UI work correctly.
 
@@ -205,9 +181,8 @@ src/                             # EXISTING — files to modify
 | Violation | Why Needed | Simpler Alternative Rejected Because |
 |-----------|------------|--------------------------------------|
 | Canvas 800×600 → 1920×1080 | Feature explicitly requires Full HD | Keeping 800×600 contradicts the user request |
-| Tile size 64→144 | Proportional scaling for HD grid | Keeping 64px tiles on 1920×1080 would leave >70% of canvas empty |
 | Geometric → loaded PNGs | Feature explicitly requires photorealistic assets | Runtime-generated shapes cannot achieve photorealistic quality |
-| GDD sprite dimensions changed | All sizes scale uniformly with resolution | Mixing old and new sizes would break visual consistency |
+| Grid offsets changed | Center grid on larger canvas | Original offsets position grid incorrectly on 1920×1080 |
 
 ## Risk Mitigation
 

@@ -2,21 +2,19 @@
 
 **Feature**: 003-hd-photorealistic | **Date**: 2026-02-10
 
-## R1: Optimal Scale Factor for 800×600 → 1920×1080
+## R1: Scaling Strategy for 800×600 → 1920×1080
 
-**Decision**: Uniform 2.25× scale factor (tileSize: 64 → 144)
+**Decision**: No config value scaling. Keep original game-logic values (tileSize=64, original speeds/ranges/sizes). Center the grid on the larger canvas by recalculating offsets. Use `setDisplaySize()` on loaded HD texture sprites to render at game-logic sizes.
 
-**Rationale**: The aspect ratio changes from 4:3 to 16:9, so width and height cannot share a single scale factor. The 7×7 square grid is the gameplay anchor. Scaling uniformly by the grid preserves gameplay balance. tileSize=144 was chosen because:
-- 144/64 = 2.25 — clean factor
-- 144 has many divisors (2,3,4,6,8,9,12,16,18,24,36,48,72) enabling clean sub-pixel math
-- Grid at 144px: 1008×1008px total. Vertical margin: (1080-1008)/2 = 36px
-- Horizontal margin: (1920-1008)/2 = 456px — suitable for side HUD expansion
-- Most scaled values produce clean integers or near-integers (max rounding error: 0.75px)
+**Rationale**: Scaling all pixel values (speeds, ranges, sizes) adds complexity and rounding errors for no gameplay benefit. The simpler approach is:
+- Keep tileSize=64 — all game logic, physics, and balance remain identical
+- Recalculate grid offsets for centering: offsetX=(1920−448)/2=736, offsetY=(1080−448)/2=316
+- Load HD texture assets at their native resolution, display at config sizes via `setDisplaySize()`
+- Grid at 64px: 448×448px total. Horizontal margin: 736px, vertical margin: 316px
 
 **Alternatives considered**:
-- **2.0× (tileSize=128)**: Grid 768×768, margins 576×156. Clean but small tiles for "HD photorealistic" art. Underutilizes the resolution bump.
-- **2.5× (tileSize=160)**: Grid 960×960, margins 480×60. Tight vertical margins (60px) leave almost no room for HUD above/below the grid.
-- **1.8× (tileSize=115)**: Matches exact height ratio (1080/600). Awkward tile size, poor divisibility, produces many fractional values.
+- **2.25× uniform scale (tileSize=144)**: Requires scaling every pixel value in config and hardcoded constants. Produces rounding errors. More changes, more risk.
+- **2× uniform scale (tileSize=128)**: Cleaner than 2.25× but still requires scaling all values. Unnecessary complexity when setDisplaySize handles visuals.
 
 ## R2: Phaser 3 Scale Manager Configuration
 
@@ -110,16 +108,6 @@ preload() {
 
 ## R5: Bug Speed Scaling Verification
 
-**Decision**: Bug speeds (pixels/second) MUST scale by 2.25× along with all other pixel values.
+**Decision**: No speed scaling needed. All config values (speeds, ranges, sizes) remain at original values.
 
-**Rationale**: Bug speed is measured in pixels per second. If the grid is 2.25× larger but speed stays the same, bugs take 2.25× longer to reach the core — a major gameplay balance change. Scaling speed by 2.25× preserves the exact same "tiles per second" rate and identical game feel.
-
-- swarmer: 60 → 135 px/s (still ~0.94 tiles/sec)
-- brute: 30 → 68 px/s (still ~0.47 tiles/sec)
-- spitter: 35 → 79 px/s (still ~0.55 tiles/sec)
-- boss: 15 → 34 px/s (still ~0.24 tiles/sec)
-
-Same logic applies to bullet speeds (400→900, 200→450).
-
-**Alternatives considered**:
-- **Keep original speeds**: Would slow the entire game by 2.25×. Rejected: spec says "No gameplay balance changes."
+**Rationale**: Since tileSize stays at 64 and grid offsets simply reposition the grid on the larger canvas, all pixel-per-second rates and tile-per-second rates are preserved automatically. No values need adjustment for gameplay balance.

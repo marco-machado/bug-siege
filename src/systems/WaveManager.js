@@ -59,7 +59,7 @@ export class WaveManager {
   getRandomEdgePosition() {
     const w = GAME.canvasWidth;
     const h = GAME.canvasHeight;
-    const margin = 45;
+    const margin = 20;
     const edge = Phaser.Math.Between(0, 3);
 
     switch (edge) {

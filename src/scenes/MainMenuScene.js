@@ -13,8 +13,8 @@ export class MainMenuScene extends Phaser.Scene {
 
     const gridG = this.add.graphics();
     gridG.lineStyle(1, 0x334455, 0.15);
-    for (let x = 0; x < W; x += 144) gridG.lineBetween(x, 0, x, H);
-    for (let y = 0; y < H; y += 144) gridG.lineBetween(0, y, W, y);
+    for (let x = 0; x < W; x += 64) gridG.lineBetween(x, 0, x, H);
+    for (let y = 0; y < H; y += 64) gridG.lineBetween(0, y, W, y);
 
     this.add.text(W / 2, H * 0.28, 'BUG SIEGE', {
       fontSize: '112px',

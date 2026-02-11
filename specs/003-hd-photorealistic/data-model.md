@@ -22,40 +22,21 @@ This feature does not introduce new runtime entities or data structures. It modi
 
 | Field | Type | Old Value | New Value |
 |-------|------|-----------|-----------|
-| cols | number | 6 | 6 (unchanged) |
-| rows | number | 6 | 6 (unchanged) |
-| tileSize | number | 64 | 144 |
-| offsetX | number | 208 | 528 |
-| offsetY | number | 108 | 108 (unchanged) |
+| cols | number | 6 | 7 |
+| rows | number | 6 | 7 |
+| tileSize | number | 64 | 64 (unchanged) |
+| offsetX | number | 208 | 736 |
+| offsetY | number | 108 | 316 |
 | coreCol | number | 3 | 3 (unchanged) |
-| coreRow | number | 2 | 2 (unchanged) |
+| coreRow | number | 2 | 3 |
 
-### TURRETS Object (pixel fields only)
+### TURRETS Object
 
-| Field | Type | Old Value | New Value |
-|-------|------|-----------|-----------|
-| blaster.range | number | 192 | 432 |
-| zapper.range | number | 160 | 360 |
-| slowfield.range | number | 128 | 288 |
-| slowfield.upgradedRange | number | 160 | 360 |
+No value changes. All ranges, costs, fire rates, damage, and other fields remain at their original values. Visual sizing is handled by `setDisplaySize()` on sprites.
 
-All other turret fields (cost, fireRate, damage, hp, upgradeCost, upgradedDamage, chainTargets, slowFactor, upgradedHp) are unchanged.
+### BUGS Object
 
-### BUGS Object (pixel fields only)
-
-| Bug Type | Field | Old Value | New Value |
-|----------|-------|-----------|-----------|
-| swarmer | speed | 60 | 135 |
-| swarmer | size | 48 | 108 |
-| brute | speed | 30 | 68 |
-| brute | size | 80 | 180 |
-| spitter | speed | 35 | 79 |
-| spitter | size | 56 | 126 |
-| spitter | attackRange | 192 | 432 |
-| boss | speed | 15 | 34 |
-| boss | size | 100 | 225 |
-
-All other bug fields (hp, coreDamage, wallDamage, reward, attackRate) are unchanged.
+No value changes. All speeds, sizes, HP, damage, and reward values remain at their original values. Visual sizing is handled by `setDisplaySize()` on sprites, with physics body circles derived from `this.width / 2`.
 
 ### WAVES and ECONOMY Objects
 
@@ -91,16 +72,23 @@ Every asset is loaded with a stable texture key that matches the existing code r
 
 ## Hardcoded Values Inventory
 
-Values embedded directly in source files (not in GameConfig.js) that require scaling:
+Values embedded directly in source files (not in GameConfig.js). These remain at their original values — no scaling applied. Visual sizing is handled via `setDisplaySize()` on loaded texture sprites.
 
-| File | Line | Current Value | New Value | Context |
-|------|------|---------------|-----------|---------|
-| Turret.js | 86 | `chainRange = 96` | `216` | Zapper chain jump distance |
-| Turret.js | 119 | `lineStyle(2, ...)` | `lineStyle(4, ...)` | Lightning chain visual width |
-| Turret.js | 153 | `circle(..., 8, ...)` | `circle(..., 18, ...)` | Muzzle flash radius |
-| Bullet.js | 7 | `this.speed = 400` | `900` | Default bullet speed |
-| Bullet.js | 40-44 | `- 50` / `+ 50` | `- 113` / `+ 113` | Out-of-bounds despawn margin |
-| Bug.js | 119 | `200` (6th arg) | `450` | Spitter bullet speed |
-| GameScene.js | 252 | `circle(x, y, 3, ...)` | `circle(x, y, 7, ...)` | Death particle size |
-| GameScene.js | 255 | `* 30` | `* 68` | Death particle spread radius |
-| WaveManager.js | 62 | `margin = 20` | `45` | Off-screen spawn margin |
+| File | Line | Value | Context |
+|------|------|-------|---------|
+| Turret.js | ~86 | `chainRange = 96` | Zapper chain jump distance |
+| Turret.js | ~119 | `lineStyle(2, ...)` | Lightning chain visual width |
+| Turret.js | ~153 | `circle(..., 8, ...)` | Muzzle flash radius |
+| Bullet.js | ~7 | `this.speed = 400` | Default bullet speed |
+| Bullet.js | ~40-44 | `- 50` / `+ 50` | Out-of-bounds despawn margin |
+| Bug.js | ~119 | `200` (6th arg) | Spitter bullet speed |
+| GameScene.js | ~252 | `circle(x, y, 3, ...)` | Death particle size |
+| GameScene.js | ~255 | `* 30` | Death particle spread radius |
+| WaveManager.js | ~62 | `margin = 20` | Off-screen spawn margin |
+
+### Runtime Visual Sizing
+
+Sprites loaded from HD PNG assets are displayed at game-logic sizes using `setDisplaySize()`:
+- Tiles and core: `setDisplaySize(GRID.tileSize, GRID.tileSize)`
+- Bullets: `setDisplaySize(GRID.tileSize / 8, GRID.tileSize / 8)`
+- Bugs: physics body via `body.setCircle(this.width / 2)`

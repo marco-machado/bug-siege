@@ -78,14 +78,14 @@ export class BootScene extends Phaser.Scene {
       g.generateTexture(key, size, size);
     } else if (key.startsWith('bug-')) {
       const type = key.replace('bug-', '');
-      const size = BUGS[type] ? BUGS[type].size : 108;
+      const size = BUGS[type] ? BUGS[type].size : 48;
       g.fillStyle(magenta, 1);
       g.fillCircle(size / 2, size / 2, size / 2);
       g.generateTexture(key, size, size);
     } else if (key === 'bullet' || key === 'spitter-bullet') {
       g.fillStyle(magenta, 1);
-      g.fillCircle(9, 9, 9);
-      g.generateTexture(key, 18, 18);
+      g.fillCircle(4, 4, 4);
+      g.generateTexture(key, 8, 8);
     } else if (key === 'background') {
       g.fillStyle(0x1a1a2e, 1);
       g.fillRect(0, 0, GAME.canvasWidth, GAME.canvasHeight);

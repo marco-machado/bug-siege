@@ -17,10 +17,9 @@ Update all pixel-unit values in `src/config/GameConfig.js`. Reference the comple
 Key changes:
 - `GAME.canvasWidth`: 800 → 1920
 - `GAME.canvasHeight`: 600 → 1080
-- `GRID.tileSize`: 64 → 144
-- `GRID.offsetX`: 208 → 528
-- All turret ranges × 2.25
-- All bug speeds × 2.25 and sizes × 2.25
+- `GRID.offsetX`: 208 → 736 (centers 448px grid on 1920px)
+- `GRID.offsetY`: 108 → 316 (centers 448px grid on 1080px)
+- All other values (tileSize, ranges, speeds, sizes) unchanged
 
 ### Step 2: Add Scale Manager to main.js
 
@@ -45,9 +44,12 @@ const config = {
 };
 ```
 
-### Step 3: Scale Hardcoded Pixel Values
+### Step 3: Add setDisplaySize to Sprite Creation
 
-Update values embedded directly in source files (not in GameConfig). See the [hardcoded values inventory](./data-model.md#hardcoded-values-inventory) for the complete list.
+Add `setDisplaySize()` calls where sprites are created to ensure HD textures render at game-logic sizes:
+- **GameScene.js**: `setDisplaySize(GRID.tileSize, GRID.tileSize)` on tile and core sprites
+- **Bullet.js**: Derive `BULLET_SIZE = GRID.tileSize / 8`, apply via `setDisplaySize()` and `body.setCircle()`
+- **Bug.js**: Use `this.width / 2` for physics body circle
 
 ### Step 4: Reposition UI Elements
 
@@ -62,7 +64,7 @@ Recalculate all absolute pixel positions in:
 
 Run `npm run dev` and verify:
 - [ ] Canvas renders at 1920×1080
-- [ ] Grid is centered with 456px side margins, 36px top/bottom margins
+- [ ] Grid is centered with 736px side margins, 316px top/bottom margins
 - [ ] Turrets can be placed on all 7×7 grid cells
 - [ ] Bugs spawn from edges and path to core correctly
 - [ ] Turret firing ranges feel correct (not too short/long)

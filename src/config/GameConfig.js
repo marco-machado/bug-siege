@@ -1,9 +1,9 @@
 export const GRID = Object.freeze({
   cols: 7,
   rows: 7,
-  tileSize: 144,
-  offsetX: 456,
-  offsetY: 36,
+  tileSize: 64,
+  offsetX: 736,
+  offsetY: 316,
   coreCol: 3,
   coreRow: 3,
   starterTurrets: Object.freeze([
@@ -17,7 +17,7 @@ export const GRID = Object.freeze({
 export const TURRETS = Object.freeze({
   blaster: Object.freeze({
     cost: 50,
-    range: 432,
+    range: 192,
     fireRate: 2.0,
     damage: 10,
     upgradeCost: 75,
@@ -26,7 +26,7 @@ export const TURRETS = Object.freeze({
   }),
   zapper: Object.freeze({
     cost: 100,
-    range: 360,
+    range: 160,
     fireRate: 0.8,
     damage: 15,
     chainTargets: 2,
@@ -36,10 +36,10 @@ export const TURRETS = Object.freeze({
   }),
   slowfield: Object.freeze({
     cost: 75,
-    range: 288,
+    range: 128,
     slowFactor: 0.5,
     upgradeCost: 112,
-    upgradedRange: 360,
+    upgradedRange: 160,
     hp: null,
   }),
   wall: Object.freeze({
@@ -52,38 +52,38 @@ export const TURRETS = Object.freeze({
 
 export const BUGS = Object.freeze({
   swarmer: Object.freeze({
-    speed: 135,
+    speed: 60,
     hp: 30,
     coreDamage: 5,
     wallDamage: 5,
     reward: 10,
-    size: 108,
+    size: 48,
   }),
   brute: Object.freeze({
-    speed: 68,
+    speed: 30,
     hp: 150,
     coreDamage: 20,
     wallDamage: 20,
     reward: 25,
-    size: 180,
+    size: 80,
   }),
   spitter: Object.freeze({
-    speed: 79,
+    speed: 35,
     hp: 60,
     coreDamage: 10,
     wallDamage: 15,
     reward: 15,
-    size: 126,
-    attackRange: 432,
+    size: 56,
+    attackRange: 192,
     attackRate: 1.0,
   }),
   boss: Object.freeze({
-    speed: 34,
+    speed: 15,
     hp: 1500,
     coreDamage: 40,
     wallDamage: 40,
     reward: 100,
-    size: 225,
+    size: 100,
   }),
 });
 

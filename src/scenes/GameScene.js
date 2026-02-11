@@ -98,14 +98,14 @@ export class GameScene extends Phaser.Scene {
     for (let r = 0; r < GRID.rows; r++) {
       for (let c = 0; c < GRID.cols; c++) {
         const { x, y } = this.grid.gridToWorld(c, r);
-        this.add.image(x, y, 'tile').setAlpha(0.5);
+        this.add.image(x, y, 'tile').setDisplaySize(GRID.tileSize, GRID.tileSize).setAlpha(0.5);
       }
     }
   }
 
   renderCore() {
     const pos = this.grid.getCoreWorldPos();
-    this.coreSprite = this.add.sprite(pos.x, pos.y, 'core');
+    this.coreSprite = this.add.sprite(pos.x, pos.y, 'core').setDisplaySize(GRID.tileSize, GRID.tileSize);
   }
 
   placeStarterTurrets() {
@@ -251,11 +251,11 @@ export class GameScene extends Phaser.Scene {
 
     for (let i = 0; i < count; i++) {
       const angle = (Math.PI * 2 * i) / count;
-      const particle = this.add.circle(x, y, 7, color, 1);
+      const particle = this.add.circle(x, y, 3, color, 1);
       this.tweens.add({
         targets: particle,
-        x: x + Math.cos(angle) * 68,
-        y: y + Math.sin(angle) * 68,
+        x: x + Math.cos(angle) * 30,
+        y: y + Math.sin(angle) * 30,
         alpha: 0,
         scale: 0.2,
         duration: 300,
