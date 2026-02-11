@@ -1,5 +1,5 @@
 import Phaser from 'phaser';
-import { TURRETS, ECONOMY } from '../config/GameConfig.js';
+import { GRID, TURRETS, ECONOMY } from '../config/GameConfig.js';
 
 export class Turret {
   constructor(scene, col, row, type, worldX, worldY) {
@@ -17,10 +17,12 @@ export class Turret {
     this.hp = conf.hp;
 
     this.fireTimer = 0;
-    this.sprite = scene.add.sprite(worldX, worldY, `turret-${type}`);
+    this.sprite = scene.add.sprite(worldX, worldY, `turret-${type}`).setDisplaySize(GRID.tileSize, GRID.tileSize);
 
     if (type === 'wall') {
       this.wallBody = scene.physics.add.staticImage(worldX, worldY, `turret-${type}`);
+      this.wallBody.setDisplaySize(GRID.tileSize, GRID.tileSize);
+      this.wallBody.refreshBody();
       this.wallBody.setVisible(false);
       this.wallBody.turretRef = this;
     }
@@ -45,8 +47,9 @@ export class Turret {
     const target = this.findNearestBug(bugs);
     if (!target) return;
 
+    const aimPos = this.type === 'zapper' ? target : this.getPredictedPosition(target);
     this.sprite.setRotation(
-      Phaser.Math.Angle.Between(this.sprite.x, this.sprite.y, target.x, target.y) + Math.PI / 2
+      Phaser.Math.Angle.Between(this.sprite.x, this.sprite.y, aimPos.x, aimPos.y) + Math.PI / 2
     );
 
     if (this.type === 'zapper') {
@@ -75,15 +78,28 @@ export class Turret {
     return nearest;
   }
 
+  getPredictedPosition(target) {
+    const bulletSpeed = 400;
+    const dx = target.x - this.sprite.x;
+    const dy = target.y - this.sprite.y;
+    const dist = Math.sqrt(dx * dx + dy * dy);
+    const t = dist / bulletSpeed;
+    return {
+      x: target.x + target.body.velocity.x * t,
+      y: target.y + target.body.velocity.y * t,
+    };
+  }
+
   fire(target) {
     const bullet = this.scene.bullets.get();
     if (!bullet) return;
-    bullet.fire(this.sprite.x, this.sprite.y, target.x, target.y, this.damage);
+    const predicted = this.getPredictedPosition(target);
+    bullet.fire(this.sprite.x, this.sprite.y, predicted.x, predicted.y, this.damage);
     this.showMuzzleFlash();
   }
 
   fireZapper(primaryTarget, bugs) {
-    const chainRange = 216;
+    const chainRange = 96;
     const maxChains = TURRETS.zapper.chainTargets;
     const targets = [primaryTarget];
 
@@ -116,7 +132,7 @@ export class Turret {
 
   drawLightningChain(targets) {
     const g = this.scene.add.graphics();
-    g.lineStyle(4, 0xaa44ff, 1);
+    g.lineStyle(2, 0xaa44ff, 1);
 
     g.beginPath();
     g.moveTo(this.sprite.x, this.sprite.y);
@@ -150,7 +166,7 @@ export class Turret {
   }
 
   showMuzzleFlash() {
-    const flash = this.scene.add.circle(this.sprite.x, this.sprite.y, 18, 0xffffaa, 0.9);
+    const flash = this.scene.add.circle(this.sprite.x, this.sprite.y, 8, 0xffffaa, 0.9);
     this.scene.tweens.add({
       targets: flash,
       alpha: 0,

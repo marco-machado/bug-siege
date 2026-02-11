@@ -109,7 +109,7 @@
 | ---------------- | ---------------------------------- |
 | Canvas           | 800 × 600 px                       |
 | Grid tile size   | 64 × 64 px                         |
-| Build grid       | 7×7 tiles (1008×1008 px), centered |
+| Build grid       | 7×7 tiles (896×896 px), centered |
 | Command Core     | Occupies 1 tile (center of grid)   |
 | Map area outside grid | Bug spawning / movement zone  |
 
@@ -142,7 +142,7 @@
 | `tile_empty.png`     | 64×64   | Empty buildable grid slot                  |
 | `tile_blocked.png`   | 64×64   | Non-buildable tile                         |
 | `core.png`           | 64×64   | Command Core structure                     |
-| `turret_blaster.png` | 64×64   | Base + barrel (rotate barrel toward target)|
+| `turret_blaster.png` | 64×64   | Base + barrel (rotate barrel toward predicted target position)|
 | `turret_zapper.png`  | 64×64   | Chain lightning turret                     |
 | `turret_slowfield.png`| 64×64  | Aura emitter                               |
 | `wall_block.png`     | 64×64   | Defensive wall                             |

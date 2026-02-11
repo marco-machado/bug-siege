@@ -150,7 +150,7 @@ A player launches the game and sees a main menu with an option to start the game
 - **FR-004**: System MUST deduct the correct credit cost when a structure is placed and prevent placement when the player has insufficient credits.
 - **FR-005**: System MUST allow the player to upgrade a turret (doubling its damage at 1.5x base cost) or sell it (returning 50% of its cost) by clicking on it.
 - **FR-006**: System MUST support one upgrade tier per turret.
-- **FR-007**: Turrets MUST automatically acquire and fire at the nearest bug within their range.
+- **FR-007**: Turrets MUST automatically acquire the nearest bug within their range. Projectile-firing turrets (Blaster) MUST use predictive aiming — firing toward the bug's predicted future position based on distance, bullet travel time, and the bug's current velocity.
 - **FR-008**: Blaster turrets MUST fire single-target projectiles at 2 shots/sec with 10 damage per shot (20 when upgraded).
 - **FR-009**: Zapper turrets MUST fire chain lightning that hits the primary target and up to 2 additional nearby bugs.
 - **FR-010**: Slowfield structures MUST emit an aura (2 tile radius, 2.5 when upgraded) that reduces the movement speed of all bugs within range by 50%.

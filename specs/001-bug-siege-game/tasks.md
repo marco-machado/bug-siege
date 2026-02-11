@@ -53,7 +53,7 @@
 
 ### Implementation for User Story 1
 
-- [x] T009 [US1] Implement Turret entity class with targeting (nearest bug in range), fire rate timer, rotation toward target, and fire method that spawns a Bullet from pool in `src/entities/Turret.js`
+- [x] T009 [US1] Implement Turret entity class with targeting (nearest bug in range), fire rate timer, predictive aiming (fires toward bug's predicted future position), rotation toward predicted target, and fire method that spawns a Bullet from pool in `src/entities/Turret.js`
 - [x] T010 [US1] Implement Bug entity class with vector steering toward Command Core position, obstacle avoidance, damage-on-contact with core (deal damage + despawn to pool), and HP/damage tracking in `src/entities/Bug.js`
 - [x] T011 [US1] Implement WaveManager with wave config reading, staggered bug spawning from random map edges (N/S/E/W), `bugsAlive` counter, wave completion detection, and wave bonus awarding in `src/systems/WaveManager.js`
 - [x] T012 [US1] Implement BuildSystem with click-on-empty-tile to open build menu, structure selection, credit validation via EconomyManager, turret placement on grid, and menu close behavior in `src/systems/BuildSystem.js`

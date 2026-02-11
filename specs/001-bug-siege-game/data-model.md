@@ -12,9 +12,9 @@ The 7x7 tile grid is the authoritative spatial data structure.
 | Field | Type | Description |
 |-------|------|-------------|
 | `cells` | `CellState[][]` | 7x7 2D array |
-| `offsetX` | `number` | World X of grid top-left (456) |
-| `offsetY` | `number` | World Y of grid top-left (36) |
-| `tileSize` | `number` | 144px |
+| `offsetX` | `number` | World X of grid top-left (512) |
+| `offsetY` | `number` | World Y of grid top-left (92) |
+| `tileSize` | `number` | 128px |
 | `cols` | `number` | 7 |
 | `rows` | `number` | 7 |
 
@@ -147,7 +147,7 @@ pool (inactive) → wave spawns → setActive(true) at map edge
 ```
 Grid 1──* Turret       (grid contains turrets by cell reference)
 Wave 1──* Bug           (wave defines spawn composition)
-Turret *──* Bug         (turrets target bugs in range)
+Turret *──* Bug         (turrets target bugs in range; projectile turrets use predictive aiming)
 Bug *──1 CommandCore   (bugs target the core)
 Spitter *──* Turret    (spitters target turrets/walls with ranged attacks)
 GameState 1──1 Grid    (game state owns the grid)

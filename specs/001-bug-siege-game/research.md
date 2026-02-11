@@ -75,6 +75,8 @@ gridToWorld(col, row) {
 // Avoid: if obstacle ahead, add perpendicular force away from obstacle
 ```
 
+**Turret Predictive Aiming**: Projectile-firing turrets (Blaster) use lead targeting to hit moving bugs. The turret calculates `t = distance / bulletSpeed`, then fires toward `(bug.x + velocity.x * t, bug.y + velocity.y * t)`. This compensates for bullet travel time and prevents misses against fast perpendicular-moving bugs like Swarmers. Instant-damage turrets (Zapper) do not need prediction.
+
 ## 5. Object Pooling
 
 **Decision**: `Phaser.Physics.Arcade.Group` with `get()`, `setActive(false).setVisible(false)`, and `body.enable = false` for recycling.

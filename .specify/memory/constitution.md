@@ -3,7 +3,7 @@ Sync Impact Report
 ==================
 Version change: 1.0.0 → 1.1.0 (003-hd-photorealistic amendment)
 Modified sections:
-  - Technical Constraints — Canvas 800×600→1920×1080, Tile 64→144, Grid 384→864, Scene flow added UIScene
+  - Technical Constraints — Canvas 800×600→1920×1080, Tile 64→128, Grid 384→896, Scene flow added UIScene
   - Asset Pipeline — Geometric placeholders → preloaded PNG/JPEG files with fallback handling, scaled sprite dimensions
 Removed sections: N/A
 Templates requiring updates: None (generic, compatible)
@@ -28,7 +28,7 @@ complexity and keeps the codebase under the 2,000 LOC target.
 
 ### II. Grid-Authoritative
 
-The 7x7 tile grid (144px cells) is the single source of truth for
+The 7x7 tile grid (128px cells) is the single source of truth for
 placement, targeting range calculations, and spatial queries.
 World-pixel positions MUST derive from grid coordinates, never the
 reverse. Build slots, the Command Core location, and obstacle data
@@ -78,13 +78,16 @@ risk for a solo/small-team game project.
 ## Technical Constraints
 
 - **Canvas**: 1920×1080 px, fixed resolution (Scale.FIT for smaller viewports)
-- **Tile size**: 144×144 px (2.25× scale factor)
-- **Build grid**: 7×7 tiles (1008×1008 px), centered on canvas
+- **Tile size**: 128×128 px (2× scale factor)
+- **Build grid**: 7×7 tiles (896×896 px), centered on canvas
 - **Scene flow**: Boot → MainMenu → Game + UI (parallel) → GameOver
 - **Physics**: Arcade Physics only (no Matter.js, no P2)
 - **Waves**: Exactly 10, compositions per GDD wave table
 - **Bug movement**: Vector steering toward Command Core with
   simple obstacle avoidance; no A* or navmesh
+- **Turret targeting**: Projectile turrets use predictive aiming
+  (lead targeting based on bug velocity and bullet travel time);
+  instant-damage turrets (Zapper) target current position
 - **Audio**: MP3/OGG format, loaded in Boot scene
 - **Font**: Single bitmap or web font (e.g., Press Start 2P)
 
