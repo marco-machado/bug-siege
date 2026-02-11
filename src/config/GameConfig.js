@@ -17,7 +17,7 @@ export const GRID = Object.freeze({
 export const TURRETS = Object.freeze({
   blaster: Object.freeze({
     cost: 50,
-    range: 192,
+    range: 224,
     fireRate: 2.0,
     damage: 10,
     upgradeCost: 75,
