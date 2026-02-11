@@ -1,4 +1,5 @@
 import Phaser from 'phaser';
+import { GAME } from '../config/GameConfig.js';
 
 export class GameOverScene extends Phaser.Scene {
   constructor() {
@@ -11,12 +12,13 @@ export class GameOverScene extends Phaser.Scene {
 
   create() {
     const { won, wave, totalKills, credits, baseHp } = this.result;
+    const { canvasWidth: W, canvasHeight: H } = GAME;
 
     const title = won ? 'VICTORY!' : 'DEFEAT';
     const color = won ? '#00ff88' : '#ff3333';
 
-    this.add.text(400, 120, title, {
-      fontSize: '48px',
+    this.add.text(W / 2, H * 0.2, title, {
+      fontSize: '96px',
       fontFamily: 'monospace',
       color,
     }).setOrigin(0.5);
@@ -30,16 +32,16 @@ export class GameOverScene extends Phaser.Scene {
       stats.push(`Remaining HP: ${baseHp}`);
     }
 
-    this.add.text(400, 250, stats.join('\n'), {
-      fontSize: '20px',
+    this.add.text(W / 2, H * 0.42, stats.join('\n'), {
+      fontSize: '40px',
       fontFamily: 'monospace',
       color: '#ffffff',
       align: 'center',
-      lineSpacing: 8,
+      lineSpacing: 16,
     }).setOrigin(0.5);
 
-    const restartBtn = this.add.text(300, 420, '[ RESTART ]', {
-      fontSize: '22px',
+    const restartBtn = this.add.text(W / 2 - 200, H * 0.7, '[ RESTART ]', {
+      fontSize: '44px',
       fontFamily: 'monospace',
       color: '#ffffff',
     }).setOrigin(0.5).setInteractive({ useHandCursor: true });
@@ -48,8 +50,8 @@ export class GameOverScene extends Phaser.Scene {
     restartBtn.on('pointerout', () => restartBtn.setColor('#ffffff'));
     restartBtn.on('pointerdown', () => this.scene.start('Game'));
 
-    const menuBtn = this.add.text(500, 420, '[ MAIN MENU ]', {
-      fontSize: '22px',
+    const menuBtn = this.add.text(W / 2 + 200, H * 0.7, '[ MAIN MENU ]', {
+      fontSize: '44px',
       fontFamily: 'monospace',
       color: '#ffffff',
     }).setOrigin(0.5).setInteractive({ useHandCursor: true });

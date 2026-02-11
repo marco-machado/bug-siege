@@ -275,8 +275,8 @@ export class GameScene extends Phaser.Scene {
   }
 
   showWaveAnnouncement(waveNum) {
-    const text = this.add.text(GAME.canvasWidth / 2, GAME.canvasHeight / 2 - 60, `WAVE ${waveNum}`, {
-      fontSize: '36px',
+    const text = this.add.text(GAME.canvasWidth / 2, GAME.canvasHeight / 2 - 120, `WAVE ${waveNum}`, {
+      fontSize: '72px',
       fontFamily: 'monospace',
       color: '#ff8844',
       fontStyle: 'bold',
