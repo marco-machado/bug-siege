@@ -17,7 +17,7 @@
 
 **Purpose**: Create asset directory structure for photorealistic PNG/JPEG files.
 
-- [ ] T001 Create asset directory structure: `assets/turrets/`, `assets/bugs/`, `assets/environment/`
+- [x] T001 Create asset directory structure: `assets/turrets/`, `assets/bugs/`, `assets/environment/`
 
 ---
 
@@ -27,8 +27,8 @@
 
 **⚠️ CRITICAL**: No user story work can begin until this phase is complete.
 
-- [ ] T002 Scale all pixel-unit values in `src/config/GameConfig.js` per the complete scaling table: GAME (canvasWidth 800→1920, canvasHeight 600→1080), GRID (tileSize 64→144, offsetX 208→528), TURRETS (blaster.range 192→432, zapper.range 160→360, slowfield.range 128→288, slowfield.upgradedRange 160→360), BUGS (swarmer speed 60→135/size 48→108, brute speed 30→68/size 80→180, spitter speed 35→79/size 56→126/attackRange 192→432, boss speed 15→34/size 100→225). Leave all non-pixel values unchanged (HP, damage, costs, fire rates, wave compositions, economy).
-- [ ] T003 Add Phaser Scale Manager configuration to `src/main.js`: add `scale: { mode: Phaser.Scale.FIT, autoCenter: Phaser.Scale.CENTER_BOTH }` to the Phaser game config object; update width/height to reference `GAME.canvasWidth` and `GAME.canvasHeight` if not already.
+- [x] T002 Scale all pixel-unit values in `src/config/GameConfig.js` per the complete scaling table: GAME (canvasWidth 800→1920, canvasHeight 600→1080), GRID (tileSize 64→144, offsetX 208→528), TURRETS (blaster.range 192→432, zapper.range 160→360, slowfield.range 128→288, slowfield.upgradedRange 160→360), BUGS (swarmer speed 60→135/size 48→108, brute speed 30→68/size 80→180, spitter speed 35→79/size 56→126/attackRange 192→432, boss speed 15→34/size 100→225). Leave all non-pixel values unchanged (HP, damage, costs, fire rates, wave compositions, economy).
+- [x] T003 Add Phaser Scale Manager configuration to `src/main.js`: add `scale: { mode: Phaser.Scale.FIT, autoCenter: Phaser.Scale.CENTER_BOTH }` to the Phaser game config object; update width/height to reference `GAME.canvasWidth` and `GAME.canvasHeight` if not already.
 
 **Checkpoint**: Game config is at HD resolution — source file modifications can now begin.
 
@@ -42,12 +42,12 @@
 
 ### Implementation for User Story 1
 
-- [ ] T004 [P] [US1] Scale 3 hardcoded pixel values in `src/entities/Turret.js`: chainRange 96→216 (line ~86), lightning lineWidth 2→4 (line ~119), muzzle flash radius 8→18 (line ~153)
-- [ ] T005 [P] [US1] Scale 1 hardcoded pixel value in `src/entities/Bug.js`: spitter bullet speed 200→450 (line ~119)
-- [ ] T006 [P] [US1] Scale 2 hardcoded pixel values in `src/entities/Bullet.js`: default speed 400→900 (line ~7), out-of-bounds margin 50→113 (lines ~40–44)
-- [ ] T007 [P] [US1] Scale 1 hardcoded pixel value in `src/systems/WaveManager.js`: spawn margin 20→45 (line ~62)
-- [ ] T008 [P] [US1] Scale death particle VFX in `src/scenes/GameScene.js`: particle radius 3→7 (line ~252), particle spread 30→68 (line ~255)
-- [ ] T009 [US1] Update all geometric texture generation in `src/scenes/BootScene.js` to produce correctly sized textures for 1920×1080 — update bullet diameter 8→18 and ensure all generated textures reference scaled sizes from GameConfig (turret textures 144×144, bug textures at their respective sizes, core 144×144, tile 144×144)
+- [x] T004 [P] [US1] Scale 3 hardcoded pixel values in `src/entities/Turret.js`: chainRange 96→216 (line ~86), lightning lineWidth 2→4 (line ~119), muzzle flash radius 8→18 (line ~153)
+- [x] T005 [P] [US1] Scale 1 hardcoded pixel value in `src/entities/Bug.js`: spitter bullet speed 200→450 (line ~119)
+- [x] T006 [P] [US1] Scale 2 hardcoded pixel values in `src/entities/Bullet.js`: default speed 400→900 (line ~7), out-of-bounds margin 50→113 (lines ~40–44)
+- [x] T007 [P] [US1] Scale 1 hardcoded pixel value in `src/systems/WaveManager.js`: spawn margin 20→45 (line ~62)
+- [x] T008 [P] [US1] Scale death particle VFX in `src/scenes/GameScene.js`: particle radius 3→7 (line ~252), particle spread 30→68 (line ~255)
+- [x] T009 [US1] Update all geometric texture generation in `src/scenes/BootScene.js` to produce correctly sized textures for 1920×1080 — update bullet diameter 8→18 and ensure all generated textures reference scaled sizes from GameConfig (turret textures 144×144, bug textures at their respective sizes, core 144×144, tile 144×144)
 
 **Checkpoint**: Game is fully playable at 1920×1080 with geometric textures. Physics, VFX, and spawning all correct.
 
@@ -63,10 +63,10 @@
 
 ### Implementation for User Story 2
 
-- [ ] T010 [P] [US2] Create 4 placeholder turret PNG assets with cyberpunk neon defense theme (transparent backgrounds, top-down perspective): `assets/turrets/blaster.png` (144×144), `assets/turrets/zapper.png` (144×144), `assets/turrets/slowfield.png` (144×144), `assets/turrets/wall.png` (144×144)
-- [ ] T011 [P] [US2] Create 4 placeholder bug PNG assets with corrupted digital organism theme (transparent backgrounds, top-down perspective): `assets/bugs/swarmer.png` (108×108), `assets/bugs/brute.png` (180×180), `assets/bugs/spitter.png` (126×126), `assets/bugs/boss.png` (225×225)
-- [ ] T012 [P] [US2] Create 3 placeholder PNG assets for projectiles and core: `assets/environment/bullet.png` (18×18, turret projectile), `assets/environment/spitter-bullet.png` (18×18, spitter projectile), `assets/environment/core.png` (144×144, command core with cyberpunk theme)
-- [ ] T013 [US2] Rewrite `src/scenes/BootScene.js` from geometric texture generation to asset preloading: add `preload()` method with `this.load.image()` calls for all 13 assets (4 turrets, 4 bugs, bullet, spitter-bullet, core, background, tile); add loading progress bar (centered on canvas); add `loaderror` event handler that tracks failed keys in a Set and logs console warnings; in `create()`, generate bright magenta (#ff00ff) geometric fallback textures for any failed keys (rectangles for turrets/core/tiles, circles for bugs/bullets), then transition to MainMenu. Reference texture keys from data-model.md.
+- [x] T010 [P] [US2] Create 4 placeholder turret PNG assets with cyberpunk neon defense theme (transparent backgrounds, top-down perspective): `assets/turrets/blaster.png` (144×144), `assets/turrets/zapper.png` (144×144), `assets/turrets/slowfield.png` (144×144), `assets/turrets/wall.png` (144×144)
+- [x] T011 [P] [US2] Create 4 placeholder bug PNG assets with corrupted digital organism theme (transparent backgrounds, top-down perspective): `assets/bugs/swarmer.png` (108×108), `assets/bugs/brute.png` (180×180), `assets/bugs/spitter.png` (126×126), `assets/bugs/boss.png` (225×225)
+- [x] T012 [P] [US2] Create 3 placeholder PNG assets for projectiles and core: `assets/environment/bullet.png` (18×18, turret projectile), `assets/environment/spitter-bullet.png` (18×18, spitter projectile), `assets/environment/core.png` (144×144, command core with cyberpunk theme)
+- [x] T013 [US2] Rewrite `src/scenes/BootScene.js` from geometric texture generation to asset preloading: add `preload()` method with `this.load.image()` calls for all 13 assets (4 turrets, 4 bugs, bullet, spitter-bullet, core, background, tile); add loading progress bar (centered on canvas); add `loaderror` event handler that tracks failed keys in a Set and logs console warnings; in `create()`, generate bright magenta (#ff00ff) geometric fallback textures for any failed keys (rectangles for turrets/core/tiles, circles for bugs/bullets), then transition to MainMenu. Reference texture keys from data-model.md.
 
 **Checkpoint**: All entity sprites are photorealistic. BootScene loads assets with progress bar. Fallback handling works for missing files.
 
@@ -82,8 +82,8 @@
 
 ### Implementation for User Story 3
 
-- [ ] T014 [P] [US3] Create 2 placeholder environment assets with cyberpunk PCB/circuit board theme: `assets/environment/background.jpg` (1920×1080, cyberpunk motherboard landscape), `assets/environment/tile.png` (144×144, circuit board trace pattern, transparent or semi-transparent)
-- [ ] T015 [US3] Add background image and textured grid tiles in `src/scenes/GameScene.js`: render `background` texture as a full-canvas image behind the grid (at canvas center), update `renderGrid()` to use `tile` texture for each grid cell instead of drawing filled rectangles
+- [x] T014 [P] [US3] Create 2 placeholder environment assets with cyberpunk PCB/circuit board theme: `assets/environment/background.jpg` (1920×1080, cyberpunk motherboard landscape), `assets/environment/tile.png` (144×144, circuit board trace pattern, transparent or semi-transparent)
+- [x] T015 [US3] Add background image and textured grid tiles in `src/scenes/GameScene.js`: render `background` texture as a full-canvas image behind the grid (at canvas center), update `renderGrid()` to use `tile` texture for each grid cell instead of drawing filled rectangles
 
 **Checkpoint**: Environment is visually complete — background and tiles match the cyberpunk theme.
 
@@ -99,11 +99,11 @@
 
 ### Implementation for User Story 4
 
-- [ ] T016 [P] [US4] Reposition and scale MainMenuScene for 1920×1080 in `src/scenes/MainMenuScene.js`: center title at `canvasWidth/2`, scale font sizes proportionally (~2×), reposition subtitle/start button/footer using proportional Y offsets, update background grid line spacing for larger canvas, increase starfield particle count for 1920×1080 coverage
-- [ ] T017 [P] [US4] Reposition and scale UIScene HUD for 1920×1080 in `src/scenes/UIScene.js`: scale all font sizes proportionally (~2×), widen HP bar for HD, reposition wave text/credits/HP bar/phase text/start-wave button using `canvasWidth` and `canvasHeight` references
-- [ ] T018 [P] [US4] Reposition and scale GameOverScene for 1920×1080 in `src/scenes/GameOverScene.js`: center all elements using `canvasWidth/2`, scale font sizes proportionally (~2×), reposition title/stats/buttons with proportional Y spacing
-- [ ] T019 [US4] Scale BuildSystem menus for 1920×1080 in `src/systems/BuildSystem.js`: scale menu background widths (~1.5–2×), font sizes, line heights, position offsets relative to grid cells; add boundary clamping so menus at grid edges don't overflow the canvas (flip menu to opposite side if it would extend beyond canvas bounds)
-- [ ] T020 [US4] Scale wave announcement text in `src/scenes/GameScene.js`: increase font size for HD readability, ensure centered positioning uses `canvasWidth/2` and `canvasHeight/2`
+- [x] T016 [P] [US4] Reposition and scale MainMenuScene for 1920×1080 in `src/scenes/MainMenuScene.js`: center title at `canvasWidth/2`, scale font sizes proportionally (~2×), reposition subtitle/start button/footer using proportional Y offsets, update background grid line spacing for larger canvas, increase starfield particle count for 1920×1080 coverage
+- [x] T017 [P] [US4] Reposition and scale UIScene HUD for 1920×1080 in `src/scenes/UIScene.js`: scale all font sizes proportionally (~2×), widen HP bar for HD, reposition wave text/credits/HP bar/phase text/start-wave button using `canvasWidth` and `canvasHeight` references
+- [x] T018 [P] [US4] Reposition and scale GameOverScene for 1920×1080 in `src/scenes/GameOverScene.js`: center all elements using `canvasWidth/2`, scale font sizes proportionally (~2×), reposition title/stats/buttons with proportional Y spacing
+- [x] T019 [US4] Scale BuildSystem menus for 1920×1080 in `src/systems/BuildSystem.js`: scale menu background widths (~1.5–2×), font sizes, line heights, position offsets relative to grid cells; add boundary clamping so menus at grid edges don't overflow the canvas (flip menu to opposite side if it would extend beyond canvas bounds)
+- [x] T020 [US4] Scale wave announcement text in `src/scenes/GameScene.js`: increase font size for HD readability, ensure centered positioning uses `canvasWidth/2` and `canvasHeight/2`
 
 **Checkpoint**: All screens polished for HD — text readable, buttons clickable, elements properly positioned.
 
@@ -113,9 +113,9 @@
 
 **Purpose**: Full verification across all user stories.
 
-- [ ] T021 Run quickstart.md verification checklist — full 10-wave playthrough at 1920×1080: verify all 13 entity textures show photorealistic sprites, background and tiles render correctly, all menus work, 60 FPS maintained during wave 10 peak
-- [ ] T022 Verify Phaser Scale.FIT behavior — resize browser window below 1920×1080, confirm canvas scales down proportionally with letterboxing, no scrollbars, no element clipping
-- [ ] T023 Verify asset load error handling — temporarily rename one asset file, confirm magenta fallback appears and console warning is logged, game remains playable
+- [x] T021 Run quickstart.md verification checklist — full 10-wave playthrough at 1920×1080: verify all 13 entity textures show photorealistic sprites, background and tiles render correctly, all menus work, 60 FPS maintained during wave 10 peak
+- [x] T022 Verify Phaser Scale.FIT behavior — resize browser window below 1920×1080, confirm canvas scales down proportionally with letterboxing, no scrollbars, no element clipping
+- [x] T023 Verify asset load error handling — temporarily rename one asset file, confirm magenta fallback appears and console warning is logged, game remains playable
 
 ---
 
