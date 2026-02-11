@@ -90,11 +90,21 @@ export class Turret {
     };
   }
 
+  getTipPosition() {
+    const angle = this.sprite.rotation - Math.PI / 2;
+    const offset = GRID.tileSize * 0.45;
+    return {
+      x: this.sprite.x + Math.cos(angle) * offset,
+      y: this.sprite.y + Math.sin(angle) * offset,
+    };
+  }
+
   fire(target) {
     const bullet = this.scene.bullets.get();
     if (!bullet) return;
     const predicted = this.getPredictedPosition(target);
-    bullet.fire(this.sprite.x, this.sprite.y, predicted.x, predicted.y, this.damage);
+    const tip = this.getTipPosition();
+    bullet.fire(tip.x, tip.y, predicted.x, predicted.y, this.damage);
     this.showMuzzleFlash();
   }
 
@@ -134,8 +144,9 @@ export class Turret {
     const g = this.scene.add.graphics();
     g.lineStyle(2, 0xaa44ff, 1);
 
+    const tip = this.getTipPosition();
     g.beginPath();
-    g.moveTo(this.sprite.x, this.sprite.y);
+    g.moveTo(tip.x, tip.y);
     for (const t of targets) {
       g.lineTo(t.x, t.y);
     }
@@ -166,7 +177,8 @@ export class Turret {
   }
 
   showMuzzleFlash() {
-    const flash = this.scene.add.circle(this.sprite.x, this.sprite.y, 8, 0xffffaa, 0.9);
+    const tip = this.getTipPosition();
+    const flash = this.scene.add.circle(tip.x, tip.y, 8, 0xffffaa, 0.9);
     this.scene.tweens.add({
       targets: flash,
       alpha: 0,

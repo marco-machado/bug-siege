@@ -1,0 +1,9 @@
+- [ ] Enemies shouldn't pass through towers. Towers should block their passage.
+- [ ] Improve Game Over screens.
+- [ ] When restarting a game, all waves come at once. Using Restart or going back to the Main Menu and starting again.
+- [ ] Maybe switch the theme to something more ethereal.
+- [ ] Animate tower rotation.
+- [ ] Highlight grid when mouse-over the cells.
+- [x] Modify the grid so the core is exactly in the center. 7x7.
+- [x] Modify cell size so the whole grid is smaller in relation to the map. 128px.
+- [x] Fire projectiles and lasers from the tip of the tower, not from the center.
