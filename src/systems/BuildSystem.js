@@ -21,6 +21,9 @@ export class BuildSystem {
     this.menuContainer = null;
     this.turretMenuContainer = null;
     this.selectedTile = null;
+    this.hoverHighlight = null;
+    this.lastHoverCol = -1;
+    this.lastHoverRow = -1;
   }
 
   setup() {
@@ -28,6 +31,10 @@ export class BuildSystem {
       if (this.scene.phase !== 'build') return;
       if (currentlyOver.length > 0) return;
       this.handleClick(pointer);
+    });
+
+    this.scene.input.on('pointermove', (pointer) => {
+      this.handleHover(pointer);
     });
   }
 
@@ -252,6 +259,51 @@ export class BuildSystem {
     });
   }
 
+  handleHover(pointer) {
+    if (this.scene.phase !== 'build' || this.menuContainer || this.turretMenuContainer) {
+      this.hideHoverHighlight();
+      return;
+    }
+
+    const { col, row } = this.scene.grid.worldToGrid(pointer.worldX, pointer.worldY);
+
+    if (!this.scene.grid.isInBounds(col, row)) {
+      this.hideHoverHighlight();
+      return;
+    }
+
+    if (col === this.lastHoverCol && row === this.lastHoverRow) return;
+
+    const cell = this.scene.grid.getCell(col, row);
+    if (cell === 'core') {
+      this.hideHoverHighlight();
+      return;
+    }
+
+    const color = cell === 'empty' ? 0x00ff88 : 0x4488aa;
+    const tileSize = this.scene.grid.tileSize;
+    const world = this.scene.grid.gridToWorld(col, row);
+
+    if (!this.hoverHighlight) {
+      this.hoverHighlight = this.scene.add.rectangle(world.x, world.y, tileSize, tileSize, color, 0.3);
+    } else {
+      this.hoverHighlight.setPosition(world.x, world.y);
+      this.hoverHighlight.setFillStyle(color, 0.3);
+      this.hoverHighlight.setVisible(true);
+    }
+
+    this.lastHoverCol = col;
+    this.lastHoverRow = row;
+  }
+
+  hideHoverHighlight() {
+    if (this.hoverHighlight) {
+      this.hoverHighlight.setVisible(false);
+    }
+    this.lastHoverCol = -1;
+    this.lastHoverRow = -1;
+  }
+
   closeMenus() {
     if (this.menuContainer) {
       this.menuContainer.destroy();
@@ -262,5 +314,6 @@ export class BuildSystem {
       this.turretMenuContainer = null;
     }
     this.selectedTile = null;
+    this.hideHoverHighlight();
   }
 }

@@ -2,8 +2,11 @@
 - [ ] Improve Game Over screens.
 - [ ] When restarting a game, all waves come at once. Using Restart or going back to the Main Menu and starting again.
 - [ ] Maybe switch the theme to something more ethereal.
-- [ ] Animate tower rotation.
-- [ ] Highlight grid when mouse-over the cells.
+- [ ] Animate tower rotation so they don't just jump to the right angle
+- [x] Highlight grid when mouse-over the cells.
 - [x] Modify the grid so the core is exactly in the center. 7x7.
 - [x] Modify cell size so the whole grid is smaller in relation to the map. 128px.
 - [x] Fire projectiles and lasers from the tip of the tower, not from the center.
+- [ ] Paint turrets range for 3 seconds when clicked during gameplay, keep same behavior when pause and placing things
+- [ ] Make turrets round
+- [ ] Turrets must not change targets unless current target is out of range
