@@ -165,6 +165,30 @@ export class Turret {
     });
   }
 
+  showRange() {
+    if (this.range === 0) return;
+
+    const colors = { blaster: 0xffaa44, zapper: 0xaa44ff, slowfield: 0x44ddff };
+    const color = colors[this.type] || 0xffffff;
+
+    const g = this.scene.add.graphics();
+    g.fillStyle(color, 0.15);
+    g.fillCircle(this.sprite.x, this.sprite.y, this.range);
+    g.lineStyle(2, color, 0.6);
+    g.strokeCircle(this.sprite.x, this.sprite.y, this.range);
+
+    g.setAlpha(0);
+    this.scene.tweens.chain({
+      targets: g,
+      tweens: [
+        { alpha: 1, duration: 200, ease: 'Sine.easeOut' },
+        { alpha: 1, duration: 3000 },
+        { alpha: 0, duration: 200, ease: 'Sine.easeIn' },
+      ],
+      onComplete: () => g.destroy(),
+    });
+  }
+
   drawAura() {
     if (!this.auraGraphics) return;
     this.auraGraphics.clear();

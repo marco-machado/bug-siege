@@ -28,7 +28,7 @@ export class BuildSystem {
 
   setup() {
     this.scene.input.on('pointerdown', (pointer, currentlyOver) => {
-      if (this.scene.phase !== 'build') return;
+      if (this.scene.phase !== 'build' && this.scene.phase !== 'wave') return;
       if (currentlyOver.length > 0) return;
       this.handleClick(pointer);
     });
@@ -43,6 +43,12 @@ export class BuildSystem {
 
     if (!this.scene.grid.isInBounds(col, row)) {
       this.closeMenus();
+      return;
+    }
+
+    if (this.scene.phase === 'wave') {
+      const turret = this.scene.turrets.find(t => t.gridCol === col && t.gridRow === row);
+      if (turret) turret.showRange();
       return;
     }
 
