@@ -40,15 +40,19 @@ export class Turret {
     }
 
     this.fireTimer -= delta;
-    if (this.fireTimer > 0) return;
 
     const target = this.findNearestBug(bugs);
     if (!target) return;
 
     const aimPos = this.type === 'zapper' ? target : this.getPredictedPosition(target);
-    this.sprite.setRotation(
-      Phaser.Math.Angle.Between(this.sprite.x, this.sprite.y, aimPos.x, aimPos.y) + Math.PI / 2
+    const targetAngle = Phaser.Math.Angle.Between(
+      this.sprite.x, this.sprite.y, aimPos.x, aimPos.y
+    ) + Math.PI / 2;
+    this.sprite.rotation = Phaser.Math.Angle.RotateTo(
+      this.sprite.rotation, targetAngle, TURRETS.rotationSpeed * delta / 1000
     );
+
+    if (this.fireTimer > 0) return;
 
     if (this.type === 'zapper') {
       this.fireZapper(target, bugs);
