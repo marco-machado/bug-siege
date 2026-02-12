@@ -32,11 +32,11 @@ This feature does not introduce new runtime entities or data structures. It modi
 
 ### TURRETS Object
 
-No value changes. All ranges, costs, fire rates, damage, and other fields remain at their original values. Visual sizing is handled by `setDisplaySize()` on sprites.
+Selected balance values in `TURRETS` (for example, turret HP and blaster range) have been updated in `src/config/GameConfig.js`. Visual sizing remains handled by `setDisplaySize()` on sprites; no new runtime fields are introduced.
 
 ### BUGS Object
 
-No value changes. All speeds, sizes, HP, damage, and reward values remain at their original values. Visual sizing is handled by `setDisplaySize()` on sprites, with physics body circles derived from `this.width / 2`.
+Selected bug stats in `BUGS` (for example, wallDamage and related combat tuning fields) have been updated in `src/config/GameConfig.js`. Visual sizing is still handled by `setDisplaySize()` on sprites, with physics body circles derived from `this.width / 2`.
 
 ### WAVES and ECONOMY Objects
 
