@@ -23,7 +23,7 @@ export const TURRETS = Object.freeze({
     damage: 10,
     upgradeCost: 75,
     upgradedDamage: 20,
-    hp: null,
+    hp: 150,
   }),
   zapper: Object.freeze({
     cost: 100,
@@ -33,7 +33,7 @@ export const TURRETS = Object.freeze({
     chainTargets: 2,
     upgradeCost: 150,
     upgradedDamage: 30,
-    hp: null,
+    hp: 150,
   }),
   slowfield: Object.freeze({
     cost: 75,
@@ -41,7 +41,7 @@ export const TURRETS = Object.freeze({
     slowFactor: 0.5,
     upgradeCost: 112,
     upgradedRange: 160,
-    hp: null,
+    hp: 100,
   }),
   wall: Object.freeze({
     cost: 25,
@@ -112,7 +112,7 @@ export const ECONOMY = Object.freeze({
 export const GAME = Object.freeze({
   canvasWidth: 1920,
   canvasHeight: 1080,
-  baseHp: 100,
+  baseHp: 200,
   totalWaves: 10,
   buildPhaseSeconds: 20,
   maxBugsPoolSize: 60,

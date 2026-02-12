@@ -251,6 +251,15 @@ export class GameScene extends Phaser.Scene {
 
     this.events.emit('hp-changed', { hp: this.baseHp, maxHp: GAME.baseHp });
 
+    if (this.coreSprite && this.coreSprite.active) {
+      this.coreSprite.setTintFill(0xff4444);
+      this.time.delayedCall(100, () => {
+        if (this.coreSprite && this.coreSprite.active) {
+          this.coreSprite.clearTint();
+        }
+      });
+    }
+
     bug.despawn();
 
     if (this.baseHp <= 0) {

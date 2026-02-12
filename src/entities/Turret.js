@@ -235,8 +235,21 @@ export class Turret {
     return true;
   }
 
+  flashDamage() {
+    if (!this.sprite || !this.sprite.active) return;
+    this.sprite.setTintFill(0xff4444);
+    this.scene.time.delayedCall(100, () => {
+      if (!this.sprite || !this.sprite.active) return;
+      if (this.upgraded) {
+        this.sprite.setTint(0xffdd44);
+      } else {
+        this.sprite.clearTint();
+      }
+    });
+  }
+
   takeDamage(amount) {
-    if (this.hp === null) return false;
+    this.flashDamage();
     this.hp -= amount;
     if (this.hp <= 0) {
       this.destroy();
