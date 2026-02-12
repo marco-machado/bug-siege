@@ -69,21 +69,8 @@ export class GameScene extends Phaser.Scene {
     this.physics.add.existing(this.coreZone, true);
     this.physics.add.overlap(this.bugs, this.coreZone, this.onBugHitCore, null, this);
 
-    this.events.on('bug-killed', (data) => {
-      this.economy.earn(data.reward);
-      this.totalKills++;
-      this.waveManager.onBugDied();
-      this.showBugDeathEffect(data.x, data.y, data.type);
-    });
-
-    this.events.on('start-wave-early', () => {
-      if (this.phase === 'build') {
-        if (this.buildCountdown > 0) {
-          this.economy.earn(ECONOMY.earlyStartBonus);
-        }
-        this.startWavePhase();
-      }
-    });
+    this.events.on('bug-killed', this.onBugKilled, this);
+    this.events.on('start-wave-early', this.onStartWaveEarly, this);
 
     this.buildSystem.setup();
     this.setupDebugKeys();
@@ -94,6 +81,11 @@ export class GameScene extends Phaser.Scene {
 
     this.events.emit('credits-changed', { credits: this.economy.getCredits() });
     this.events.emit('hp-changed', { hp: this.baseHp, maxHp: GAME.baseHp });
+
+    this.events.once('shutdown', () => {
+      this.events.off('bug-killed', this.onBugKilled, this);
+      this.events.off('start-wave-early', this.onStartWaveEarly, this);
+    });
   }
 
   renderGrid() {
@@ -173,6 +165,7 @@ export class GameScene extends Phaser.Scene {
   }
 
   onWaveComplete() {
+    if (this.phase === 'gameover') return;
     const waveNum = this.waveManager.getCurrentWave();
     this.economy.awardWaveBonus(waveNum);
 
@@ -197,6 +190,22 @@ export class GameScene extends Phaser.Scene {
         }
       },
     });
+  }
+
+  onBugKilled(data) {
+    this.economy.earn(data.reward);
+    this.totalKills++;
+    this.waveManager.onBugDied();
+    this.showBugDeathEffect(data.x, data.y, data.type);
+  }
+
+  onStartWaveEarly() {
+    if (this.phase === 'build') {
+      if (this.buildCountdown > 0) {
+        this.economy.earn(ECONOMY.earlyStartBonus);
+      }
+      this.startWavePhase();
+    }
   }
 
   onBulletHitBug(_bullet, _bug) {
@@ -255,6 +264,7 @@ export class GameScene extends Phaser.Scene {
   gameOver(won) {
     if (this.phase === 'gameover') return;
     this.phase = 'gameover';
+
     this.scene.stop('UIScene');
     this.scene.start('GameOver', {
       won,

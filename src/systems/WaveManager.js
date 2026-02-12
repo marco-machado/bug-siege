@@ -72,7 +72,7 @@ export class WaveManager {
   }
 
   onBugDied() {
-    this.bugsAlive--;
+    this.bugsAlive = Math.max(0, this.bugsAlive - 1);
     if (this.bugsAlive <= 0 && !this.spawning) {
       this.scene.onWaveComplete();
     }
