@@ -1,4 +1,7 @@
 import Phaser from 'phaser';
+import { GRID } from '../config/GameConfig.js';
+
+const BULLET_SIZE = GRID.tileSize / 8;
 
 export class Bullet extends Phaser.Physics.Arcade.Sprite {
   constructor(scene, x, y) {
@@ -11,6 +14,8 @@ export class Bullet extends Phaser.Physics.Arcade.Sprite {
     this.damage = damage;
     this.speed = speed !== undefined ? speed : 400;
     this.setTexture(texture || 'bullet');
+    this.setDisplaySize(BULLET_SIZE, BULLET_SIZE);
+    this.body.setCircle(this.width / 2);
     this.setPosition(x, y);
     this.setActive(true);
     this.setVisible(true);
@@ -21,7 +26,7 @@ export class Bullet extends Phaser.Physics.Arcade.Sprite {
       Math.cos(angle) * this.speed,
       Math.sin(angle) * this.speed,
     );
-    this.setRotation(angle);
+    this.setRotation(angle + Math.PI / 2);
   }
 
   despawn() {

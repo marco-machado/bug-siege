@@ -1,4 +1,4 @@
-import { TURRETS } from '../config/GameConfig.js';
+import { TURRETS, GAME } from '../config/GameConfig.js';
 import { Turret } from '../entities/Turret.js';
 
 const BUILD_OPTIONS = [
@@ -21,13 +21,20 @@ export class BuildSystem {
     this.menuContainer = null;
     this.turretMenuContainer = null;
     this.selectedTile = null;
+    this.hoverHighlight = null;
+    this.lastHoverCol = -1;
+    this.lastHoverRow = -1;
   }
 
   setup() {
     this.scene.input.on('pointerdown', (pointer, currentlyOver) => {
-      if (this.scene.phase !== 'build') return;
+      if (this.scene.phase !== 'build' && this.scene.phase !== 'wave') return;
       if (currentlyOver.length > 0) return;
       this.handleClick(pointer);
+    });
+
+    this.scene.input.on('pointermove', (pointer) => {
+      this.handleHover(pointer);
     });
   }
 
@@ -36,6 +43,12 @@ export class BuildSystem {
 
     if (!this.scene.grid.isInBounds(col, row)) {
       this.closeMenus();
+      return;
+    }
+
+    if (this.scene.phase === 'wave') {
+      const turret = this.scene.turrets.find(t => t.gridCol === col && t.gridRow === row);
+      if (turret) turret.showRange();
       return;
     }
 
@@ -52,23 +65,45 @@ export class BuildSystem {
     }
   }
 
+  clampMenuPosition(worldX, worldY, menuWidth, menuHeight) {
+    const W = GAME.canvasWidth;
+    const H = GAME.canvasHeight;
+    let x = worldX + 80;
+    let y = worldY - menuHeight / 2;
+
+    if (x + menuWidth > W - 20) {
+      x = worldX - 80 - menuWidth;
+    }
+    if (y < 20) {
+      y = 20;
+    }
+    if (y + menuHeight > H - 20) {
+      y = H - 20 - menuHeight;
+    }
+
+    return { x, y };
+  }
+
   openBuildMenu(col, row) {
     this.selectedTile = { col, row };
     const world = this.scene.grid.gridToWorld(col, row);
 
-    this.menuContainer = this.scene.add.container(world.x + 40, world.y - 60);
-
     const currentCredits = this.scene.economy.getCredits();
-    const headerHeight = 22;
-    const lineHeight = 44;
-    const menuHeight = headerHeight + BUILD_OPTIONS.length * lineHeight + 12;
-    const bg = this.scene.add.rectangle(0, 0, 200, menuHeight, 0x111122, 0.95)
+    const headerHeight = 40;
+    const lineHeight = 72;
+    const menuWidth = 380;
+    const menuHeight = headerHeight + BUILD_OPTIONS.length * lineHeight + 20;
+
+    const pos = this.clampMenuPosition(world.x, world.y, menuWidth, menuHeight);
+    this.menuContainer = this.scene.add.container(pos.x, pos.y);
+
+    const bg = this.scene.add.rectangle(0, 0, menuWidth, menuHeight, 0x111122, 0.95)
       .setOrigin(0, 0)
-      .setStrokeStyle(1, 0x4488aa);
+      .setStrokeStyle(2, 0x4488aa);
     this.menuContainer.add(bg);
 
-    const creditsHeader = this.scene.add.text(8, 4, `Credits: $${currentCredits}`, {
-      fontSize: '11px',
+    const creditsHeader = this.scene.add.text(16, 8, `Credits: $${currentCredits}`, {
+      fontSize: '22px',
       fontFamily: 'monospace',
       color: '#ffdd00',
     });
@@ -78,16 +113,16 @@ export class BuildSystem {
       const conf = TURRETS[opt.type];
       const canAfford = this.scene.economy.canAfford(conf.cost);
       const color = canAfford ? '#ffffff' : '#555555';
-      const y = headerHeight + 8 + i * lineHeight;
+      const y = headerHeight + 12 + i * lineHeight;
 
-      const label = this.scene.add.text(8, y, `${opt.label} ($${conf.cost})`, {
-        fontSize: '13px',
+      const label = this.scene.add.text(16, y, `${opt.label} ($${conf.cost})`, {
+        fontSize: '26px',
         fontFamily: 'monospace',
         color,
       }).setInteractive({ useHandCursor: true });
 
-      const desc = this.scene.add.text(8, y + 16, opt.desc, {
-        fontSize: '10px',
+      const desc = this.scene.add.text(16, y + 32, opt.desc, {
+        fontSize: '20px',
         fontFamily: 'monospace',
         color: canAfford ? '#88aacc' : '#444444',
       });
@@ -138,7 +173,6 @@ export class BuildSystem {
     if (!turret) return;
 
     const world = this.scene.grid.gridToWorld(col, row);
-    this.turretMenuContainer = this.scene.add.container(world.x + 40, world.y - 30);
     const currentCredits = this.scene.economy.getCredits();
 
     const items = [];
@@ -176,31 +210,37 @@ export class BuildSystem {
       },
     });
 
-    const turretHeaderHeight = 22;
-    const lineHeight = 36;
-    const bg = this.scene.add.rectangle(0, 0, 180, turretHeaderHeight + items.length * lineHeight + 12, 0x111122, 0.95)
+    const turretHeaderHeight = 40;
+    const lineHeight = 60;
+    const menuWidth = 340;
+    const menuHeight = turretHeaderHeight + items.length * lineHeight + 20;
+
+    const pos = this.clampMenuPosition(world.x, world.y, menuWidth, menuHeight);
+    this.turretMenuContainer = this.scene.add.container(pos.x, pos.y);
+
+    const bg = this.scene.add.rectangle(0, 0, menuWidth, menuHeight, 0x111122, 0.95)
       .setOrigin(0, 0)
-      .setStrokeStyle(1, 0x4488aa);
+      .setStrokeStyle(2, 0x4488aa);
     this.turretMenuContainer.add(bg);
 
-    const creditsLabel = this.scene.add.text(8, 4, `Credits: $${currentCredits}`, {
-      fontSize: '11px',
+    const creditsLabel = this.scene.add.text(16, 8, `Credits: $${currentCredits}`, {
+      fontSize: '22px',
       fontFamily: 'monospace',
       color: '#ffdd00',
     });
     this.turretMenuContainer.add(creditsLabel);
 
     items.forEach((item, i) => {
-      const y = turretHeaderHeight + 8 + i * lineHeight;
-      const text = this.scene.add.text(8, y, item.label, {
-        fontSize: '13px',
+      const y = turretHeaderHeight + 12 + i * lineHeight;
+      const text = this.scene.add.text(16, y, item.label, {
+        fontSize: '26px',
         fontFamily: 'monospace',
         color: item.color,
       }).setInteractive({ useHandCursor: true });
 
       if (item.desc) {
-        const descText = this.scene.add.text(8, y + 16, item.desc, {
-          fontSize: '10px',
+        const descText = this.scene.add.text(16, y + 30, item.desc, {
+          fontSize: '20px',
           fontFamily: 'monospace',
           color: '#88aacc',
         });
@@ -225,6 +265,51 @@ export class BuildSystem {
     });
   }
 
+  handleHover(pointer) {
+    if (this.scene.phase !== 'build' || this.menuContainer || this.turretMenuContainer) {
+      this.hideHoverHighlight();
+      return;
+    }
+
+    const { col, row } = this.scene.grid.worldToGrid(pointer.worldX, pointer.worldY);
+
+    if (!this.scene.grid.isInBounds(col, row)) {
+      this.hideHoverHighlight();
+      return;
+    }
+
+    if (col === this.lastHoverCol && row === this.lastHoverRow) return;
+
+    const cell = this.scene.grid.getCell(col, row);
+    if (cell === 'core') {
+      this.hideHoverHighlight();
+      return;
+    }
+
+    const color = cell === 'empty' ? 0x00ff88 : 0x4488aa;
+    const tileSize = this.scene.grid.tileSize;
+    const world = this.scene.grid.gridToWorld(col, row);
+
+    if (!this.hoverHighlight) {
+      this.hoverHighlight = this.scene.add.rectangle(world.x, world.y, tileSize, tileSize, color, 0.3);
+    } else {
+      this.hoverHighlight.setPosition(world.x, world.y);
+      this.hoverHighlight.setFillStyle(color, 0.3);
+      this.hoverHighlight.setVisible(true);
+    }
+
+    this.lastHoverCol = col;
+    this.lastHoverRow = row;
+  }
+
+  hideHoverHighlight() {
+    if (this.hoverHighlight) {
+      this.hoverHighlight.setVisible(false);
+    }
+    this.lastHoverCol = -1;
+    this.lastHoverRow = -1;
+  }
+
   closeMenus() {
     if (this.menuContainer) {
       this.menuContainer.destroy();
@@ -235,5 +320,6 @@ export class BuildSystem {
       this.turretMenuContainer = null;
     }
     this.selectedTile = null;
+    this.hideHoverHighlight();
   }
 }

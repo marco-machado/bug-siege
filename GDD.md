@@ -20,8 +20,8 @@
 
 ## The Base
 
-- Centered on screen, occupies a **6×6 tile grid**.
-- The **Command Core** sits in one tile (center-right); it is the primary target for bugs.
+- Centered on screen, occupies a **7×7 tile grid**.
+- The **Command Core** sits in one tile (exact center); it is the primary target for bugs.
 - Remaining grid tiles are **build slots** for turrets and utility structures.
 - The base has a **health bar** (e.g., 100 HP). When it hits 0, game over.
 - Four corner slots are pre-built with **Starter Turrets** (basic, low damage).
@@ -109,7 +109,7 @@
 | ---------------- | ---------------------------------- |
 | Canvas           | 800 × 600 px                       |
 | Grid tile size   | 64 × 64 px                         |
-| Build grid       | 6×6 tiles (384×384 px), centered |
+| Build grid       | 7×7 tiles (896×896 px), centered |
 | Command Core     | Occupies 1 tile (center of grid)   |
 | Map area outside grid | Bug spawning / movement zone  |
 
@@ -142,7 +142,7 @@
 | `tile_empty.png`     | 64×64   | Empty buildable grid slot                  |
 | `tile_blocked.png`   | 64×64   | Non-buildable tile                         |
 | `core.png`           | 64×64   | Command Core structure                     |
-| `turret_blaster.png` | 64×64   | Base + barrel (rotate barrel toward target)|
+| `turret_blaster.png` | 64×64   | Base + barrel (rotate barrel toward predicted target position)|
 | `turret_zapper.png`  | 64×64   | Chain lightning turret                     |
 | `turret_slowfield.png`| 64×64  | Aura emitter                               |
 | `wall_block.png`     | 64×64   | Defensive wall                             |

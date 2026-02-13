@@ -1,30 +1,71 @@
 import Phaser from 'phaser';
-import { BUGS, GRID } from '../config/GameConfig.js';
+import { BUGS, GRID, GAME } from '../config/GameConfig.js';
 
 export class BootScene extends Phaser.Scene {
   constructor() {
     super('Boot');
+    this.failedKeys = new Set();
   }
 
   preload() {
+    const W = GAME.canvasWidth;
+    const H = GAME.canvasHeight;
+    const barW = 600;
+    const barH = 40;
+    const barX = (W - barW) / 2;
+    const barY = H / 2;
+
+    const progressBox = this.add.graphics();
+    progressBox.fillStyle(0x222222, 0.8);
+    progressBox.fillRect(barX, barY, barW, barH);
+
+    const progressBar = this.add.graphics();
+
+    const loadingText = this.add.text(W / 2, barY - 40, 'Loading...', {
+      fontSize: '32px',
+      fontFamily: 'monospace',
+      color: '#00ff88',
+    }).setOrigin(0.5);
+
+    this.load.on('progress', (value) => {
+      progressBar.clear();
+      progressBar.fillStyle(0x00ff88, 1);
+      progressBar.fillRect(barX + 4, barY + 4, (barW - 8) * value, barH - 8);
+    });
+
+    this.load.on('complete', () => {
+      progressBar.destroy();
+      progressBox.destroy();
+      loadingText.destroy();
+    });
+
+    this.load.on('loaderror', (file) => {
+      console.warn(`Failed to load asset: ${file.key} (${file.url})`);
+      this.failedKeys.add(file.key);
+    });
+
+    this.load.image('turret-blaster', 'assets/turrets/blaster.png');
+    this.load.image('turret-zapper', 'assets/turrets/zapper.png');
+    this.load.image('turret-slowfield', 'assets/turrets/slowfield.png');
+    this.load.image('turret-wall', 'assets/turrets/wall.png');
+    this.load.image('bug-swarmer', 'assets/bugs/swarmer.png');
+    this.load.image('bug-brute', 'assets/bugs/brute.png');
+    this.load.image('bug-spitter', 'assets/bugs/spitter.png');
+    this.load.image('bug-boss', 'assets/bugs/boss.png');
+    this.load.image('bullet', 'assets/environment/bullet.png');
+    this.load.image('spitter-bullet', 'assets/environment/spitter-bullet.png');
     this.load.spritesheet('core', 'assets/sprites/core_spritesheet.png', {
       frameWidth: 128,
       frameHeight: 128,
     });
+    this.load.image('background', 'assets/environment/background.jpg');
+    this.load.image('tile', 'assets/environment/tile.png');
   }
 
   create() {
-    this.generateTurretTexture('turret-blaster', 0x3388ff);
-    this.generateTurretTexture('turret-zapper', 0xaa44ff);
-    this.generateTurretTexture('turret-slowfield', 0x44ddff);
-    this.generateWallTexture();
-    this.generateBugTexture('bug-swarmer', BUGS.swarmer.size, 0x44ff44);
-    this.generateBugTexture('bug-brute', BUGS.brute.size, 0xff4444);
-    this.generateBugTexture('bug-spitter', BUGS.spitter.size, 0xffaa00);
-    this.generateBugTexture('bug-boss', BUGS.boss.size, 0x9900ff);
-    this.generateBulletTexture('bullet', 8, 0xffff00);
-    this.generateBulletTexture('spitter-bullet', 8, 0xff6600);
-    this.generateTileTexture();
+    for (const key of this.failedKeys) {
+      this.generateFallback(key);
+    }
 
     this.anims.create({
       key: 'core-pulse',
@@ -36,56 +77,31 @@ export class BootScene extends Phaser.Scene {
     this.scene.start('MainMenu');
   }
 
-  generateTurretTexture(key, color) {
-    const size = GRID.tileSize;
+  generateFallback(key) {
     const g = this.add.graphics();
-    g.fillStyle(color, 1);
-    g.fillRect(0, 0, size - 4, size - 4);
-    g.fillStyle(0xffffff, 0.8);
-    g.fillRect(size / 2 - 4, 0, 8, 16);
-    g.generateTexture(key, size, size);
-    g.destroy();
-  }
+    const magenta = 0xff00ff;
 
-  generateWallTexture() {
-    const size = GRID.tileSize;
-    const g = this.add.graphics();
-    g.fillStyle(0x888888, 1);
-    g.fillRect(0, 0, size - 4, size - 4);
-    g.lineStyle(2, 0xaaaaaa, 1);
-    g.strokeRect(4, 4, size - 12, size - 12);
-    g.generateTexture('turret-wall', size, size);
-    g.destroy();
-  }
+    if (key.startsWith('turret-') || key === 'core' || key === 'tile') {
+      const size = GRID.tileSize;
+      g.fillStyle(magenta, 1);
+      g.fillRect(0, 0, size, size);
+      g.generateTexture(key, size, size);
+    } else if (key.startsWith('bug-')) {
+      const type = key.replace('bug-', '');
+      const size = BUGS[type] ? BUGS[type].size : 48;
+      g.fillStyle(magenta, 1);
+      g.fillCircle(size / 2, size / 2, size / 2);
+      g.generateTexture(key, size, size);
+    } else if (key === 'bullet' || key === 'spitter-bullet') {
+      g.fillStyle(magenta, 1);
+      g.fillCircle(4, 4, 4);
+      g.generateTexture(key, 8, 8);
+    } else if (key === 'background') {
+      g.fillStyle(0x1a1a2e, 1);
+      g.fillRect(0, 0, GAME.canvasWidth, GAME.canvasHeight);
+      g.generateTexture(key, GAME.canvasWidth, GAME.canvasHeight);
+    }
 
-
-  generateBugTexture(key, diameter, color) {
-    const g = this.add.graphics();
-    const r = diameter / 2;
-    g.fillStyle(color, 1);
-    g.fillCircle(r, r, r - 2);
-    g.fillStyle(0x000000, 0.4);
-    g.fillCircle(r - 6, r - 6, 4);
-    g.fillCircle(r + 6, r - 6, 4);
-    g.generateTexture(key, diameter, diameter);
-    g.destroy();
-  }
-
-  generateBulletTexture(key, diameter, color) {
-    const g = this.add.graphics();
-    const r = diameter / 2;
-    g.fillStyle(color, 1);
-    g.fillCircle(r, r, r);
-    g.generateTexture(key, diameter, diameter);
-    g.destroy();
-  }
-
-  generateTileTexture() {
-    const size = GRID.tileSize;
-    const g = this.add.graphics();
-    g.lineStyle(1, 0x334455, 0.6);
-    g.strokeRect(0, 0, size, size);
-    g.generateTexture('tile', size, size);
     g.destroy();
   }
 }

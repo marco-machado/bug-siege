@@ -16,22 +16,22 @@ export class MainMenuScene extends Phaser.Scene {
     for (let x = 0; x < W; x += 64) gridG.lineBetween(x, 0, x, H);
     for (let y = 0; y < H; y += 64) gridG.lineBetween(0, y, W, y);
 
-    this.add.text(W / 2, 180, 'BUG SIEGE', {
-      fontSize: '56px',
+    this.add.text(W / 2, H * 0.28, 'BUG SIEGE', {
+      fontSize: '112px',
       fontFamily: 'monospace',
       color: '#00ff88',
       fontStyle: 'bold',
     }).setOrigin(0.5);
 
-    this.add.text(W / 2, 240, 'TOWER DEFENSE', {
-      fontSize: '18px',
+    this.add.text(W / 2, H * 0.38, 'TOWER DEFENSE', {
+      fontSize: '36px',
       fontFamily: 'monospace',
       color: '#668899',
-      letterSpacing: 8,
+      letterSpacing: 16,
     }).setOrigin(0.5);
 
-    const startBtn = this.add.text(W / 2, 360, '[ START GAME ]', {
-      fontSize: '24px',
+    const startBtn = this.add.text(W / 2, H * 0.55, '[ START GAME ]', {
+      fontSize: '48px',
       fontFamily: 'monospace',
       color: '#ffffff',
     }).setOrigin(0.5).setInteractive({ useHandCursor: true });
@@ -49,8 +49,8 @@ export class MainMenuScene extends Phaser.Scene {
       ease: 'Sine.easeInOut',
     });
 
-    this.add.text(W / 2, H - 30, 'Defend the core. Survive 10 waves.', {
-      fontSize: '12px',
+    this.add.text(W / 2, H - 50, 'Defend the core. Survive 10 waves.', {
+      fontSize: '24px',
       fontFamily: 'monospace',
       color: '#445566',
     }).setOrigin(0.5);
@@ -58,10 +58,10 @@ export class MainMenuScene extends Phaser.Scene {
 
   createStarfield(w, h) {
     const g = this.add.graphics();
-    for (let i = 0; i < 80; i++) {
+    for (let i = 0; i < 200; i++) {
       const x = Phaser.Math.Between(0, w);
       const y = Phaser.Math.Between(0, h);
-      const size = Phaser.Math.FloatBetween(0.5, 1.5);
+      const size = Phaser.Math.FloatBetween(0.5, 2.0);
       const alpha = Phaser.Math.FloatBetween(0.2, 0.6);
       g.fillStyle(0xffffff, alpha);
       g.fillCircle(x, y, size);

@@ -144,13 +144,13 @@ A player launches the game and sees a main menu with an option to start the game
 
 ### Functional Requirements
 
-- **FR-001**: System MUST display a grid-based play area with a centered 6x6 build grid containing a Command Core and four pre-placed Blaster turrets at the corners (standard Blaster stats, upgradeable and sellable).
+- **FR-001**: System MUST display a grid-based play area with a centered 7x7 build grid containing a Command Core at the exact center and four pre-placed Blaster turrets at the corners (standard Blaster stats, upgradeable and sellable).
 - **FR-002**: System MUST allow the player to place structures (Blaster, Zapper, Slowfield, Wall Block) on empty grid tiles by clicking and selecting from a build menu.
 - **FR-003**: System MUST prevent placement on occupied tiles, the Command Core tile, and tiles outside the build grid.
 - **FR-004**: System MUST deduct the correct credit cost when a structure is placed and prevent placement when the player has insufficient credits.
 - **FR-005**: System MUST allow the player to upgrade a turret (doubling its damage at 1.5x base cost) or sell it (returning 50% of its cost) by clicking on it.
 - **FR-006**: System MUST support one upgrade tier per turret.
-- **FR-007**: Turrets MUST automatically acquire and fire at the nearest bug within their range.
+- **FR-007**: Turrets MUST automatically acquire the nearest bug within their range. Projectile-firing turrets (Blaster) MUST use predictive aiming — firing toward the bug's predicted future position based on distance, bullet travel time, and the bug's current velocity.
 - **FR-008**: Blaster turrets MUST fire single-target projectiles at 2 shots/sec with 10 damage per shot (20 when upgraded).
 - **FR-009**: Zapper turrets MUST fire chain lightning that hits the primary target and up to 2 additional nearby bugs.
 - **FR-010**: Slowfield structures MUST emit an aura (2 tile radius, 2.5 when upgraded) that reduces the movement speed of all bugs within range by 50%.
@@ -182,7 +182,7 @@ A player launches the game and sees a main menu with an option to start the game
 - **Bug**: Enemy unit that spawns from map edges and moves toward the Command Core. Has a type (Swarmer, Brute, Spitter), speed, HP, damage value, and kill reward.
 - **Wave**: A timed enemy spawn event defining which bug types and quantities appear. 10 waves total with escalating composition.
 - **Credits**: The player's currency used to build and upgrade structures. Earned from kills and wave bonuses.
-- **Build Grid**: A 6x6 tile grid centered on screen. Contains the Command Core, four starter turrets, and empty slots for player construction.
+- **Build Grid**: A 7x7 tile grid centered on screen. Contains the Command Core at the exact center, four starter turrets at the corners, and empty slots for player construction.
 
 ### Balance Tables
 
@@ -236,7 +236,7 @@ A player launches the game and sees a main menu with an option to start the game
 
 ### Session 2026-02-08
 
-- Q: Grid size discrepancy — GDD says 4x4, spec says 6x6. Which is correct? → A: 6x6 grid (31 open build slots for strategic depth).
+- Q: Grid size discrepancy — GDD says 4x4, spec says 6x6. Which is correct? → A: 7x7 grid (44 open build slots for strategic depth, core at exact center).
 - Q: Can Spitters destroy turrets? Do all structures have HP? → A: Only Wall Blocks are destructible; turrets are indestructible.
 - Q: Concrete numeric balance values for turrets and bugs? → A: Derive reasonable defaults (balance table added to spec).
 - Q: What type are the four pre-placed starter turrets? → A: Starters are Blasters (same stats as player-built Blasters, upgradeable and sellable).

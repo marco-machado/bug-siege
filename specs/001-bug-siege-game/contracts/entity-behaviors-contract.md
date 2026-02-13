@@ -7,9 +7,9 @@
 ### Blaster
 
 - **Targeting**: Nearest bug within 192px (3 tiles) range.
-- **Firing**: 2 shots/sec. Fires a `Bullet` projectile toward the target's current position.
+- **Firing**: 2 shots/sec. Uses **predictive aiming** — calculates the target's future position based on distance, bullet speed (400px/sec), and the bug's current velocity, then fires the `Bullet` toward that predicted intercept point.
 - **Projectile**: Travels at 400px/sec. Deals 10 damage (20 upgraded) on overlap with bug. Despawns on hit or out-of-bounds.
-- **Visual**: Rectangle with barrel line rotating toward target.
+- **Visual**: Rectangle with barrel line rotating toward predicted target position.
 
 ### Zapper
 

@@ -1,5 +1,5 @@
 import Phaser from 'phaser';
-import { GRID, GAME, ECONOMY } from '../config/GameConfig.js';
+import { GRID, GAME, ECONOMY, DEBUG } from '../config/GameConfig.js';
 import { Grid } from '../entities/Grid.js';
 import { Turret } from '../entities/Turret.js';
 import { Bug } from '../entities/Bug.js';
@@ -27,6 +27,8 @@ export class GameScene extends Phaser.Scene {
     this.economy = new EconomyManager(this);
     this.waveManager = new WaveManager(this);
     this.buildSystem = new BuildSystem(this);
+
+    this.add.image(GAME.canvasWidth / 2, GAME.canvasHeight / 2, 'background');
 
     this.renderGrid();
     this.renderCore();
@@ -56,6 +58,7 @@ export class GameScene extends Phaser.Scene {
     this.physics.add.overlap(this.bullets, this.bugs, this.onBulletHitBug, null, this);
     this.physics.add.overlap(this.spitterBullets, this.wallBodies, this.onSpitterBulletHitWall, null, this);
     this.physics.add.collider(this.bugs, this.wallBodies, this.onBugHitWall, null, this);
+    this.physics.add.overlap(this.bugs, this.wallBodies, this.onBugHitWall, null, this);
 
     this.coreZone = this.add.zone(
       this.grid.getCoreWorldPos().x,
@@ -66,23 +69,11 @@ export class GameScene extends Phaser.Scene {
     this.physics.add.existing(this.coreZone, true);
     this.physics.add.overlap(this.bugs, this.coreZone, this.onBugHitCore, null, this);
 
-    this.events.on('bug-killed', (data) => {
-      this.economy.earn(data.reward);
-      this.totalKills++;
-      this.waveManager.onBugDied();
-      this.showBugDeathEffect(data.x, data.y, data.type);
-    });
-
-    this.events.on('start-wave-early', () => {
-      if (this.phase === 'build') {
-        if (this.buildCountdown > 0) {
-          this.economy.earn(ECONOMY.earlyStartBonus);
-        }
-        this.startWavePhase();
-      }
-    });
+    this.events.on('bug-killed', this.onBugKilled, this);
+    this.events.on('start-wave-early', this.onStartWaveEarly, this);
 
     this.buildSystem.setup();
+    if (DEBUG.enableDebugKeys) this.setupDebugKeys();
 
     this.scene.launch('UIScene');
 
@@ -90,13 +81,19 @@ export class GameScene extends Phaser.Scene {
 
     this.events.emit('credits-changed', { credits: this.economy.getCredits() });
     this.events.emit('hp-changed', { hp: this.baseHp, maxHp: GAME.baseHp });
+
+    this.events.once('shutdown', () => {
+      this.events.off('bug-killed', this.onBugKilled, this);
+      this.events.off('start-wave-early', this.onStartWaveEarly, this);
+      if (this.input.keyboard) this.input.keyboard.removeAllListeners();
+    });
   }
 
   renderGrid() {
     for (let r = 0; r < GRID.rows; r++) {
       for (let c = 0; c < GRID.cols; c++) {
         const { x, y } = this.grid.gridToWorld(c, r);
-        this.add.image(x, y, 'tile').setAlpha(0.5);
+        this.add.image(x, y, 'tile').setDisplaySize(GRID.tileSize, GRID.tileSize).setAlpha(0.5);
       }
     }
   }
@@ -113,6 +110,25 @@ export class GameScene extends Phaser.Scene {
       const world = this.grid.gridToWorld(s.col, s.row);
       const turret = new Turret(this, s.col, s.row, s.type, world.x, world.y);
       this.turrets.push(turret);
+      if (turret.wallBody) {
+        this.wallBodies.add(turret.wallBody);
+      }
+    }
+  }
+
+  setupDebugKeys() {
+    const types = { ONE: 'swarmer', TWO: 'brute', THREE: 'spitter', FOUR: 'boss' };
+    for (const [key, type] of Object.entries(types)) {
+      this.input.keyboard.on(`keydown-${key}`, () => {
+        if (this.phase !== 'wave') return;
+        const pos = this.waveManager.getRandomEdgePosition();
+        const corePos = this.grid.getCoreWorldPos();
+        const bug = this.bugs.get();
+        if (bug) {
+          bug.spawn(pos.x, pos.y, type, corePos);
+          this.waveManager.bugsAlive++;
+        }
+      });
     }
   }
 
@@ -152,6 +168,7 @@ export class GameScene extends Phaser.Scene {
   }
 
   onWaveComplete() {
+    if (this.phase === 'gameover') return;
     const waveNum = this.waveManager.getCurrentWave();
     this.economy.awardWaveBonus(waveNum);
 
@@ -176,6 +193,22 @@ export class GameScene extends Phaser.Scene {
         }
       },
     });
+  }
+
+  onBugKilled(data) {
+    this.economy.earn(data.reward);
+    this.totalKills++;
+    this.waveManager.onBugDied();
+    this.showBugDeathEffect(data.x, data.y, data.type);
+  }
+
+  onStartWaveEarly() {
+    if (this.phase === 'build') {
+      if (this.buildCountdown > 0) {
+        this.economy.earn(ECONOMY.earlyStartBonus);
+      }
+      this.startWavePhase();
+    }
   }
 
   onBulletHitBug(_bullet, _bug) {
@@ -221,6 +254,15 @@ export class GameScene extends Phaser.Scene {
 
     this.events.emit('hp-changed', { hp: this.baseHp, maxHp: GAME.baseHp });
 
+    if (this.coreSprite && this.coreSprite.active) {
+      this.coreSprite.setTintFill(0xff4444);
+      this.time.delayedCall(100, () => {
+        if (this.coreSprite && this.coreSprite.active) {
+          this.coreSprite.clearTint();
+        }
+      });
+    }
+
     bug.despawn();
 
     if (this.baseHp <= 0) {
@@ -234,6 +276,7 @@ export class GameScene extends Phaser.Scene {
   gameOver(won) {
     if (this.phase === 'gameover') return;
     this.phase = 'gameover';
+
     this.scene.stop('UIScene');
     this.scene.start('GameOver', {
       won,
@@ -275,8 +318,8 @@ export class GameScene extends Phaser.Scene {
   }
 
   showWaveAnnouncement(waveNum) {
-    const text = this.add.text(GAME.canvasWidth / 2, GAME.canvasHeight / 2 - 60, `WAVE ${waveNum}`, {
-      fontSize: '36px',
+    const text = this.add.text(GAME.canvasWidth / 2, GAME.canvasHeight / 2 - 120, `WAVE ${waveNum}`, {
+      fontSize: '72px',
       fontFamily: 'monospace',
       color: '#ff8844',
       fontStyle: 'bold',

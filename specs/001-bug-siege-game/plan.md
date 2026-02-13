@@ -5,7 +5,7 @@
 
 ## Summary
 
-Build a complete top-down tower defense game using Phaser 3 where players defend a Command Core from 10 waves of alien bugs by placing turrets on a 6x6 grid. The game uses Arcade Physics, object pooling, data-driven configuration, and vector steering (no pathfinding). Built with Vite + ES modules, targeting under 2,000 LOC with placeholder geometric art.
+Build a complete top-down tower defense game using Phaser 3 where players defend a Command Core from 10 waves of alien bugs by placing turrets on a 7x7 grid. The game uses Arcade Physics, object pooling, data-driven configuration, and vector steering (no pathfinding). Built with Vite + ES modules, targeting under 2,000 LOC with placeholder geometric art.
 
 ## Technical Context
 
@@ -28,7 +28,7 @@ Build a complete top-down tower defense game using Phaser 3 where players defend
 | Principle | Status | Evidence |
 |-----------|--------|----------|
 | **I. Phaser 3 Native** | PASS | All systems use Phaser 3 APIs: Arcade Physics, Scenes (Boot/MainMenu/Game/UIScene/GameOver), Groups for pooling, Graphics for rendering. No third-party libraries. |
-| **II. Grid-Authoritative** | PASS | 6x6 grid (64px tiles) is the single source of truth. World positions derive from grid coords via `gridToWorld()`. Build slots, core location, and obstacle data stored in 2D array. |
+| **II. Grid-Authoritative** | PASS | 7x7 grid (144px tiles) is the single source of truth. World positions derive from grid coords via `gridToWorld()`. Build slots, core location, and obstacle data stored in 2D array. |
 | **III. Data-Driven Configuration** | PASS | All turret stats, bug stats, wave compositions, and economy values in `GameConfig.js`. Balance changes require editing only config data. |
 | **IV. Object Pooling** | PASS | Bugs and bullets use Phaser Physics Group pooling. `maxSize` caps pool. `setActive(false)/setVisible(false)` + `body.enable = false` for recycling. No runtime object creation during waves. |
 | **V. Scope Lock** | PASS | No pathfinding (vector steering), no save system, no multiplayer, no procedural waves. All features come from GDD. Target <2,000 LOC. |
@@ -74,7 +74,7 @@ src/
 │   ├── UIScene.js             # HUD overlay (wave, credits, HP, start wave button)
 │   └── GameOverScene.js       # Win/loss screen with stats and restart
 ├── entities/
-│   ├── Grid.js                # 6x6 grid data structure + coordinate conversion
+│   ├── Grid.js                # 7x7 grid data structure + coordinate conversion
 │   ├── Turret.js              # Turret class (targeting, firing, upgrade state)
 │   ├── Bug.js                 # Bug class (steering, damage, type behavior)
 │   └── Bullet.js              # Projectile class (pooled, despawn logic)
