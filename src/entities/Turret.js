@@ -81,7 +81,7 @@ export class Turret {
   }
 
   getPredictedPosition(target) {
-    const bulletSpeed = 400;
+    const bulletSpeed = TURRETS.bulletSpeed;
     const dx = target.x - this.sprite.x;
     const dy = target.y - this.sprite.y;
     const dist = Math.sqrt(dx * dx + dy * dy);

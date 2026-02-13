@@ -28,7 +28,7 @@ complexity and keeps the codebase under the 2,000 LOC target.
 
 ### II. Grid-Authoritative
 
-The 7x7 tile grid (128px cells) is the single source of truth for
+The 7x7 tile grid (64px cells) is the single source of truth for
 placement, targeting range calculations, and spatial queries.
 World-pixel positions MUST derive from grid coordinates, never the
 reverse. Build slots, the Command Core location, and obstacle data
@@ -78,8 +78,8 @@ risk for a solo/small-team game project.
 ## Technical Constraints
 
 - **Canvas**: 1920×1080 px, fixed resolution (Scale.FIT for smaller viewports)
-- **Tile size**: 128×128 px (2× scale factor)
-- **Build grid**: 7×7 tiles (896×896 px), centered on canvas
+- **Tile size**: 64×64 px
+- **Build grid**: 7×7 tiles (448×448 px), centered on canvas
 - **Scene flow**: Boot → MainMenu → Game + UI (parallel) → GameOver
 - **Physics**: Arcade Physics only (no Matter.js, no P2)
 - **Waves**: Exactly 10, compositions per GDD wave table

@@ -1,5 +1,5 @@
 import Phaser from 'phaser';
-import { GRID, GAME, ECONOMY } from '../config/GameConfig.js';
+import { GRID, GAME, ECONOMY, DEBUG } from '../config/GameConfig.js';
 import { Grid } from '../entities/Grid.js';
 import { Turret } from '../entities/Turret.js';
 import { Bug } from '../entities/Bug.js';
@@ -73,7 +73,7 @@ export class GameScene extends Phaser.Scene {
     this.events.on('start-wave-early', this.onStartWaveEarly, this);
 
     this.buildSystem.setup();
-    this.setupDebugKeys();
+    if (DEBUG.enableDebugKeys) this.setupDebugKeys();
 
     this.scene.launch('UIScene');
 
@@ -85,6 +85,7 @@ export class GameScene extends Phaser.Scene {
     this.events.once('shutdown', () => {
       this.events.off('bug-killed', this.onBugKilled, this);
       this.events.off('start-wave-early', this.onStartWaveEarly, this);
+      if (this.input.keyboard) this.input.keyboard.removeAllListeners();
     });
   }
 

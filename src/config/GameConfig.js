@@ -16,6 +16,7 @@ export const GRID = Object.freeze({
 
 export const TURRETS = Object.freeze({
   rotationSpeed: 10,
+  bulletSpeed: 400,
   blaster: Object.freeze({
     cost: 50,
     range: 224,
@@ -107,6 +108,10 @@ export const ECONOMY = Object.freeze({
   waveBonusPerWave: 10,
   sellReturnRate: 0.5,
   earlyStartBonus: 25,
+});
+
+export const DEBUG = Object.freeze({
+  enableDebugKeys: import.meta.env.VITE_DEBUG_KEYS === 'true',
 });
 
 export const GAME = Object.freeze({

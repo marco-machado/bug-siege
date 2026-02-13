@@ -12,7 +12,7 @@ This feature does not introduce new runtime entities or data structures. It modi
 |-------|------|-----------|-----------|
 | canvasWidth | number | 800 | 1920 |
 | canvasHeight | number | 600 | 1080 |
-| baseHp | number | 100 | 100 (unchanged) |
+| baseHp | number | 100 | 200 |
 | totalWaves | number | 10 | 10 (unchanged) |
 | buildPhaseSeconds | number | 20 | 20 (unchanged) |
 | maxBugsPoolSize | number | 60 | 60 (unchanged) |
