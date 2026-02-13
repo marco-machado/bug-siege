@@ -107,7 +107,7 @@
 
 | Property         | Value                              |
 | ---------------- | ---------------------------------- |
-| Canvas           | 800 × 600 px                       |
+| Canvas           | 1920 × 1080 px                     |
 | Grid tile size   | 64 × 64 px                         |
 | Build grid       | 7×7 tiles (896×896 px), centered |
 | Command Core     | Occupies 1 tile (center of grid)   |
@@ -117,7 +117,7 @@
 
 ## Visual Style
 
-- Top-down isometric-ish perspective (or pure top-down for simplicity).
+- Pure top-down perspective.
 - Alien desert / moon surface background.
 - Purple/pink bug sprites. Blue/white mechanical structures.
 - Particle effects for projectiles and bug deaths.
@@ -135,46 +135,80 @@
 
 ## Assets
 
-### Sprites (PNG, 64×64 unless noted)
+### Visual Theme
 
-| Asset                | Size    | Notes                                      |
-| -------------------- | ------- | ------------------------------------------ |
-| `tile_empty.png`     | 64×64   | Empty buildable grid slot                  |
-| `tile_blocked.png`   | 64×64   | Non-buildable tile                         |
-| `core.png`           | 64×64   | Command Core structure                     |
-| `turret_blaster.png` | 64×64   | Base + barrel (rotate barrel toward predicted target position)|
-| `turret_zapper.png`  | 64×64   | Chain lightning turret                     |
-| `turret_slowfield.png`| 64×64  | Aura emitter                               |
-| `wall_block.png`     | 64×64   | Defensive wall                             |
-| `bug_swarmer.png`    | 48×48   | Spritesheet, 4 frames walk cycle           |
-| `bug_brute.png`      | 80×80   | Larger sprite, 4 frames                    |
-| `bug_spitter.png`    | 56×56   | 4 frames + spit animation                 |
-| `bullet.png`         | 16×16   | Blaster projectile                         |
-| `lightning.png`      | variable| Zapper beam (or draw with Phaser graphics) |
-| `spit.png`           | 16×16   | Spitter projectile                         |
-| `background.png`     | 800×600 | Desert/moon terrain                        |
+**Cyberpunk / neon circuit board aesthetic.** Bugs are corrupted digital organisms. Turrets are glowing cyber-defense installations. The background is a lit-up PCB / motherboard landscape. Grid tiles resemble circuit board traces. All assets must be visually cohesive within this theme.
 
-### UI (PNG)
+### Asset Manifest (13 files)
 
-| Asset               | Notes                        |
-| -------------------- | ---------------------------- |
-| `healthbar_bg.png`   | Health bar background        |
-| `healthbar_fill.png` | Green fill, scaled by HP     |
-| `btn_start_wave.png` | Start wave button            |
-| `icon_blaster.png`   | 32×32, build menu icon       |
-| `icon_zapper.png`    | 32×32                        |
-| `icon_slowfield.png` | 32×32                        |
-| `icon_wall.png`      | 32×32                        |
-| `icon_sell.png`      | 32×32                        |
-| `icon_upgrade.png`   | 32×32                        |
+All entities are PNG, loaded at high resolution and displayed at game-logic size via `setDisplaySize()`. Source images should be **1024×1024** for entities and **1920×1080** for the background to look crisp at full HD. Generated with solid `#00ff00` background via FLUX.2 Pro, then background is removed in post-processing to produce transparency. Style: photorealistic — not pixel art, not retro, not cartoon.
 
-### Particles / FX (can be generated in code)
+#### Turrets (`assets/turrets/`)
+
+| File | Texture Key | Display Size | Description |
+|------|-------------|-------------|-------------|
+| `blaster-base.png` | `turret-blaster-base` | 64×64 | Blaster turret base (static). Circular armored platform without barrel. Dark gunmetal plating, battle scorch marks. Does not rotate. Top-down view. |
+| `blaster-barrel.png` | `turret-blaster-barrel` | 64×64 | Blaster turret barrel (rotating). Cannon barrel with blue plasma muzzle tip. Rendered as a separate sprite layered above the base, rotates to track targets. Top-down view. |
+| `zapper.png` | `turret-zapper` | 64×64 | Cyberpunk chain lightning turret. Purple/violet tesla coil or energy conductor. Arcing electricity visual. Metallic base with glowing purple core. Top-down view. |
+| `slowfield.png` | `turret-slowfield` | 64×64 | Cyberpunk slow field emitter. Cyan/teal pulsing aura device. Circular emitter dish with radiating energy rings. Metallic housing. Top-down view. |
+| `wall.png` | `turret-wall` | 64×64 | Cyberpunk defensive wall block. Reinforced metal plating, rivets/bolts, glowing seam lines. Heavy armored look. Should tile visually when placed adjacent. Top-down view. |
+
+#### Bugs (`assets/bugs/`)
+
+| File | Texture Key | Display Size | Description |
+|------|-------------|-------------|-------------|
+| `swarmer.png` | `bug-swarmer` | 48×48 | Corrupted digital swarmer. Small, fast-looking insectoid. Green/lime glitch aesthetic, fragmented digital body, glowing green eyes. Swarm creature — numerous and weak. Top-down view. |
+| `brute.png` | `bug-brute` | 80×80 | Corrupted digital brute. Large, armored, tank-like insectoid. Red/dark red with heavy digital plating, glowing orange eyes. Slow but intimidating. Visibly larger/heavier than swarmer. Top-down view. |
+| `spitter.png` | `bug-spitter` | 56×56 | Corrupted digital spitter. Medium ranged attacker. Orange/amber with visible ranged attack organ (mouth/cannon). Glowing projectile buildup visible. Top-down view. |
+| `boss.png` | `bug-boss` | 100×100 | Corrupted digital boss. Massive, intimidating apex predator. Deep purple with magenta energy, spikes/tendrils, intense glowing eyes. Should look like a final threat — 10× HP of a brute. Largest sprite in the game. Top-down view. |
+
+#### Environment (`assets/environment/`)
+
+| File | Texture Key | Display Size | Description |
+|------|-------------|-------------|-------------|
+| `core.png` | `core` | 64×64 | Command core / energy reactor. Octagonal metallic chassis with glowing blue-white energy orb at center. Pulsing cyan conduits. The player's base — must look important and worth defending. Top-down view. Note: `assets/sprites/core_spritesheet.png` has an animated version (29 frames, 128×128) used at runtime. |
+| `background.jpg` | `background` | 1920×1080 | Full-canvas cyberpunk PCB / motherboard landscape. Dark navy/black base with glowing circuit traces, solder points, chip outlines. Subtle — must not compete with gameplay elements. No bright focal points. Dense and detailed. |
+| `tile.png` | `tile` | 64×64 | Circuit board trace grid tile. Subtle trace lines forming a square cell. Must tile seamlessly when repeated in a 7×7 grid. Semi-transparent so background shows through. Glowing trace lines and solder points at intersections. |
+| `bullet.png` | `bullet` | 8×8 | Turret projectile. Small glowing energy bolt — yellow/cyan, bright center with soft glow falloff. Must be visible against dark background at small size. |
+| `spitter-bullet.png` | `spitter-bullet` | 8×8 | Spitter bug projectile. Small corrupted energy glob — orange/red, organic-looking, slightly irregular shape. Distinct from turret bullet color. |
+
+### Asset Generation Workflow
+
+#### Tool: FLUX.2 Pro (Black Forest Labs)
+
+Generate photorealistic sprites using FLUX.2 Pro. Target **1024×1024 PNG** for all entities, **1920×1080 JPEG** for the background. Solid `#00ff00` green background (FLUX.2 does not output transparency natively — remove background in post-processing). Style: photorealistic — not pixel art, not retro, not cartoon.
+
+#### Prompts
+
+All prompts and the prompting methodology are documented in [`FLUX2.md`](FLUX2.md).
+
+#### Post-Processing
+
+After generation, trim transparent padding and ensure correct dimensions:
+
+```bash
+# Trim padding from individual sprites (resizes to 1024×1024)
+./scripts/trim-sprite.sh assets/turrets/*.png
+./scripts/trim-sprite.sh assets/bugs/*.png
+./scripts/trim-sprite.sh assets/environment/core.png assets/environment/tile.png
+./scripts/trim-sprite.sh assets/environment/bullet.png assets/environment/spitter-bullet.png
+```
+
+> **Note**: `trim-sprite.sh` currently resizes to 64×64. Update the script's target size to **1024×1024** for HD assets before running.
+
+Target output sizes:
+- All entity sprites: **1024×1024** PNG with transparency
+- Background: **1920×1080** JPEG (no trim needed)
+
+After processing, place assets in their final directories and verify in-game. Phaser's `setDisplaySize()` handles scaling to game-logic sizes at runtime.
+
+### Particles / FX (generated in code)
 
 - Explosion puff (bug death)
 - Muzzle flash
 - Slow aura circle
 
-### Audio (MP3/OGG)
+### Audio (MP3/OGG — future)
 
 | Asset                | Notes                   |
 | -------------------- | ----------------------- |
@@ -189,37 +223,6 @@
 ### Font
 
 - One bitmap or web font (e.g., `Press Start 2P` or system monospace)
-
-**Total unique image assets: ~20.** Most can be simple geometric placeholders initially, then swapped for polished art later.
-
-### Asset Generation Workflow
-
-Sprites are generated using **Retro Diffusion Core** via [Poe.com](https://poe.com/Retro-Diffusion-Core).
-
-**Prompt format:**
-
-```
-<subject description>, top-down view, <style/material keywords>, game building/creature --ar 64:64 --style rd_plus__topdown_asset --removebg --native --seed 123 --bypass_prompt_expansion
-```
-
-- `--seed 123` — keeps generations consistent while testing different styles/params
-- `--bypass_prompt_expansion` — prevents the model from rewriting your prompt
-- `--native` — returns the image at its generated resolution (no upscaling)
-
-**Example (Command Core):**
-
-```
-A glowing blue-white sci-fi energy reactor core, octagonal metallic base with cyan energy orb in the center, top-down view, dark metal plating, game building --ar 64:64 --style rd_plus__topdown_asset --removebg --native --seed 123 --bypass_prompt_expansion
-```
-
-**Post-processing:** Retro Diffusion outputs 256×256 PNGs with transparent padding. Run the trim script to crop to content and resize to 64×64:
-
-```bash
-./scripts/trim-sprite.sh assets/sprites/core.png       # single file
-./scripts/trim-sprite.sh assets/sprites/*.png           # batch
-```
-
-Generated assets go in `assets/sprites/` and are loaded in `BootScene.preload()`.
 
 ---
 

@@ -44,7 +44,8 @@ export class BootScene extends Phaser.Scene {
       this.failedKeys.add(file.key);
     });
 
-    this.load.image('turret-blaster', 'assets/turrets/blaster.png');
+    this.load.image('turret-blaster-base', 'assets/turrets/blaster-base.png');
+    this.load.image('turret-blaster-barrel', 'assets/turrets/blaster-barrel.png');
     this.load.image('turret-zapper', 'assets/turrets/zapper.png');
     this.load.image('turret-slowfield', 'assets/turrets/slowfield.png');
     this.load.image('turret-wall', 'assets/turrets/wall.png');

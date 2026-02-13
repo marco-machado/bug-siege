@@ -17,9 +17,17 @@ export class Turret {
     this.hp = conf.hp;
 
     this.fireTimer = 0;
-    this.sprite = scene.add.sprite(worldX, worldY, `turret-${type}`).setDisplaySize(GRID.tileSize, GRID.tileSize);
+    const textureKey = type === 'blaster' ? 'turret-blaster-base' : `turret-${type}`;
+    this.sprite = scene.add.sprite(worldX, worldY, textureKey).setDisplaySize(GRID.tileSize, GRID.tileSize);
 
-    this.wallBody = scene.physics.add.staticImage(worldX, worldY, `turret-${type}`);
+    this.barrelSprite = null;
+    if (type === 'blaster') {
+      this.barrelSprite = scene.add.sprite(worldX, worldY, 'turret-blaster-barrel')
+        .setDisplaySize(GRID.tileSize, GRID.tileSize);
+      this.barrelSprite.setDepth(this.sprite.depth + 1);
+    }
+
+    this.wallBody = scene.physics.add.staticImage(worldX, worldY, textureKey);
     this.wallBody.setDisplaySize(GRID.tileSize, GRID.tileSize);
     this.wallBody.refreshBody();
     this.wallBody.setVisible(false);
@@ -29,6 +37,10 @@ export class Turret {
       this.auraGraphics = scene.add.graphics();
       this.drawAura();
     }
+  }
+
+  get aimSprite() {
+    return this.barrelSprite || this.sprite;
   }
 
   update(_time, delta, bugs) {
@@ -48,8 +60,8 @@ export class Turret {
     const targetAngle = Phaser.Math.Angle.Between(
       this.sprite.x, this.sprite.y, aimPos.x, aimPos.y
     ) + Math.PI / 2;
-    this.sprite.rotation = Phaser.Math.Angle.RotateTo(
-      this.sprite.rotation, targetAngle, TURRETS.rotationSpeed * delta / 1000
+    this.aimSprite.rotation = Phaser.Math.Angle.RotateTo(
+      this.aimSprite.rotation, targetAngle, TURRETS.rotationSpeed * delta / 1000
     );
 
     if (this.fireTimer > 0) return;
@@ -93,7 +105,7 @@ export class Turret {
   }
 
   getTipPosition() {
-    const angle = this.sprite.rotation - Math.PI / 2;
+    const angle = this.aimSprite.rotation - Math.PI / 2;
     const offset = GRID.tileSize * 0.45;
     return {
       x: this.sprite.x + Math.cos(angle) * offset,
@@ -231,6 +243,7 @@ export class Turret {
     }
 
     this.sprite.setTint(0xffdd44);
+    if (this.barrelSprite) this.barrelSprite.setTint(0xffdd44);
 
     return true;
   }
@@ -238,12 +251,15 @@ export class Turret {
   flashDamage() {
     if (!this.sprite || !this.sprite.active) return;
     this.sprite.setTintFill(0xff4444);
+    if (this.barrelSprite?.active) this.barrelSprite.setTintFill(0xff4444);
     this.scene.time.delayedCall(100, () => {
       if (!this.sprite || !this.sprite.active) return;
       if (this.upgraded) {
         this.sprite.setTint(0xffdd44);
+        if (this.barrelSprite?.active) this.barrelSprite.setTint(0xffdd44);
       } else {
         this.sprite.clearTint();
+        if (this.barrelSprite?.active) this.barrelSprite.clearTint();
       }
     });
   }
@@ -260,6 +276,7 @@ export class Turret {
 
   destroy() {
     this.sprite.destroy();
+    if (this.barrelSprite) this.barrelSprite.destroy();
     if (this.wallBody) {
       this.wallBody.destroy();
     }
