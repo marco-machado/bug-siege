@@ -1,28 +1,30 @@
 export const GRID = Object.freeze({
-  cols: 6,
-  rows: 6,
+  cols: 7,
+  rows: 7,
   tileSize: 64,
-  offsetX: 208,
-  offsetY: 108,
+  offsetX: 736,
+  offsetY: 316,
   coreCol: 3,
-  coreRow: 2,
+  coreRow: 3,
   starterTurrets: Object.freeze([
     Object.freeze({ col: 0, row: 0, type: 'blaster' }),
-    Object.freeze({ col: 5, row: 0, type: 'blaster' }),
-    Object.freeze({ col: 0, row: 5, type: 'blaster' }),
-    Object.freeze({ col: 5, row: 5, type: 'blaster' }),
+    Object.freeze({ col: 6, row: 0, type: 'blaster' }),
+    Object.freeze({ col: 0, row: 6, type: 'blaster' }),
+    Object.freeze({ col: 6, row: 6, type: 'blaster' }),
   ]),
 });
 
 export const TURRETS = Object.freeze({
+  rotationSpeed: 10,
+  bulletSpeed: 400,
   blaster: Object.freeze({
     cost: 50,
-    range: 192,
+    range: 224,
     fireRate: 2.0,
     damage: 10,
     upgradeCost: 75,
     upgradedDamage: 20,
-    hp: null,
+    hp: 150,
   }),
   zapper: Object.freeze({
     cost: 100,
@@ -32,7 +34,7 @@ export const TURRETS = Object.freeze({
     chainTargets: 2,
     upgradeCost: 150,
     upgradedDamage: 30,
-    hp: null,
+    hp: 150,
   }),
   slowfield: Object.freeze({
     cost: 75,
@@ -40,7 +42,7 @@ export const TURRETS = Object.freeze({
     slowFactor: 0.5,
     upgradeCost: 112,
     upgradedRange: 160,
-    hp: null,
+    hp: 100,
   }),
   wall: Object.freeze({
     cost: 25,
@@ -55,7 +57,7 @@ export const BUGS = Object.freeze({
     speed: 60,
     hp: 30,
     coreDamage: 5,
-    wallDamage: 5,
+    wallDamage: 10,
     reward: 10,
     size: 48,
   }),
@@ -63,7 +65,7 @@ export const BUGS = Object.freeze({
     speed: 30,
     hp: 150,
     coreDamage: 20,
-    wallDamage: 20,
+    wallDamage: 40,
     reward: 25,
     size: 80,
   }),
@@ -71,7 +73,7 @@ export const BUGS = Object.freeze({
     speed: 35,
     hp: 60,
     coreDamage: 10,
-    wallDamage: 15,
+    wallDamage: 20,
     reward: 15,
     size: 56,
     attackRange: 192,
@@ -81,7 +83,7 @@ export const BUGS = Object.freeze({
     speed: 15,
     hp: 1500,
     coreDamage: 40,
-    wallDamage: 40,
+    wallDamage: 50,
     reward: 100,
     size: 100,
   }),
@@ -108,10 +110,14 @@ export const ECONOMY = Object.freeze({
   earlyStartBonus: 25,
 });
 
+export const DEBUG = Object.freeze({
+  enableDebugKeys: import.meta.env.VITE_DEBUG_KEYS === 'true',
+});
+
 export const GAME = Object.freeze({
-  canvasWidth: 800,
-  canvasHeight: 600,
-  baseHp: 100,
+  canvasWidth: 1920,
+  canvasHeight: 1080,
+  baseHp: 200,
   totalWaves: 10,
   buildPhaseSeconds: 20,
   maxBugsPoolSize: 60,

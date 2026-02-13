@@ -7,30 +7,31 @@
 
 ### Grid
 
-The 6x6 tile grid is the authoritative spatial data structure.
+The 7x7 tile grid is the authoritative spatial data structure.
 
 | Field | Type | Description |
 |-------|------|-------------|
-| `cells` | `CellState[][]` | 6x6 2D array |
-| `offsetX` | `number` | World X of grid top-left (208) |
-| `offsetY` | `number` | World Y of grid top-left (108) |
-| `tileSize` | `number` | 64px |
-| `cols` | `number` | 6 |
-| `rows` | `number` | 6 |
+| `cells` | `CellState[][]` | 7x7 2D array |
+| `offsetX` | `number` | World X of grid top-left (512) |
+| `offsetY` | `number` | World Y of grid top-left (92) |
+| `tileSize` | `number` | 128px |
+| `cols` | `number` | 7 |
+| `rows` | `number` | 7 |
 
 **CellState enum**: `'empty'` | `'core'` | `'turret'` | `'wall'`
 
-**Initial Layout** (6x6, row-major):
+**Initial Layout** (7x7, row-major):
 ```
-[ turret, empty, empty, empty, empty, turret ]
-[ empty,  empty, empty, empty, empty, empty  ]
-[ empty,  empty, empty, core,  empty, empty  ]
-[ empty,  empty, empty, empty, empty, empty  ]
-[ empty,  empty, empty, empty, empty, empty  ]
-[ turret, empty, empty, empty, empty, turret ]
+[ turret, empty, empty, empty, empty, empty, turret ]
+[ empty,  empty, empty, empty, empty, empty, empty  ]
+[ empty,  empty, empty, empty, empty, empty, empty  ]
+[ empty,  empty, empty, core,  empty, empty, empty  ]
+[ empty,  empty, empty, empty, empty, empty, empty  ]
+[ empty,  empty, empty, empty, empty, empty, empty  ]
+[ turret, empty, empty, empty, empty, empty, turret ]
 ```
 
-Core at row 2, col 3 (center of 6x6). Starter Blasters at four corners: (0,0), (0,5), (5,0), (5,5).
+Core at row 3, col 3 (exact center of 7x7). Starter Blasters at four corners: (0,0), (6,0), (0,6), (6,6).
 
 ### Turret
 
@@ -146,7 +147,7 @@ pool (inactive) → wave spawns → setActive(true) at map edge
 ```
 Grid 1──* Turret       (grid contains turrets by cell reference)
 Wave 1──* Bug           (wave defines spawn composition)
-Turret *──* Bug         (turrets target bugs in range)
+Turret *──* Bug         (turrets target bugs in range; projectile turrets use predictive aiming)
 Bug *──1 CommandCore   (bugs target the core)
 Spitter *──* Turret    (spitters target turrets/walls with ranged attacks)
 GameState 1──1 Grid    (game state owns the grid)

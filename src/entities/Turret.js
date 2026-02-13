@@ -1,5 +1,5 @@
 import Phaser from 'phaser';
-import { TURRETS, ECONOMY } from '../config/GameConfig.js';
+import { GRID, TURRETS, ECONOMY } from '../config/GameConfig.js';
 
 export class Turret {
   constructor(scene, col, row, type, worldX, worldY) {
@@ -17,13 +17,13 @@ export class Turret {
     this.hp = conf.hp;
 
     this.fireTimer = 0;
-    this.sprite = scene.add.sprite(worldX, worldY, `turret-${type}`);
+    this.sprite = scene.add.sprite(worldX, worldY, `turret-${type}`).setDisplaySize(GRID.tileSize, GRID.tileSize);
 
-    if (type === 'wall') {
-      this.wallBody = scene.physics.add.staticImage(worldX, worldY, `turret-${type}`);
-      this.wallBody.setVisible(false);
-      this.wallBody.turretRef = this;
-    }
+    this.wallBody = scene.physics.add.staticImage(worldX, worldY, `turret-${type}`);
+    this.wallBody.setDisplaySize(GRID.tileSize, GRID.tileSize);
+    this.wallBody.refreshBody();
+    this.wallBody.setVisible(false);
+    this.wallBody.turretRef = this;
 
     if (type === 'slowfield') {
       this.auraGraphics = scene.add.graphics();
@@ -40,14 +40,19 @@ export class Turret {
     }
 
     this.fireTimer -= delta;
-    if (this.fireTimer > 0) return;
 
     const target = this.findNearestBug(bugs);
     if (!target) return;
 
-    this.sprite.setRotation(
-      Phaser.Math.Angle.Between(this.sprite.x, this.sprite.y, target.x, target.y)
+    const aimPos = this.type === 'zapper' ? target : this.getPredictedPosition(target);
+    const targetAngle = Phaser.Math.Angle.Between(
+      this.sprite.x, this.sprite.y, aimPos.x, aimPos.y
+    ) + Math.PI / 2;
+    this.sprite.rotation = Phaser.Math.Angle.RotateTo(
+      this.sprite.rotation, targetAngle, TURRETS.rotationSpeed * delta / 1000
     );
+
+    if (this.fireTimer > 0) return;
 
     if (this.type === 'zapper') {
       this.fireZapper(target, bugs);
@@ -75,10 +80,33 @@ export class Turret {
     return nearest;
   }
 
+  getPredictedPosition(target) {
+    const bulletSpeed = TURRETS.bulletSpeed;
+    const dx = target.x - this.sprite.x;
+    const dy = target.y - this.sprite.y;
+    const dist = Math.sqrt(dx * dx + dy * dy);
+    const t = dist / bulletSpeed;
+    return {
+      x: target.x + target.body.velocity.x * t,
+      y: target.y + target.body.velocity.y * t,
+    };
+  }
+
+  getTipPosition() {
+    const angle = this.sprite.rotation - Math.PI / 2;
+    const offset = GRID.tileSize * 0.45;
+    return {
+      x: this.sprite.x + Math.cos(angle) * offset,
+      y: this.sprite.y + Math.sin(angle) * offset,
+    };
+  }
+
   fire(target) {
     const bullet = this.scene.bullets.get();
     if (!bullet) return;
-    bullet.fire(this.sprite.x, this.sprite.y, target.x, target.y, this.damage);
+    const predicted = this.getPredictedPosition(target);
+    const tip = this.getTipPosition();
+    bullet.fire(tip.x, tip.y, predicted.x, predicted.y, this.damage);
     this.showMuzzleFlash();
   }
 
@@ -118,8 +146,9 @@ export class Turret {
     const g = this.scene.add.graphics();
     g.lineStyle(2, 0xaa44ff, 1);
 
+    const tip = this.getTipPosition();
     g.beginPath();
-    g.moveTo(this.sprite.x, this.sprite.y);
+    g.moveTo(tip.x, tip.y);
     for (const t of targets) {
       g.lineTo(t.x, t.y);
     }
@@ -140,6 +169,30 @@ export class Turret {
     });
   }
 
+  showRange() {
+    if (this.range === 0) return;
+
+    const colors = { blaster: 0xffaa44, zapper: 0xaa44ff, slowfield: 0x44ddff };
+    const color = colors[this.type] || 0xffffff;
+
+    const g = this.scene.add.graphics();
+    g.fillStyle(color, 0.15);
+    g.fillCircle(this.sprite.x, this.sprite.y, this.range);
+    g.lineStyle(2, color, 0.6);
+    g.strokeCircle(this.sprite.x, this.sprite.y, this.range);
+
+    g.setAlpha(0);
+    this.scene.tweens.chain({
+      targets: g,
+      tweens: [
+        { alpha: 1, duration: 200, ease: 'Sine.easeOut' },
+        { alpha: 1, duration: 3000 },
+        { alpha: 0, duration: 200, ease: 'Sine.easeIn' },
+      ],
+      onComplete: () => g.destroy(),
+    });
+  }
+
   drawAura() {
     if (!this.auraGraphics) return;
     this.auraGraphics.clear();
@@ -150,7 +203,8 @@ export class Turret {
   }
 
   showMuzzleFlash() {
-    const flash = this.scene.add.circle(this.sprite.x, this.sprite.y, 8, 0xffffaa, 0.9);
+    const tip = this.getTipPosition();
+    const flash = this.scene.add.circle(tip.x, tip.y, 8, 0xffffaa, 0.9);
     this.scene.tweens.add({
       targets: flash,
       alpha: 0,
@@ -181,8 +235,21 @@ export class Turret {
     return true;
   }
 
+  flashDamage() {
+    if (!this.sprite || !this.sprite.active) return;
+    this.sprite.setTintFill(0xff4444);
+    this.scene.time.delayedCall(100, () => {
+      if (!this.sprite || !this.sprite.active) return;
+      if (this.upgraded) {
+        this.sprite.setTint(0xffdd44);
+      } else {
+        this.sprite.clearTint();
+      }
+    });
+  }
+
   takeDamage(amount) {
-    if (this.hp === null) return false;
+    this.flashDamage();
     this.hp -= amount;
     if (this.hp <= 0) {
       this.destroy();

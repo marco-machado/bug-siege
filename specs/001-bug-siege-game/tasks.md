@@ -36,7 +36,7 @@
 
 **⚠️ CRITICAL**: No user story work can begin until this phase is complete
 
-- [x] T005 Implement Grid entity with 6x6 cell array, `gridToWorld()`/`worldToGrid()` coordinate conversion, initial layout (core + 4 starter positions), and placement validation in `src/entities/Grid.js`
+- [x] T005 Implement Grid entity with 7x7 cell array, `gridToWorld()`/`worldToGrid()` coordinate conversion, initial layout (core at center + 4 starter positions at corners), and placement validation in `src/entities/Grid.js`
 - [x] T006 [P] Implement BootScene that generates all placeholder textures via Phaser Graphics API (turret rectangles with barrels, bug circles per type/size, bullet circles, core rectangle, grid tile outlines, wall block rectangle) in `src/scenes/BootScene.js`
 - [x] T007 [P] Implement EconomyManager with credits tracking, spend/earn/canAfford methods, sell refund calculation (50%), wave bonus calculation (50 + wave×10), and event emission in `src/systems/EconomyManager.js`
 - [x] T008 Implement Bullet entity class extending Phaser.Physics.Arcade.Sprite with pooled lifecycle (activate at position with velocity, despawn on hit or out-of-bounds, disable physics body on despawn) in `src/entities/Bullet.js`
@@ -53,7 +53,7 @@
 
 ### Implementation for User Story 1
 
-- [x] T009 [US1] Implement Turret entity class with targeting (nearest bug in range), fire rate timer, rotation toward target, and fire method that spawns a Bullet from pool in `src/entities/Turret.js`
+- [x] T009 [US1] Implement Turret entity class with targeting (nearest bug in range), fire rate timer, predictive aiming (fires toward bug's predicted future position), rotation toward predicted target, and fire method that spawns a Bullet from pool in `src/entities/Turret.js`
 - [x] T010 [US1] Implement Bug entity class with vector steering toward Command Core position, obstacle avoidance, damage-on-contact with core (deal damage + despawn to pool), and HP/damage tracking in `src/entities/Bug.js`
 - [x] T011 [US1] Implement WaveManager with wave config reading, staggered bug spawning from random map edges (N/S/E/W), `bugsAlive` counter, wave completion detection, and wave bonus awarding in `src/systems/WaveManager.js`
 - [x] T012 [US1] Implement BuildSystem with click-on-empty-tile to open build menu, structure selection, credit validation via EconomyManager, turret placement on grid, and menu close behavior in `src/systems/BuildSystem.js`

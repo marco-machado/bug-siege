@@ -1,20 +1,12 @@
 <!--
 Sync Impact Report
 ==================
-Version change: N/A → 1.0.0 (initial ratification)
-Modified principles: N/A (initial creation)
-Added sections:
-  - Core Principles (5 principles)
-  - Technical Constraints
-  - Asset Pipeline
-  - Governance
+Version change: 1.0.0 → 1.1.0 (003-hd-photorealistic amendment)
+Modified sections:
+  - Technical Constraints — Canvas 800×600→1920×1080, Tile 64→128, Grid 384→896, Scene flow added UIScene
+  - Asset Pipeline — Geometric placeholders → preloaded PNG/JPEG files with fallback handling, scaled sprite dimensions
 Removed sections: N/A
-Templates requiring updates:
-  - .specify/templates/plan-template.md — no update needed (generic, compatible)
-  - .specify/templates/spec-template.md — no update needed (generic, compatible)
-  - .specify/templates/tasks-template.md — no update needed (generic, compatible)
-  - .specify/templates/checklist-template.md — no update needed (generic, compatible)
-  - .specify/templates/agent-file-template.md — no update needed (generic, compatible)
+Templates requiring updates: None (generic, compatible)
 Follow-up TODOs: None
 -->
 
@@ -36,7 +28,7 @@ complexity and keeps the codebase under the 2,000 LOC target.
 
 ### II. Grid-Authoritative
 
-The 6x6 tile grid (64px cells) is the single source of truth for
+The 7x7 tile grid (64px cells) is the single source of truth for
 placement, targeting range calculations, and spatial queries.
 World-pixel positions MUST derive from grid coordinates, never the
 reverse. Build slots, the Command Core location, and obstacle data
@@ -85,28 +77,32 @@ risk for a solo/small-team game project.
 
 ## Technical Constraints
 
-- **Canvas**: 800x600 px, fixed resolution
-- **Tile size**: 64x64 px
-- **Build grid**: 6x6 tiles (384x384 px), centered on canvas
-- **Scene flow**: Boot → MainMenu → Game → GameOver
+- **Canvas**: 1920×1080 px, fixed resolution (Scale.FIT for smaller viewports)
+- **Tile size**: 64×64 px
+- **Build grid**: 7×7 tiles (448×448 px), centered on canvas
+- **Scene flow**: Boot → MainMenu → Game + UI (parallel) → GameOver
 - **Physics**: Arcade Physics only (no Matter.js, no P2)
 - **Waves**: Exactly 10, compositions per GDD wave table
 - **Bug movement**: Vector steering toward Command Core with
   simple obstacle avoidance; no A* or navmesh
+- **Turret targeting**: Projectile turrets use predictive aiming
+  (lead targeting based on bug velocity and bullet travel time);
+  instant-damage turrets (Zapper) target current position
 - **Audio**: MP3/OGG format, loaded in Boot scene
 - **Font**: Single bitmap or web font (e.g., Press Start 2P)
 
 ## Asset Pipeline
 
-All visual assets MUST start as simple geometric placeholders
-(colored rectangles, circles, basic shapes drawn with Phaser
-Graphics or minimal PNGs). Placeholder assets MUST be
-functionally complete (correct dimensions, hit areas, anchor
-points) so gameplay can be tested before final art exists.
-Final art MUST be swappable via asset key replacement without
-code changes. Sprite dimensions MUST match the GDD asset table
-(64x64 standard, 48x48 Swarmer, 80x80 Brute, 56x56 Spitter,
-16x16 projectiles).
+Visual assets are individual PNG files (transparent) or JPEG
+(backgrounds), organized by category in `assets/` subdirectories
+(`turrets/`, `bugs/`, `environment/`). Assets are preloaded in
+BootScene via `this.load.image()` with a progress bar. If any
+asset fails to load, a bright magenta geometric fallback is
+generated at runtime and a console warning is logged. Final art
+MUST be swappable via texture key replacement without code
+changes. Sprite dimensions MUST match the scaled asset table
+(144×144 turrets/core/tile, 108×108 Swarmer, 180×180 Brute,
+126×126 Spitter, 225×225 Boss, 18×18 projectiles).
 
 ## Governance
 
@@ -129,4 +125,4 @@ wording clarifications.
 include a constitution check verifying adherence to all five
 core principles.
 
-**Version**: 1.0.0 | **Ratified**: 2026-02-08 | **Last Amended**: 2026-02-08
+**Version**: 1.1.0 | **Ratified**: 2026-02-08 | **Last Amended**: 2026-02-10

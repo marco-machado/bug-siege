@@ -31,10 +31,10 @@ export default defineConfig({
 
 **Decision**: Manual 2D array + pixel math (no Phaser Tilemap).
 
-**Rationale**: A 6x6 grid with simple empty/occupied/core states doesn't justify Tilemap overhead. Manual `gridToWorld()` / `worldToGrid()` conversion is trivial (multiply/divide by 64). The 2D array is the single source of truth per Constitution Principle II (Grid-Authoritative).
+**Rationale**: A 7x7 grid with simple empty/occupied/core states doesn't justify Tilemap overhead. Manual `gridToWorld()` / `worldToGrid()` conversion is trivial (multiply/divide by tileSize). The 2D array is the single source of truth per Constitution Principle II (Grid-Authoritative).
 
 **Alternatives Considered**:
-- Phaser Tilemap: Overkill for a 36-cell grid. Adds complexity (layer management, tileset loading) with no benefit.
+- Phaser Tilemap: Overkill for a 49-cell grid. Adds complexity (layer management, tileset loading) with no benefit.
 - Tilemap with JSON: Same issue — configuration overhead not warranted.
 
 **Key Pattern**:
@@ -74,6 +74,8 @@ gridToWorld(col, row) {
 // Steer: steer = desired - currentVelocity, limit to maxForce
 // Avoid: if obstacle ahead, add perpendicular force away from obstacle
 ```
+
+**Turret Predictive Aiming**: Projectile-firing turrets (Blaster) use lead targeting to hit moving bugs. The turret calculates `t = distance / bulletSpeed`, then fires toward `(bug.x + velocity.x * t, bug.y + velocity.y * t)`. This compensates for bullet travel time and prevents misses against fast perpendicular-moving bugs like Swarmers. Instant-damage turrets (Zapper) do not need prediction.
 
 ## 5. Object Pooling
 
