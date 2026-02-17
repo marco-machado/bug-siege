@@ -23,7 +23,7 @@
 - Centered on screen, occupies a **7×7 tile grid**.
 - The **Command Core** sits in one tile (exact center); it is the primary target for bugs.
 - Remaining grid tiles are **build slots** for turrets and utility structures.
-- The base has a **health bar** (e.g., 100 HP). When it hits 0, game over.
+- The base has a **health bar** (e.g., 200 HP). When it hits 0, game over.
 - Four corner slots are pre-built with **Starter Turrets** (basic, low damage).
 
 ---
@@ -96,7 +96,7 @@
 │   bugs →│ CORE   │← bugs    │
 │         └────────┘           │
 │                              │
-│  [ HP ██████████░░ 72/100 ]  │  ← Base health bar
+│  [ HP ██████████░░ 144/200 ] │  ← Base health bar
 │  [ Start Wave ]              │  ← Action button
 └──────────────────────────────┘
 ```
