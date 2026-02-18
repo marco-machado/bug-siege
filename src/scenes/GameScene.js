@@ -68,6 +68,7 @@ export class GameScene extends Phaser.Scene {
     );
     this.physics.add.existing(this.coreZone, true);
     this.physics.add.overlap(this.bugs, this.coreZone, this.onBugHitCore, null, this);
+    this.physics.add.overlap(this.spitterBullets, this.coreZone, this.onSpitterBulletHitCore, null, this);
 
     this.events.on('bug-killed', this.onBugKilled, this);
     this.events.on('start-wave-early', this.onStartWaveEarly, this);
@@ -240,6 +241,32 @@ export class GameScene extends Phaser.Scene {
     if (bug.wallAttackCooldown > 0) return;
     bug.wallAttackCooldown = 1000;
     turret.takeDamage(bug.wallDamage);
+  }
+
+  onSpitterBulletHitCore(_core, _bullet) {
+    const bullet = _bullet;
+    if (!bullet.active) return;
+    if (this.phase === 'gameover') return;
+
+    this.baseHp -= bullet.damage;
+    if (this.baseHp < 0) this.baseHp = 0;
+
+    this.events.emit('hp-changed', { hp: this.baseHp, maxHp: GAME.baseHp });
+
+    if (this.coreSprite && this.coreSprite.active) {
+      this.coreSprite.setTintFill(0xff4444);
+      this.time.delayedCall(100, () => {
+        if (this.coreSprite && this.coreSprite.active) {
+          this.coreSprite.clearTint();
+        }
+      });
+    }
+
+    bullet.despawn();
+
+    if (this.baseHp <= 0) {
+      this.gameOver(false);
+    }
   }
 
   onBugHitCore(_core, _bug) {

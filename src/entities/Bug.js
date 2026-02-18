@@ -101,7 +101,6 @@ export class Bug extends Phaser.Physics.Arcade.Sprite {
 
     for (const turret of this.scene.turrets) {
       if (!turret.sprite || !turret.sprite.active) continue;
-      if (turret.type !== 'wall') continue;
       const dist = Phaser.Math.Distance.Between(this.x, this.y, turret.sprite.x, turret.sprite.y);
       if (dist < minDist) {
         minDist = dist;
@@ -112,11 +111,15 @@ export class Bug extends Phaser.Physics.Arcade.Sprite {
   }
 
   fireSpitterBullet(target) {
-    if (!this.scene.spitterBullets) return;
     if (!target.sprite || !target.sprite.active) return;
+    this.fireSpitterBulletAt(target.sprite.x, target.sprite.y);
+  }
+
+  fireSpitterBulletAt(targetX, targetY) {
+    if (!this.scene.spitterBullets) return;
     const bullet = this.scene.spitterBullets.get();
     if (!bullet) return;
-    bullet.fire(this.x, this.y, target.sprite.x, target.sprite.y, this.wallDamage, 200, 'spitter-bullet');
+    bullet.fire(this.x, this.y, targetX, targetY, this.wallDamage, 200, 'spitter-bullet');
   }
 
   updateSpitter(delta) {
@@ -133,9 +136,27 @@ export class Bug extends Phaser.Physics.Arcade.Sprite {
         this.fireSpitterBullet(target);
         this.attackTimer = 1000 / BUGS.spitter.attackRate;
       }
-    } else {
-      this.steer();
+      return;
     }
+
+    if (this.corePos) {
+      const distToCore = Phaser.Math.Distance.Between(this.x, this.y, this.corePos.x, this.corePos.y);
+      if (distToCore <= BUGS.spitter.attackRange) {
+        this.setVelocity(0, 0);
+        const dx = this.corePos.x - this.x;
+        const dy = this.corePos.y - this.y;
+        this.setRotation(Math.atan2(dy, dx) + Math.PI / 2);
+
+        this.attackTimer -= delta;
+        if (this.attackTimer <= 0) {
+          this.fireSpitterBulletAt(this.corePos.x, this.corePos.y);
+          this.attackTimer = 1000 / BUGS.spitter.attackRate;
+        }
+        return;
+      }
+    }
+
+    this.steer();
   }
 
   preUpdate(time, delta) {
