@@ -38,7 +38,9 @@
 | **Wall Block** | 25   | No attack. Absorbs hits, redirecting bug pathing. |
 
 - Structures can be **sold** for 50% of their cost.
+- Structures can be **repaired** during build phase when damaged. Cost scales with damage taken (30% markup over proportional build cost).
 - One **upgrade tier** per turret (doubles damage, costs 1.5× base price).
+- Turrets **lock onto a target** until it dies or leaves range before acquiring a new one.
 
 ---
 
@@ -74,6 +76,7 @@
 - **Starting credits:** 200
 - **Kill reward:** Swarmer 10 | Brute 25 | Spitter 15 | Boss 100
 - **Wave clear bonus:** 50 + (wave number × 10)
+- **Repair cost:** proportional to damage × 1.3 markup (e.g., Blaster at 50% HP costs 33 credits)
 
 ---
 
@@ -211,6 +214,7 @@
 - **Arcade Physics** for movement and collision.
 - Object pools for bullets and bugs (performance).
 - Tween-based health bar animations.
+- Debug mode (`VITE_DEBUG_KEYS=true`): spawns bugs via number keys, shows live turret stats overlay (type, position, HP, damage, upgrade status).
 
 ---
 

@@ -198,6 +198,27 @@ export class BuildSystem {
       });
     }
 
+    if (turret.hp < turret.maxHp) {
+      const repairCost = turret.getRepairCost();
+      const canRepair = this.scene.economy.canAfford(repairCost);
+      items.push({
+        label: `Repair ($${repairCost})`,
+        desc: `HP: ${turret.hp}/${turret.maxHp}`,
+        color: canRepair ? '#ffffff' : '#555555',
+        enabled: canRepair,
+        action: (textObj) => {
+          if (canRepair) {
+            if (this.scene.economy.spend(repairCost)) {
+              turret.repair();
+            }
+            this.closeMenus();
+          } else {
+            this.flashDenied(textObj);
+          }
+        },
+      });
+    }
+
     items.push({
       label: `Sell ($${turret.getSellValue()})`,
       desc: '',

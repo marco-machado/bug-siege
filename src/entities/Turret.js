@@ -15,8 +15,10 @@ export class Turret {
     this.fireRate = conf.fireRate || 0;
     this.damage = conf.damage || 0;
     this.hp = conf.hp;
+    this.maxHp = conf.hp;
 
     this.fireTimer = 0;
+    this.currentTarget = null;
     this.sprite = scene.add.sprite(worldX, worldY, `turret-${type}`).setDisplaySize(GRID.tileSize, GRID.tileSize);
 
     this.wallBody = scene.physics.add.staticImage(worldX, worldY, `turret-${type}`);
@@ -41,7 +43,17 @@ export class Turret {
 
     this.fireTimer -= delta;
 
-    const target = this.findNearestBug(bugs);
+    let target = this.currentTarget;
+    if (target && target.active) {
+      const dist = Phaser.Math.Distance.Between(
+        this.sprite.x, this.sprite.y, target.x, target.y
+      );
+      if (dist >= this.range) target = null;
+    } else {
+      target = null;
+    }
+    if (!target) target = this.findNearestBug(bugs);
+    this.currentTarget = target;
     if (!target) return;
 
     const aimPos = this.type === 'zapper' ? target : this.getPredictedPosition(target);
@@ -228,6 +240,7 @@ export class Turret {
     }
     if (this.type === 'wall' && conf.upgradedHp) {
       this.hp = conf.upgradedHp;
+      this.maxHp = conf.upgradedHp;
     }
 
     this.sprite.setTint(0xffdd44);
@@ -273,6 +286,14 @@ export class Turret {
 
   getUpgradeCost() {
     return TURRETS[this.type].upgradeCost;
+  }
+
+  repair() {
+    this.hp = this.maxHp;
+  }
+
+  getRepairCost() {
+    return Math.ceil(this.cost * (1 - this.hp / this.maxHp) * ECONOMY.repairCostMarkup);
   }
 
   getSellValue() {

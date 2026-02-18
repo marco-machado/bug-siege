@@ -1,5 +1,5 @@
 import Phaser from 'phaser';
-import { GAME } from '../config/GameConfig.js';
+import { GAME, DEBUG } from '../config/GameConfig.js';
 
 export class UIScene extends Phaser.Scene {
   constructor() {
@@ -52,7 +52,9 @@ export class UIScene extends Phaser.Scene {
       fontSize: '28px',
       fontFamily: 'monospace',
       color: '#00ff88',
-    }).setOrigin(0.5).setInteractive({ useHandCursor: true }).setVisible(false);
+    }).setOrigin(0.5).setInteractive({ useHandCursor: true }).setVisible(true);
+
+    this.phaseText.setText('BUILD PHASE');
 
     this.startWaveBtn.on('pointerdown', () => {
       this.gameScene.events.emit('start-wave-early');
@@ -99,6 +101,16 @@ export class UIScene extends Phaser.Scene {
     this.gameScene.events.on('phase-changed', this.onPhaseChanged);
     this.gameScene.events.on('timer-tick', this.onTimerTick);
 
+    if (DEBUG.enableDebugKeys) {
+      this.debugText = this.add.text(32, 130, '', {
+        fontSize: '18px',
+        fontFamily: 'monospace',
+        color: '#88ff88',
+        backgroundColor: '#000000aa',
+        padding: { x: 8, y: 4 },
+      }).setScrollFactor(0).setDepth(200);
+    }
+
     this.events.once('shutdown', () => {
       this.gameScene.events.off('credits-changed', this.onCreditsChanged);
       this.gameScene.events.off('wave-changed', this.onWaveChanged);
@@ -106,5 +118,23 @@ export class UIScene extends Phaser.Scene {
       this.gameScene.events.off('phase-changed', this.onPhaseChanged);
       this.gameScene.events.off('timer-tick', this.onTimerTick);
     });
+  }
+
+  update() {
+    if (!this.debugText) return;
+
+    const turrets = this.gameScene.turrets;
+    if (!turrets || turrets.length === 0) {
+      this.debugText.setText('No turrets placed');
+      return;
+    }
+
+    const lines = turrets.map((t) => {
+      const upg = t.upgraded ? 'Yes' : 'No';
+      const typeName = t.type.charAt(0).toUpperCase() + t.type.slice(1);
+      return `${typeName} (${t.gridCol},${t.gridRow}) HP:${t.hp}/${t.maxHp} DMG:${t.damage} UPG:${upg}`;
+    });
+
+    this.debugText.setText(lines.join('\n'));
   }
 }
