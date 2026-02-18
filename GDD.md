@@ -49,6 +49,7 @@
 | **Swarmer**  | Fast   | Low | Low    | Basic melee. Attacks nearest wall or core. |
 | **Brute**    | Slow   | High | High  | Tanky. Walks straight to core.    |
 | **Spitter**  | Medium | Med | Med    | Ranged attack on turrets.         |
+| **Boss**     | V.Slow | V.High | V.High | Massive bug. Spawns in wave 10. |
 
 - Bugs spawn from **all four edges** of the map (N, S, E, W).
 - Each wave specifies a spawn composition and count.
@@ -63,7 +64,7 @@
   - Waves 1–3: Swarmers only.
   - Waves 4–6: Mix of Swarmers + Brutes.
   - Waves 7–9: All three types.
-  - Wave 10 (Boss): A massive Brute with 10× HP, plus a full swarm.
+  - Wave 10 (Boss): A Boss bug plus a full swarm.
 - Short countdown timer between waves for building.
 
 ---
@@ -71,7 +72,7 @@
 ## Economy
 
 - **Starting credits:** 200
-- **Kill reward:** Swarmer 10 | Brute 25 | Spitter 15
+- **Kill reward:** Swarmer 10 | Brute 25 | Spitter 15 | Boss 100
 - **Wave clear bonus:** 50 + (wave number × 10)
 
 ---
@@ -107,7 +108,7 @@
 
 | Property         | Value                              |
 | ---------------- | ---------------------------------- |
-| Canvas           | 800 × 600 px                       |
+| Canvas           | 1920 × 1080 px                     |
 | Grid tile size   | 64 × 64 px                         |
 | Build grid       | 7×7 tiles (896×896 px), centered |
 | Command Core     | Occupies 1 tile (center of grid)   |
@@ -152,7 +153,7 @@
 | `bullet.png`         | 16×16   | Blaster projectile                         |
 | `lightning.png`      | variable| Zapper beam (or draw with Phaser graphics) |
 | `spit.png`           | 16×16   | Spitter projectile                         |
-| `background.png`     | 800×600 | Desert/moon terrain                        |
+| `background.png`     | 1920×1080 | Desert/moon terrain                        |
 
 ### UI (PNG)
 
