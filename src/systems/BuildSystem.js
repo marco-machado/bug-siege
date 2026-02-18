@@ -219,6 +219,53 @@ export class BuildSystem {
       });
     }
 
+    const sameTypeDamaged = this.scene.turrets.filter(
+      t => t.type === turret.type && t.hp < t.maxHp
+    );
+    if (sameTypeDamaged.length >= 2) {
+      const totalTypeCost = sameTypeDamaged.reduce((sum, t) => sum + t.getRepairCost(), 0);
+      const canRepairType = this.scene.economy.canAfford(totalTypeCost);
+      const typeLabel = turret.type.charAt(0).toUpperCase() + turret.type.slice(1);
+      items.push({
+        label: `Repair All ${typeLabel}s ($${totalTypeCost})`,
+        desc: `${sameTypeDamaged.length} damaged`,
+        color: canRepairType ? '#ffffff' : '#555555',
+        enabled: canRepairType,
+        action: (textObj) => {
+          if (canRepairType) {
+            if (this.scene.economy.spend(totalTypeCost)) {
+              sameTypeDamaged.forEach(t => t.repair());
+            }
+            this.closeMenus();
+          } else {
+            this.flashDenied(textObj);
+          }
+        },
+      });
+    }
+
+    const allDamaged = this.scene.turrets.filter(t => t.hp < t.maxHp);
+    if (allDamaged.length >= 2 && allDamaged.length !== sameTypeDamaged.length) {
+      const totalAllCost = allDamaged.reduce((sum, t) => sum + t.getRepairCost(), 0);
+      const canRepairAll = this.scene.economy.canAfford(totalAllCost);
+      items.push({
+        label: `Repair All ($${totalAllCost})`,
+        desc: `${allDamaged.length} damaged`,
+        color: canRepairAll ? '#ffffff' : '#555555',
+        enabled: canRepairAll,
+        action: (textObj) => {
+          if (canRepairAll) {
+            if (this.scene.economy.spend(totalAllCost)) {
+              allDamaged.forEach(t => t.repair());
+            }
+            this.closeMenus();
+          } else {
+            this.flashDenied(textObj);
+          }
+        },
+      });
+    }
+
     items.push({
       label: `Sell ($${turret.getSellValue()})`,
       desc: '',

@@ -31,6 +31,14 @@ export class Turret {
       this.auraGraphics = scene.add.graphics();
       this.drawAura();
     }
+
+    const barWidth = GRID.tileSize * 0.8;
+    const barHeight = 6;
+    const barY = worldY + GRID.tileSize / 2 + 6;
+    this.hpBarBg = scene.add.rectangle(worldX, barY, barWidth, barHeight, 0x333333)
+      .setOrigin(0.5, 0.5).setVisible(false);
+    this.hpBarFill = scene.add.rectangle(worldX, barY, barWidth, barHeight, 0x00ff00)
+      .setOrigin(0.5, 0.5).setVisible(false);
   }
 
   update(_time, delta, bugs) {
@@ -63,6 +71,9 @@ export class Turret {
     this.sprite.rotation = Phaser.Math.Angle.RotateTo(
       this.sprite.rotation, targetAngle, TURRETS.rotationSpeed * delta / 1000
     );
+
+    const angleDiff = Phaser.Math.Angle.Wrap(targetAngle - this.sprite.rotation);
+    if (Math.abs(angleDiff) > 0.1) return;
 
     if (this.fireTimer > 0) return;
 
@@ -239,10 +250,11 @@ export class Turret {
       this.drawAura();
     }
     if (this.type === 'wall' && conf.upgradedHp) {
-      this.hp = conf.upgradedHp;
       this.maxHp = conf.upgradedHp;
     }
 
+    this.hp = this.maxHp;
+    this.updateHpBar();
     this.sprite.setTint(0xffdd44);
 
     return true;
@@ -268,6 +280,7 @@ export class Turret {
       this.destroy();
       return true;
     }
+    this.updateHpBar();
     return false;
   }
 
@@ -279,6 +292,8 @@ export class Turret {
     if (this.auraGraphics) {
       this.auraGraphics.destroy();
     }
+    if (this.hpBarBg) this.hpBarBg.destroy();
+    if (this.hpBarFill) this.hpBarFill.destroy();
     this.scene.grid.setCell(this.gridCol, this.gridRow, 'empty');
     const idx = this.scene.turrets.indexOf(this);
     if (idx !== -1) this.scene.turrets.splice(idx, 1);
@@ -288,8 +303,26 @@ export class Turret {
     return TURRETS[this.type].upgradeCost;
   }
 
+  updateHpBar() {
+    if (this.hp >= this.maxHp) {
+      this.hpBarBg.setVisible(false);
+      this.hpBarFill.setVisible(false);
+      return;
+    }
+    this.hpBarBg.setVisible(true);
+    this.hpBarFill.setVisible(true);
+    const ratio = this.hp / this.maxHp;
+    const fullWidth = GRID.tileSize * 0.8;
+    this.hpBarFill.setDisplaySize(fullWidth * ratio, 6);
+    let color = 0x00ff00;
+    if (ratio <= 0.25) color = 0xff3333;
+    else if (ratio <= 0.5) color = 0xffaa00;
+    this.hpBarFill.setFillStyle(color);
+  }
+
   repair() {
     this.hp = this.maxHp;
+    this.updateHpBar();
   }
 
   getRepairCost() {
