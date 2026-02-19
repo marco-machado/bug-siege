@@ -113,7 +113,7 @@
 | ---------------- | ---------------------------------- |
 | Canvas           | 1920 × 1080 px                     |
 | Grid tile size   | 64 × 64 px                         |
-| Build grid       | 7×7 tiles (896×896 px), centered |
+| Build grid       | 7×7 tiles (448×448 px), centered |
 | Command Core     | Occupies 1 tile (center of grid)   |
 | Map area outside grid | Bug spawning / movement zone  |
 
