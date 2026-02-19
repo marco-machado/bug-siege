@@ -164,6 +164,7 @@ export class BuildSystem {
       this.scene.wallBodies.add(turret.wallBody);
     }
 
+    this.scene.playSfx('sfx_build');
     this.scene.showBuildFlash(world.x, world.y);
     this.closeMenus();
   }
@@ -189,6 +190,7 @@ export class BuildSystem {
           if (canUpgrade) {
             if (this.scene.economy.spend(upgCost)) {
               turret.upgrade();
+              this.scene.playSfx('sfx_select');
             }
             this.closeMenus();
           } else {
@@ -210,6 +212,7 @@ export class BuildSystem {
           if (canRepair) {
             if (this.scene.economy.spend(repairCost)) {
               turret.repair();
+              this.scene.playSfx('sfx_select');
             }
             this.closeMenus();
           } else {
@@ -235,6 +238,7 @@ export class BuildSystem {
           if (canRepairType) {
             if (this.scene.economy.spend(totalTypeCost)) {
               sameTypeDamaged.forEach(t => t.repair());
+              this.scene.playSfx('sfx_select');
             }
             this.closeMenus();
           } else {
@@ -257,6 +261,7 @@ export class BuildSystem {
           if (canRepairAll) {
             if (this.scene.economy.spend(totalAllCost)) {
               allDamaged.forEach(t => t.repair());
+              this.scene.playSfx('sfx_select');
             }
             this.closeMenus();
           } else {
@@ -273,6 +278,7 @@ export class BuildSystem {
       enabled: true,
       action: () => {
         this.scene.economy.sellRefund(turret.cost);
+        this.scene.playSfx('sfx_sell');
         turret.destroy();
         this.closeMenus();
       },

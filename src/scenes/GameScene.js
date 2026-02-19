@@ -23,6 +23,7 @@ export class GameScene extends Phaser.Scene {
   }
 
   create() {
+    this._sfxCooldowns = {};
     this.grid = new Grid();
     this.economy = new EconomyManager(this);
     this.waveManager = new WaveManager(this);
@@ -79,11 +80,20 @@ export class GameScene extends Phaser.Scene {
     this.scene.launch('UIScene');
 
     this.startBuildPhase();
+    const startBgm = () => this.sound.play('bgm_wave', { loop: true, volume: 0.5 });
+    if (this.sound.locked) {
+      this.sound.once('unlocked', startBgm);
+    } else {
+      startBgm();
+    }
 
     this.events.emit('credits-changed', { credits: this.economy.getCredits() });
     this.events.emit('hp-changed', { hp: this.baseHp, maxHp: GAME.baseHp });
 
     this.events.once('shutdown', () => {
+      this.sound.stopByKey('bgm_wave');
+      this.sound.stopByKey('sfx_victory');
+      this.sound.stopByKey('sfx_core_destroyed');
       this.events.off('bug-killed', this.onBugKilled, this);
       this.events.off('start-wave-early', this.onStartWaveEarly, this);
       if (this.input.keyboard) this.input.keyboard.removeAllListeners();
@@ -162,6 +172,7 @@ export class GameScene extends Phaser.Scene {
     this.phase = 'wave';
     this.buildSystem.closeMenus();
     this.events.emit('phase-changed', { phase: 'wave' });
+    this.playSfx('sfx_wave_start');
     this.waveManager.startWave();
     this.showWaveAnnouncement(this.waveManager.getCurrentWave());
   }
@@ -198,6 +209,7 @@ export class GameScene extends Phaser.Scene {
     this.economy.earn(data.reward);
     this.totalKills++;
     this.waveManager.onBugDied();
+    this.playSfx('sfx_splat');
     this.showBugDeathEffect(data.x, data.y, data.type);
   }
 
@@ -243,15 +255,12 @@ export class GameScene extends Phaser.Scene {
     turret.takeDamage(bug.wallDamage);
   }
 
-  onSpitterBulletHitCore(_core, _bullet) {
-    const bullet = _bullet;
-    if (!bullet.active) return;
-    if (this.phase === 'gameover') return;
-
-    this.baseHp -= bullet.damage;
+  damageCore(amount) {
+    this.baseHp -= amount;
     if (this.baseHp < 0) this.baseHp = 0;
 
     this.events.emit('hp-changed', { hp: this.baseHp, maxHp: GAME.baseHp });
+    this.playSfx('sfx_hit');
 
     if (this.coreSprite && this.coreSprite.active) {
       this.coreSprite.setTintFill(0xff4444);
@@ -262,45 +271,35 @@ export class GameScene extends Phaser.Scene {
       });
     }
 
-    bullet.despawn();
-
     if (this.baseHp <= 0) {
       this.gameOver(false);
+      return true;
     }
+    return false;
+  }
+
+  onSpitterBulletHitCore(_core, _bullet) {
+    const bullet = _bullet;
+    if (!bullet.active || this.phase === 'gameover') return;
+    this.damageCore(bullet.damage);
+    bullet.despawn();
   }
 
   onBugHitCore(_core, _bug) {
     const bug = _bug;
-    if (!bug.active) return;
-    if (this.phase === 'gameover') return;
-
-    this.baseHp -= bug.coreDamage;
-    if (this.baseHp < 0) this.baseHp = 0;
-
-    this.events.emit('hp-changed', { hp: this.baseHp, maxHp: GAME.baseHp });
-
-    if (this.coreSprite && this.coreSprite.active) {
-      this.coreSprite.setTintFill(0xff4444);
-      this.time.delayedCall(100, () => {
-        if (this.coreSprite && this.coreSprite.active) {
-          this.coreSprite.clearTint();
-        }
-      });
+    if (!bug.active || this.phase === 'gameover') return;
+    if (!this.damageCore(bug.coreDamage)) {
+      this.waveManager.onBugDied();
     }
-
     bug.despawn();
-
-    if (this.baseHp <= 0) {
-      this.gameOver(false);
-      return;
-    }
-
-    this.waveManager.onBugDied();
   }
 
   gameOver(won) {
     if (this.phase === 'gameover') return;
     this.phase = 'gameover';
+    this.sound.stopByKey('bgm_wave');
+    if (won) this.sound.play('sfx_victory');
+    else this.sound.play('sfx_core_destroyed');
 
     this.scene.stop('UIScene');
     this.scene.start('GameOver', {
@@ -310,6 +309,17 @@ export class GameScene extends Phaser.Scene {
       credits: this.economy.getCredits(),
       baseHp: this.baseHp,
     });
+  }
+
+  playSfx(key, config) {
+    const now = this.time.now;
+    const cooldown = { sfx_shoot: 80, sfx_splat: 50, sfx_hit: 100, sfx_zap: 100 }[key] || 0;
+    if (cooldown > 0) {
+      const last = this._sfxCooldowns[key] || 0;
+      if (now - last < cooldown) return;
+      this._sfxCooldowns[key] = now;
+    }
+    this.sound.play(key, config);
   }
 
   showBugDeathEffect(x, y, type) {
