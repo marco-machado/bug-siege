@@ -74,11 +74,20 @@ export class UIScene extends Phaser.Scene {
       this.waveText.setText(`Wave: ${data.wave}/${data.total}`);
     };
 
+    this.hpTween = null;
+
     this.onHpChanged = (data) => {
       const pct = data.hp / data.maxHp;
-      this.hpBarFill.setDisplaySize(this.hpBarWidth * pct, this.hpBarHeight);
+      const targetWidth = this.hpBarWidth * pct;
       this.hpBarFill.setFillStyle(pct > 0.5 ? 0x00ff44 : pct > 0.25 ? 0xffaa00 : 0xff3333);
       this.hpLabel.setText(`HP: ${data.hp}/${data.maxHp}`);
+      if (this.hpTween) this.hpTween.destroy();
+      this.hpTween = this.tweens.add({
+        targets: this.hpBarFill,
+        displayWidth: targetWidth,
+        duration: 300,
+        ease: 'Power2',
+      });
     };
 
     this.onPhaseChanged = (data) => {

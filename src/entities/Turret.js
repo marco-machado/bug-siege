@@ -317,11 +317,18 @@ export class Turret {
     this.hpBarFill.setVisible(true);
     const ratio = this.hp / this.maxHp;
     const fullWidth = GRID.tileSize * 0.8;
-    this.hpBarFill.setDisplaySize(fullWidth * ratio, 6);
+    const targetWidth = fullWidth * ratio;
     let color = 0x00ff00;
     if (ratio <= 0.25) color = 0xff3333;
     else if (ratio <= 0.5) color = 0xffaa00;
     this.hpBarFill.setFillStyle(color);
+    if (this.hpTween) this.hpTween.destroy();
+    this.hpTween = this.scene.tweens.add({
+      targets: this.hpBarFill,
+      displayWidth: targetWidth,
+      duration: 200,
+      ease: 'Power2',
+    });
   }
 
   repair() {

@@ -1,5 +1,5 @@
 import Phaser from 'phaser';
-import { BUGS, STEERING } from '../config/GameConfig.js';
+import { BUGS, STEERING, TURRETS } from '../config/GameConfig.js';
 
 export class Bug extends Phaser.Physics.Arcade.Sprite {
   constructor(scene, x, y) {
@@ -28,8 +28,8 @@ export class Bug extends Phaser.Physics.Arcade.Sprite {
     this.maxHp = conf.hp;
     this.moveSpeed = conf.speed;
     this.baseSpeed = conf.speed;
-    this.coreDamage = conf.coreDamage;
-    this.wallDamage = conf.wallDamage;
+    this.coreDamage = conf.coreDamage ?? conf.damage ?? 0;
+    this.wallDamage = conf.wallDamage ?? conf.damage ?? 0;
     this.reward = conf.reward;
     this.slowed = false;
     this.attackTimer = 0;
@@ -47,7 +47,7 @@ export class Bug extends Phaser.Physics.Arcade.Sprite {
   }
 
   getSpeed() {
-    return this.slowed ? this.baseSpeed * 0.5 : this.baseSpeed;
+    return this.slowed ? this.baseSpeed * TURRETS.slowfield.slowFactor : this.baseSpeed;
   }
 
   applyMovement(dirX, dirY, speed) {
@@ -84,26 +84,28 @@ export class Bug extends Phaser.Physics.Arcade.Sprite {
 
     if (dist < 1) return;
 
-    let dirX = dx / dist;
-    let dirY = dy / dist;
+    let forceX = dx / dist;
+    let forceY = dy / dist;
 
-    const blocker = this.getAvoidanceTarget(dirX, dirY);
-    if (blocker && blocker.sprite && blocker.sprite.active) {
-      const bx = blocker.sprite.x - this.x;
-      const by = blocker.sprite.y - this.y;
-      const sign = (dirX * by - dirY * bx) >= 0 ? 1 : -1;
-      const perpX = sign * dirY;
-      const perpY = sign * -dirX;
-      const w = STEERING.avoidanceWeight;
-      dirX = dirX * (1 - w) + perpX * w;
-      dirY = dirY * (1 - w) + perpY * w;
-      const len = Math.sqrt(dirX * dirX + dirY * dirY);
-      if (len < 0.0001) return;
-      dirX /= len;
-      dirY /= len;
+    const radius = STEERING.avoidanceRadius;
+    const radiusSq = radius * radius;
+    const strength = STEERING.repulsionStrength;
+
+    for (const turret of this.activeTurrets()) {
+      const tx = turret.sprite.x - this.x;
+      const ty = turret.sprite.y - this.y;
+      const tDistSq = tx * tx + ty * ty;
+      if (tDistSq >= radiusSq || tDistSq < 1) continue;
+      const tDist = Math.sqrt(tDistSq);
+      const factor = (1 - tDist / radius) * strength;
+      forceX -= (tx / tDist) * factor;
+      forceY -= (ty / tDist) * factor;
     }
 
-    this.applyMovement(dirX, dirY, this.getSpeed());
+    const len = Math.sqrt(forceX * forceX + forceY * forceY);
+    if (len < 0.0001) return;
+
+    this.applyMovement(forceX / len, forceY / len, this.getSpeed());
   }
 
   steerSwarmer() {
@@ -137,25 +139,6 @@ export class Bug extends Phaser.Physics.Arcade.Sprite {
     }
 
     return { x: nearestX, y: nearestY };
-  }
-
-  getAvoidanceTarget(dirX, dirY) {
-    let nearest = null;
-    let nearestProj = Infinity;
-
-    for (const turret of this.activeTurrets()) {
-      const rx = turret.sprite.x - this.x;
-      const ry = turret.sprite.y - this.y;
-      const proj = rx * dirX + ry * dirY;
-      if (proj < 0 || proj > STEERING.avoidanceLookahead) continue;
-      const perpDist = Math.abs(rx * dirY - ry * dirX);
-      if (perpDist < STEERING.avoidanceClearance && proj < nearestProj) {
-        nearestProj = proj;
-        nearest = turret;
-      }
-    }
-
-    return nearest;
   }
 
   takeDamage(amount) {
