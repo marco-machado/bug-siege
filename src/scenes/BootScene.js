@@ -80,6 +80,14 @@ export class BootScene extends Phaser.Scene {
   }
 
   generateFallback(key) {
+    if (key.startsWith('sfx_') || key.startsWith('bgm_')) {
+      const ctx = this.sound.context;
+      if (ctx && ctx.createBuffer) {
+        this.cache.audio.add(key, ctx.createBuffer(1, 1, 22050));
+      }
+      return;
+    }
+
     const g = this.add.graphics();
     const magenta = 0xff00ff;
 

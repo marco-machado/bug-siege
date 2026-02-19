@@ -130,7 +130,7 @@ export class Turret {
     const predicted = this.getPredictedPosition(target);
     const tip = this.getTipPosition();
     bullet.fire(tip.x, tip.y, predicted.x, predicted.y, this.damage);
-    this.scene.sound.play('sfx_shoot');
+    this.scene.playSfx('sfx_shoot');
     this.showMuzzleFlash();
   }
 
@@ -163,7 +163,7 @@ export class Turret {
     }
 
     this.drawLightningChain(targets);
-    this.scene.sound.play('sfx_zap');
+    this.scene.playSfx('sfx_zap');
     this.showMuzzleFlash();
   }
 
@@ -276,8 +276,9 @@ export class Turret {
   }
 
   takeDamage(amount) {
+    if (!this.sprite || !this.sprite.active) return false;
     this.flashDamage();
-    this.scene.sound.play('sfx_hit');
+    this.scene.playSfx('sfx_hit');
     this.hp -= amount;
     if (this.hp <= 0) {
       this.destroy();
