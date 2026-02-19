@@ -1,5 +1,5 @@
 import Phaser from 'phaser';
-import { BUGS, STEERING } from '../config/GameConfig.js';
+import { BUGS, STEERING, TURRETS } from '../config/GameConfig.js';
 
 export class Bug extends Phaser.Physics.Arcade.Sprite {
   constructor(scene, x, y) {
@@ -28,8 +28,8 @@ export class Bug extends Phaser.Physics.Arcade.Sprite {
     this.maxHp = conf.hp;
     this.moveSpeed = conf.speed;
     this.baseSpeed = conf.speed;
-    this.coreDamage = conf.coreDamage;
-    this.wallDamage = conf.wallDamage;
+    this.coreDamage = conf.coreDamage ?? conf.damage ?? 0;
+    this.wallDamage = conf.wallDamage ?? conf.damage ?? 0;
     this.reward = conf.reward;
     this.slowed = false;
     this.attackTimer = 0;
@@ -47,7 +47,7 @@ export class Bug extends Phaser.Physics.Arcade.Sprite {
   }
 
   getSpeed() {
-    return this.slowed ? this.baseSpeed * 0.5 : this.baseSpeed;
+    return this.slowed ? this.baseSpeed * TURRETS.slowfield.slowFactor : this.baseSpeed;
   }
 
   applyMovement(dirX, dirY, speed) {

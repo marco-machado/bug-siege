@@ -72,8 +72,7 @@ export const BUGS = Object.freeze({
   spitter: Object.freeze({
     speed: 35,
     hp: 60,
-    coreDamage: 10,
-    wallDamage: 20,
+    damage: 20,
     reward: 15,
     size: 56,
     attackRange: 192,
@@ -85,7 +84,7 @@ export const BUGS = Object.freeze({
     coreDamage: 40,
     wallDamage: 50,
     reward: 100,
-    size: 100,
+    size: 96,
   }),
 });
 

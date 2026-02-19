@@ -48,9 +48,9 @@
 
 | Bug Type     | Speed  | HP  | Damage | Behavior                          |
 | ------------ | ------ | --- | ------ | --------------------------------- |
-| **Swarmer**  | Fast   | Low | Low    | Basic melee. Attacks nearest wall or core. |
-| **Brute**    | Slow   | High | High  | Tanky. Walks straight to core.    |
-| **Spitter**  | Medium | Med | Med    | Ranged attack on turrets.         |
+| **Swarmer**  | Fast   | Low | Low    | Basic melee. Attacks nearest structure or core. |
+| **Brute**    | Slow   | High | High  | Tanky. Moves toward core, navigating around obstacles. |
+| **Spitter**  | Medium | Med | 20     | Ranged attack on turrets and core. |
 | **Boss**     | V.Slow | V.High | V.High | Massive bug. Spawns in wave 10. |
 
 - Bugs spawn from **all four edges** of the map (N, S, E, W).
