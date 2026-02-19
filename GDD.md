@@ -83,7 +83,7 @@
 ## Controls
 
 - **Click** a grid tile → open build menu (radial or panel).
-- **Click** an existing turret → show upgrade / sell options.
+- **Click** an existing turret → show upgrade / sell / repair options.
 - **Spacebar** or button → start next wave early (bonus credits).
 
 ---
@@ -121,7 +121,7 @@
 
 ## Visual Style
 
-- Top-down isometric-ish perspective (or pure top-down for simplicity).
+- Top-down perspective.
 - Alien desert / moon surface background.
 - Purple/pink bug sprites. Blue/white mechanical structures.
 - Particle effects for projectiles and bug deaths.
@@ -153,6 +153,7 @@
 | `bug_swarmer.png`    | 48×48   | Spritesheet, 4 frames walk cycle           |
 | `bug_brute.png`      | 80×80   | Larger sprite, 4 frames                    |
 | `bug_spitter.png`    | 56×56   | 4 frames + spit animation                 |
+| `bug_boss.png`       | 96×96   | Boss bug sprite, 4 frames                  |
 | `bullet.png`         | 16×16   | Blaster projectile                         |
 | `lightning.png`      | variable| Zapper beam (or draw with Phaser graphics) |
 | `spit.png`           | 16×16   | Spitter projectile                         |
@@ -182,13 +183,38 @@
 
 | Asset                | Notes                   |
 | -------------------- | ----------------------- |
-| `sfx_shoot.mp3`      | Blaster fire            |
-| `sfx_zap.mp3`        | Zapper chain            |
-| `sfx_splat.mp3`      | Bug death               |
-| `sfx_hit.mp3`        | Base takes damage       |
-| `sfx_wave_start.mp3` | Wave horn               |
-| `sfx_build.mp3`      | Place structure         |
-| `bgm_ambient.mp3`    | Looping background music|
+| `sfx_shoot.ogg`      | Blaster fire            |
+| `sfx_zap.ogg`        | Zapper chain            |
+| `sfx_splat.wav`      | Bug death               |
+| `sfx_hit.ogg`        | Base/turret/wall takes damage |
+| `sfx_wave_start.wav` | Wave horn               |
+| `sfx_build.ogg`      | Place structure         |
+| `sfx_select.ogg`     | Menu selection (upgrade/repair) |
+| `sfx_sell.ogg`       | Sell structure                  |
+| `sfx_core_destroyed.ogg` | Core destruction explosion             |
+| `sfx_victory.ogg`        | Victory jingle (all waves cleared)     |
+| `bgm_wave.ogg`       | Looping background music (all phases)          |
+
+### Audio Resources (CC0 — no attribution required)
+
+| Asset Needed | Source |
+| --- | --- |
+| `sfx_shoot` | [63 Digital Sound Effects — Kenney (lasers, phasers, zaps)](https://opengameart.org/content/63-digital-sound-effects-lasers-phasers-space-etc) |
+| `sfx_shoot` | [50 CC0 Retro/Synth SFX (shoot, laser, explosion)](https://opengameart.org/content/50-cc0-retro-synth-sfx) |
+| `sfx_shoot` | [Freesound: Retro Lasers — bubaproducer](https://freesound.org/people/bubaproducer/packs/9318/) |
+| `sfx_zap` | [63 Digital Sound Effects — Kenney (6 zap sounds)](https://opengameart.org/content/63-digital-sound-effects-lasers-phasers-space-etc) |
+| `sfx_zap` | [60 CC0 Sci-Fi SFX](https://opengameart.org/content/60-cc0-sci-fi-sfx) |
+| `sfx_splat` | [Fly Swatter Squish Sound (squish/splat combo)](https://opengameart.org/content/fly-swatter-squish-sound) |
+| `sfx_splat` | [2 Wooden Squish Splatter Sequences](https://opengameart.org/content/2-wooden-squish-splatter-sequences) |
+| `sfx_hit` | [50 CC0 Retro/Synth SFX (explosion/impact)](https://opengameart.org/content/50-cc0-retro-synth-sfx) |
+| `sfx_hit` | [Space Sound Effects (6 explosions)](https://opengameart.org/content/space-sound-effects) |
+| `sfx_wave_start` | [Sirens and Alarm Noise](https://opengameart.org/content/sirens-and-alarm-noise) |
+| `sfx_wave_start` | [30 CC0 SFX Loops (3 alarm sounds)](https://opengameart.org/content/30-cc0-sfx-loops) |
+| `sfx_build` | [Interface Sounds — Kenney (100 OGG files)](https://opengameart.org/content/interface-sounds) |
+| `sfx_build` | [51 UI Sound Effects (buttons, switches, clicks)](https://opengameart.org/content/51-ui-sound-effects-buttons-switches-and-clicks) |
+| `bgm_wave` | [Scifi City — Ambient Loop (seamless)](https://opengameart.org/content/scifi-city-ambient-loop) |
+| `bgm_wave` | [Ominous Sci-Fi Menu — Looping](https://opengameart.org/content/ominous-sci-fi-menu-looping) |
+| `bgm_wave` | [Ambience Pack 1 — Sci Fi Horror (5 loopable tracks)](https://opengameart.org/content/ambience-pack-1-sci-fi-horror) |
 
 ### Font
 

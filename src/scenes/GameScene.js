@@ -79,6 +79,7 @@ export class GameScene extends Phaser.Scene {
     this.scene.launch('UIScene');
 
     this.startBuildPhase();
+    this.sound.play('bgm_wave', { loop: true, volume: 0.5 });
 
     this.events.emit('credits-changed', { credits: this.economy.getCredits() });
     this.events.emit('hp-changed', { hp: this.baseHp, maxHp: GAME.baseHp });
@@ -162,6 +163,7 @@ export class GameScene extends Phaser.Scene {
     this.phase = 'wave';
     this.buildSystem.closeMenus();
     this.events.emit('phase-changed', { phase: 'wave' });
+    this.sound.play('sfx_wave_start');
     this.waveManager.startWave();
     this.showWaveAnnouncement(this.waveManager.getCurrentWave());
   }
@@ -198,6 +200,7 @@ export class GameScene extends Phaser.Scene {
     this.economy.earn(data.reward);
     this.totalKills++;
     this.waveManager.onBugDied();
+    this.sound.play('sfx_splat');
     this.showBugDeathEffect(data.x, data.y, data.type);
   }
 
@@ -252,6 +255,7 @@ export class GameScene extends Phaser.Scene {
     if (this.baseHp < 0) this.baseHp = 0;
 
     this.events.emit('hp-changed', { hp: this.baseHp, maxHp: GAME.baseHp });
+    this.sound.play('sfx_hit');
 
     if (this.coreSprite && this.coreSprite.active) {
       this.coreSprite.setTintFill(0xff4444);
@@ -278,6 +282,7 @@ export class GameScene extends Phaser.Scene {
     if (this.baseHp < 0) this.baseHp = 0;
 
     this.events.emit('hp-changed', { hp: this.baseHp, maxHp: GAME.baseHp });
+    this.sound.play('sfx_hit');
 
     if (this.coreSprite && this.coreSprite.active) {
       this.coreSprite.setTintFill(0xff4444);
@@ -301,6 +306,9 @@ export class GameScene extends Phaser.Scene {
   gameOver(won) {
     if (this.phase === 'gameover') return;
     this.phase = 'gameover';
+    this.sound.stopByKey('bgm_wave');
+    if (won) this.sound.play('sfx_victory');
+    else this.sound.play('sfx_core_destroyed');
 
     this.scene.stop('UIScene');
     this.scene.start('GameOver', {

@@ -57,6 +57,18 @@ export class BootScene extends Phaser.Scene {
     this.load.image('core', 'assets/environment/core.png');
     this.load.image('background', 'assets/environment/background.jpg');
     this.load.image('tile', 'assets/environment/tile.png');
+
+    this.load.audio('sfx_wave_start', 'assets/audio/sfx_wave_start.wav');
+    this.load.audio('sfx_shoot', 'assets/audio/sfx_shoot.ogg');
+    this.load.audio('sfx_splat', 'assets/audio/sfx_splat.wav');
+    this.load.audio('sfx_build', 'assets/audio/sfx_build.ogg');
+    this.load.audio('sfx_select', 'assets/audio/sfx_select.ogg');
+    this.load.audio('sfx_sell', 'assets/audio/sfx_sell.ogg');
+    this.load.audio('sfx_hit', 'assets/audio/sfx_hit.ogg');
+    this.load.audio('sfx_zap', 'assets/audio/sfx_zap.ogg');
+    this.load.audio('sfx_core_destroyed', 'assets/audio/sfx_core_destroyed.ogg');
+    this.load.audio('sfx_victory', 'assets/audio/sfx_victory.ogg');
+    this.load.audio('bgm_wave', 'assets/audio/bgm_wave.ogg');
   }
 
   create() {
