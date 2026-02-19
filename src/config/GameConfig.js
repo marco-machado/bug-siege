@@ -115,6 +115,12 @@ export const DEBUG = Object.freeze({
   enableDebugKeys: import.meta.env.VITE_DEBUG_KEYS === 'true',
 });
 
+export const STEERING = Object.freeze({
+  avoidanceLookahead: 80,
+  avoidanceClearance: 48,
+  avoidanceWeight: 0.7,
+});
+
 export const GAME = Object.freeze({
   canvasWidth: 1920,
   canvasHeight: 1080,

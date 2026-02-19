@@ -14,7 +14,7 @@ No test framework or linter is configured yet.
 
 ## Architecture
 
-**Bug Siege** is a top-down tower defense game built with Phaser 3 and Vite. Fixed 800x600 canvas, Arcade physics, 10-wave session (~10 min). All textures are generated at runtime in BootScene (no external image assets).
+**Bug Siege** is a top-down tower defense game built with Phaser 3 and Vite. Fixed 1920×1080 canvas, Arcade physics, 10-wave session (~10 min). All textures are generated at runtime in BootScene (no external image assets).
 
 ### Scene Flow
 

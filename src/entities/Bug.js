@@ -1,5 +1,5 @@
 import Phaser from 'phaser';
-import { BUGS } from '../config/GameConfig.js';
+import { BUGS, STEERING } from '../config/GameConfig.js';
 
 export class Bug extends Phaser.Physics.Arcade.Sprite {
   constructor(scene, x, y) {
@@ -52,12 +52,89 @@ export class Bug extends Phaser.Physics.Arcade.Sprite {
 
     if (dist < 1) return;
 
-    this.setVelocity(
-      (dx / dist) * speed,
-      (dy / dist) * speed,
-    );
+    let dirX = dx / dist;
+    let dirY = dy / dist;
 
+    const blocker = this.getAvoidanceTarget(dirX, dirY);
+    if (blocker) {
+      const bx = blocker.sprite.x - this.x;
+      const by = blocker.sprite.y - this.y;
+      const cross = dirX * by - dirY * bx;
+      let perpX, perpY;
+      if (cross >= 0) {
+        perpX = dirY;
+        perpY = -dirX;
+      } else {
+        perpX = -dirY;
+        perpY = dirX;
+      }
+      const w = STEERING.avoidanceWeight;
+      dirX = dirX * (1 - w) + perpX * w;
+      dirY = dirY * (1 - w) + perpY * w;
+      const len = Math.sqrt(dirX * dirX + dirY * dirY);
+      dirX /= len;
+      dirY /= len;
+    }
+
+    this.setVelocity(dirX * speed, dirY * speed);
+    this.setRotation(Math.atan2(dirY, dirX) + Math.PI / 2);
+  }
+
+  steerSwarmer() {
+    if (!this.active || !this.corePos) return;
+
+    const speed = this.slowed ? this.baseSpeed * 0.5 : this.baseSpeed;
+    let targetX = this.corePos.x;
+    let targetY = this.corePos.y;
+
+    if (this.scene && this.scene.turrets) {
+      let nearestDist = Infinity;
+      for (const turret of this.scene.turrets) {
+        if (!turret.sprite || !turret.sprite.active) continue;
+        const d = Phaser.Math.Distance.Between(this.x, this.y, turret.sprite.x, turret.sprite.y);
+        if (d < nearestDist) {
+          nearestDist = d;
+          targetX = turret.sprite.x;
+          targetY = turret.sprite.y;
+        }
+      }
+      const distToCore = Phaser.Math.Distance.Between(this.x, this.y, this.corePos.x, this.corePos.y);
+      if (distToCore < nearestDist) {
+        targetX = this.corePos.x;
+        targetY = this.corePos.y;
+      }
+    }
+
+    const dx = targetX - this.x;
+    const dy = targetY - this.y;
+    const dist = Math.sqrt(dx * dx + dy * dy);
+
+    if (dist < 1) return;
+
+    this.setVelocity((dx / dist) * speed, (dy / dist) * speed);
     this.setRotation(Math.atan2(dy, dx) + Math.PI / 2);
+  }
+
+  getAvoidanceTarget(dirX, dirY) {
+    if (!this.scene || !this.scene.turrets) return null;
+
+    let nearest = null;
+    let nearestProj = Infinity;
+
+    for (const turret of this.scene.turrets) {
+      if (!turret.sprite || !turret.sprite.active) continue;
+      const rx = turret.sprite.x - this.x;
+      const ry = turret.sprite.y - this.y;
+      const proj = rx * dirX + ry * dirY;
+      if (proj < 0 || proj > STEERING.avoidanceLookahead) continue;
+      const perpDist = Math.abs(rx * dirY - ry * dirX);
+      if (perpDist < STEERING.avoidanceClearance && proj < nearestProj) {
+        nearestProj = proj;
+        nearest = turret;
+      }
+    }
+
+    return nearest;
   }
 
   takeDamage(amount) {
@@ -167,6 +244,8 @@ export class Bug extends Phaser.Physics.Arcade.Sprite {
 
     if (this.bugType === 'spitter') {
       this.updateSpitter(delta);
+    } else if (this.bugType === 'swarmer') {
+      this.steerSwarmer();
     } else {
       this.steer();
     }
