@@ -115,9 +115,8 @@ export const DEBUG = Object.freeze({
 });
 
 export const STEERING = Object.freeze({
-  avoidanceLookahead: 80,
-  avoidanceClearance: 48,
-  avoidanceWeight: 0.7,
+  avoidanceRadius: 120,
+  repulsionStrength: 3.0,
 });
 
 export const GAME = Object.freeze({
