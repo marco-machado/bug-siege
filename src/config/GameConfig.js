@@ -107,6 +107,7 @@ export const ECONOMY = Object.freeze({
   waveBonusBase: 50,
   waveBonusPerWave: 10,
   sellReturnRate: 0.5,
+  repairCostMarkup: 1.3,
   earlyStartBonus: 25,
 });
 

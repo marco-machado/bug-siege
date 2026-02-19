@@ -313,7 +313,7 @@ export class GameScene extends Phaser.Scene {
   }
 
   showBugDeathEffect(x, y, type) {
-    const colors = { swarmer: 0x44ff44, brute: 0xff4444, spitter: 0xaa44ff, boss: 0x9900ff };
+    const colors = { swarmer: 0x44ff44, brute: 0xff4444, spitter: 0xff8844, boss: 0x9900ff };
     const color = colors[type] || 0xffffff;
     const count = type === 'boss' ? 12 : 6;
 
