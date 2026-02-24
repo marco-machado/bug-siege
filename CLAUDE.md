@@ -8,6 +8,8 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 npm run dev       # Start Vite dev server (localhost:5173)
 npm run build     # Production build → dist/
 npm run preview   # Preview production build
+
+VITE_DEBUG_KEYS=true npm run dev  # Dev server with debug keys enabled
 ```
 
 No test framework or linter is configured yet.

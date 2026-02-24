@@ -286,7 +286,20 @@ export class BuildSystem {
 
     const turretHeaderHeight = 40;
     const lineHeight = 60;
-    const menuWidth = 340;
+    const padding = 32;
+    let menuWidth = 340;
+
+    items.forEach(item => {
+      const m = this.scene.add.text(0, 0, item.label, { fontSize: '26px', fontFamily: 'monospace' });
+      menuWidth = Math.max(menuWidth, m.width + padding);
+      m.destroy();
+      if (item.desc) {
+        const d = this.scene.add.text(0, 0, item.desc, { fontSize: '20px', fontFamily: 'monospace' });
+        menuWidth = Math.max(menuWidth, d.width + padding);
+        d.destroy();
+      }
+    });
+
     const menuHeight = turretHeaderHeight + items.length * lineHeight + 20;
 
     const pos = this.clampMenuPosition(world.x, world.y, menuWidth, menuHeight);
