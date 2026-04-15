@@ -3,7 +3,7 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: executing
-last_updated: "2026-04-15T21:24:47.697Z"
+last_updated: "2026-04-15T21:28:49.529Z"
 progress:
   total_phases: 6
   completed_phases: 0
@@ -55,10 +55,9 @@ progress:
 | Particle count | <300 total | Unknown | Not measured |
 | Memory leaks | 0 | Unknown | Not measured |
 | Phase 01 P01 | 180 | 2 tasks | 2 files |
+| Phase 01 P02 | 15 | 2 tasks | 2 files |
 
-## Accumulated Context
-
-### Key Decisions
+## Decisions
 
 | Decision | Rationale | Status |
 |----------|-----------|--------|
@@ -68,6 +67,10 @@ progress:
 | Both screen shake and particle effects | Maximum juice — the game should feel impactful on every hit | Pending |
 | Void Ethereal Palette | Established foundation for consistent cosmic atmospheric coloring | Completed |
 | Bug Tween Safety Net | Prevented orphaned tweens on pooled entities to avoid visual corruption | Completed |
+
+- [Phase 01]: Used dynamic canvas for procedural nebula generation to ensure theme alignment and avoid large assets
+
+## Accumulated Context
 
 ### Todos
 
@@ -98,7 +101,7 @@ From research/SUMMARY.md:
 
 ## Session Continuity
 
-**Last session:** 2026-04-15T21:24:15.961Z
+**Last session:** 2026-04-15T21:28:24.027Z
 **Next session:** Plan Phase 1
 
 **Context to preserve:**

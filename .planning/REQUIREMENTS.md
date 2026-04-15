@@ -8,7 +8,7 @@
 ### Theme & Visual Foundation
 
 - [x] **THEME-01**: Add frozen THEME config object to GameConfig.js with cosmic nebula color palette (deep purples, blues, accent colors for bugs/turrets/UI)
-- [ ] **THEME-02**: Generate procedural nebula background texture in BootScene (replacing background.jpg) using Graphics gradients and noise
+- [x] **THEME-02**: Generate procedural nebula background texture in BootScene (replacing background.jpg) using Graphics gradients and noise
 - [ ] **THEME-03**: Migrate all hardcoded color values across 6+ files to reference THEME config constants
 - [ ] **THEME-04**: Add post-FX glow/bloom on turrets and core (WebGL only, graceful degradation on Canvas)
 - [ ] **THEME-05**: Add vignette camera effect for atmospheric framing
@@ -72,7 +72,7 @@
 | Requirement | Phase | Status |
 |-------------|-------|--------|
 | THEME-01 | Phase 1: Cosmic Foundation | Complete |
-| THEME-02 | Phase 1: Cosmic Foundation | Pending |
+| THEME-02 | Phase 1: Cosmic Foundation | Complete |
 | ANIM-05 | Phase 1: Cosmic Foundation | Complete |
 | ANIM-01 | Phase 2: Living Entities | Pending |
 | ANIM-02 | Phase 2: Living Entities | Pending |
