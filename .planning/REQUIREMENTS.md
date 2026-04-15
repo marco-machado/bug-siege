@@ -71,31 +71,31 @@
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| THEME-01 | Phase 1 | Pending |
-| THEME-02 | Phase 1 | Pending |
-| THEME-03 | Phase 1 | Pending |
-| THEME-04 | Phase 1 | Pending |
-| THEME-05 | Phase 1 | Pending |
-| ANIM-01 | Phase 2 | Pending |
-| ANIM-02 | Phase 2 | Pending |
-| ANIM-03 | Phase 2 | Pending |
-| ANIM-04 | Phase 2 | Pending |
-| ANIM-05 | Phase 2 | Pending |
-| VFX-01 | Phase 3 | Pending |
-| VFX-02 | Phase 3 | Pending |
-| VFX-03 | Phase 3 | Pending |
-| VFX-04 | Phase 3 | Pending |
-| VFX-05 | Phase 3 | Pending |
-| VFX-06 | Phase 3 | Pending |
-| VFX-07 | Phase 3 | Pending |
-| SHAKE-01 | Phase 4 | Pending |
-| SHAKE-02 | Phase 4 | Pending |
-| SHAKE-03 | Phase 4 | Pending |
-| SHAKE-04 | Phase 4 | Pending |
-| AUDIO-01 | Phase 5 | Pending |
-| AUDIO-02 | Phase 5 | Pending |
-| AUDIO-03 | Phase 5 | Pending |
-| AUDIO-04 | Phase 5 | Pending |
+| THEME-01 | Phase 1: Cosmic Foundation | Pending |
+| THEME-02 | Phase 1: Cosmic Foundation | Pending |
+| ANIM-05 | Phase 1: Cosmic Foundation | Pending |
+| ANIM-01 | Phase 2: Living Entities | Pending |
+| ANIM-02 | Phase 2: Living Entities | Pending |
+| ANIM-03 | Phase 2: Living Entities | Pending |
+| ANIM-04 | Phase 2: Living Entities | Pending |
+| VFX-01 | Phase 3: Juicy Combat | Pending |
+| VFX-02 | Phase 3: Juicy Combat | Pending |
+| VFX-03 | Phase 3: Juicy Combat | Pending |
+| VFX-05 | Phase 3: Juicy Combat | Pending |
+| VFX-07 | Phase 3: Juicy Combat | Pending |
+| VFX-04 | Phase 4: Impactful Effects | Pending |
+| VFX-06 | Phase 4: Impactful Effects | Pending |
+| SHAKE-01 | Phase 4: Impactful Effects | Pending |
+| SHAKE-02 | Phase 4: Impactful Effects | Pending |
+| SHAKE-03 | Phase 4: Impactful Effects | Pending |
+| SHAKE-04 | Phase 4: Impactful Effects | Pending |
+| THEME-04 | Phase 5: Atmospheric Glow | Pending |
+| THEME-05 | Phase 5: Atmospheric Glow | Pending |
+| AUDIO-01 | Phase 6: Ethereal Audio | Pending |
+| AUDIO-02 | Phase 6: Ethereal Audio | Pending |
+| AUDIO-03 | Phase 6: Ethereal Audio | Pending |
+| AUDIO-04 | Phase 6: Ethereal Audio | Pending |
+| THEME-03 | Phase 7: Cohesive Theme | Pending |
 
 **Coverage:**
 - v1 requirements: 25 total
@@ -104,4 +104,4 @@
 
 ---
 *Requirements defined: 2026-04-15*
-*Last updated: 2026-04-15 after initial definition*
+*Last updated: 2026-04-15 after roadmap creation*
