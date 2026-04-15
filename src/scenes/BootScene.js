@@ -1,5 +1,5 @@
 import Phaser from 'phaser';
-import { BUGS, GRID, GAME } from '../config/GameConfig.js';
+import { BUGS, GRID, GAME, THEME } from '../config/GameConfig.js';
 
 export class BootScene extends Phaser.Scene {
   constructor() {
@@ -76,7 +76,37 @@ export class BootScene extends Phaser.Scene {
       this.generateFallback(key);
     }
 
+    this.generateNebula();
+
     this.scene.start('MainMenu');
+  }
+
+  generateNebula() {
+    const canvas = document.createElement('canvas');
+    canvas.width = GAME.canvasWidth;
+    canvas.height = GAME.canvasHeight;
+    const ctx = canvas.getContext('2d');
+
+    ctx.fillStyle = THEME.background;
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    const numClouds = 12 + Math.floor(Math.random() * 4);
+    for (let i = 0; i < numClouds; i++) {
+      const x = Math.random() * canvas.width;
+      const y = Math.random() * canvas.height;
+      const radius = 400 + Math.random() * 400;
+      const color = THEME.nebula[Math.floor(Math.random() * THEME.nebula.length)];
+      const opacity = 0.1 + Math.random() * 0.2;
+
+      const gradient = ctx.createRadialGradient(x, y, 0, x, y, radius);
+      gradient.addColorStop(0, `${color}${Math.floor(opacity * 255).toString(16).padStart(2, '0')}`);
+      gradient.addColorStop(1, 'transparent');
+
+      ctx.fillStyle = gradient;
+      ctx.fillRect(x - radius, y - radius, radius * 2, radius * 2);
+    }
+
+    this.textures.addCanvas('nebula', canvas);
   }
 
   generateFallback(key) {
