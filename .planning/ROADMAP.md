@@ -20,7 +20,7 @@
 
 **Plans:** 2 plans
 Plans:
-- [ ] 01-01-PLAN.md — Theme config and tween safety net
+- [x] 01-01-PLAN.md — Theme config and tween safety net
 - [ ] 01-02-PLAN.md — Procedural nebula background
 **UI hint:** yes
 
@@ -95,7 +95,7 @@ Plans:
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Cosmic Foundation | 0/0 | Not started | - |
+| 1. Cosmic Foundation | 1/2 | In Progress|  |
 | 2. Living Entities | 0/0 | Not started | - |
 | 3. Juicy Combat | 0/0 | Not started | - |
 | 4. Impactful Effects | 0/0 | Not started | - |

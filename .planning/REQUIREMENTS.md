@@ -7,7 +7,7 @@
 
 ### Theme & Visual Foundation
 
-- [ ] **THEME-01**: Add frozen THEME config object to GameConfig.js with cosmic nebula color palette (deep purples, blues, accent colors for bugs/turrets/UI)
+- [x] **THEME-01**: Add frozen THEME config object to GameConfig.js with cosmic nebula color palette (deep purples, blues, accent colors for bugs/turrets/UI)
 - [ ] **THEME-02**: Generate procedural nebula background texture in BootScene (replacing background.jpg) using Graphics gradients and noise
 - [ ] **THEME-03**: Migrate all hardcoded color values across 6+ files to reference THEME config constants
 - [ ] **THEME-04**: Add post-FX glow/bloom on turrets and core (WebGL only, graceful degradation on Canvas)
@@ -19,7 +19,7 @@
 - [ ] **ANIM-02**: Add breathing/pulse animation to command core sprite
 - [ ] **ANIM-03**: Add idle glow pulse on turrets, with brighter pulse for upgraded turrets
 - [ ] **ANIM-04**: Add bug type-specific animation signatures (swarmer jittery, brute heavy, spitter pulsing)
-- [ ] **ANIM-05**: Kill all orphaned tweens in Bug.despawn() to prevent visual corruption on pooled entity reuse
+- [x] **ANIM-05**: Kill all orphaned tweens in Bug.despawn() to prevent visual corruption on pooled entity reuse
 
 ### Particles & VFX
 
@@ -71,9 +71,9 @@
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| THEME-01 | Phase 1: Cosmic Foundation | Pending |
+| THEME-01 | Phase 1: Cosmic Foundation | Complete |
 | THEME-02 | Phase 1: Cosmic Foundation | Pending |
-| ANIM-05 | Phase 1: Cosmic Foundation | Pending |
+| ANIM-05 | Phase 1: Cosmic Foundation | Complete |
 | ANIM-01 | Phase 2: Living Entities | Pending |
 | ANIM-02 | Phase 2: Living Entities | Pending |
 | ANIM-03 | Phase 2: Living Entities | Pending |
