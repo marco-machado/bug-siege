@@ -18,15 +18,10 @@
 
 ## Phase Details
 
-### Phase 1: Cosmic Foundation
-**Goal:** Game has nebula background and won't break from tween corruption
-**Depends on:** Nothing (first phase)
-**Requirements:** THEME-01, THEME-02, ANIM-05
-**Success Criteria** (what must be TRUE):
-  1. Game loads with procedural nebula background (not solid color)
-  2. Bugs despawn cleanly without tween corruption (no orphaned tweens on respawn)
-  3. THEME config object exists in GameConfig.js and is frozen
-**Plans:** TBD
+**Plans:** 2 plans
+Plans:
+- [ ] 01-01-PLAN.md — Theme config and tween safety net
+- [ ] 01-02-PLAN.md — Procedural nebula background
 **UI hint:** yes
 
 ### Phase 2: Living Entities
