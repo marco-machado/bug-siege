@@ -166,6 +166,7 @@ export class Bug extends Phaser.Physics.Arcade.Sprite {
   }
 
   despawn() {
+    this.scene.tweens.killTweensOf(this);
     this.setActive(false);
     this.setVisible(false);
     this.body.enable = false;
