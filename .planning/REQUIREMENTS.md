@@ -15,10 +15,10 @@
 
 ### Procedural Animation
 
-- [ ] **ANIM-01**: Add wobble and squash-stretch movement animation to all bug types in Bug.preUpdate()
+- [x] **ANIM-01**: Add wobble and squash-stretch movement animation to all bug types in Bug.preUpdate()
 - [ ] **ANIM-02**: Add breathing/pulse animation to command core sprite
 - [ ] **ANIM-03**: Add idle glow pulse on turrets, with brighter pulse for upgraded turrets
-- [ ] **ANIM-04**: Add bug type-specific animation signatures (swarmer jittery, brute heavy, spitter pulsing)
+- [x] **ANIM-04**: Add bug type-specific animation signatures (swarmer jittery, brute heavy, spitter pulsing)
 - [x] **ANIM-05**: Kill all orphaned tweens in Bug.despawn() to prevent visual corruption on pooled entity reuse
 
 ### Particles & VFX
@@ -74,10 +74,10 @@
 | THEME-01 | Phase 1: Cosmic Foundation | Complete |
 | THEME-02 | Phase 1: Cosmic Foundation | Complete |
 | ANIM-05 | Phase 1: Cosmic Foundation | Complete |
-| ANIM-01 | Phase 2: Living Entities | Pending |
+| ANIM-01 | Phase 2: Living Entities | Complete |
 | ANIM-02 | Phase 2: Living Entities | Pending |
 | ANIM-03 | Phase 2: Living Entities | Pending |
-| ANIM-04 | Phase 2: Living Entities | Pending |
+| ANIM-04 | Phase 2: Living Entities | Complete |
 | VFX-01 | Phase 3: Juicy Combat | Pending |
 | VFX-02 | Phase 3: Juicy Combat | Pending |
 | VFX-03 | Phase 3: Juicy Combat | Pending |
