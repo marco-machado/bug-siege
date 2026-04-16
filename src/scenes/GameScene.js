@@ -59,7 +59,6 @@ export class GameScene extends Phaser.Scene {
     this.physics.add.overlap(this.bullets, this.bugs, this.onBulletHitBug, null, this);
     this.physics.add.overlap(this.spitterBullets, this.wallBodies, this.onSpitterBulletHitWall, null, this);
     this.physics.add.collider(this.bugs, this.wallBodies, this.onBugHitWall, null, this);
-    this.physics.add.overlap(this.bugs, this.wallBodies, this.onBugHitWall, null, this);
 
     this.coreZone = this.add.zone(
       this.grid.getCoreWorldPos().x,
