@@ -11,7 +11,7 @@ const config = {
   width: GAME.canvasWidth,
   height: GAME.canvasHeight,
   parent: 'game',
-  backgroundColor: '#1a1a2e',
+  backgroundColor: '#0a0a12',
   scale: {
     mode: Phaser.Scale.FIT,
     autoCenter: Phaser.Scale.CENTER_BOTH,

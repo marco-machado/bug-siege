@@ -130,7 +130,7 @@ export const GAME = Object.freeze({
 });
 
 export const THEME = Object.freeze({
-  background: '#05050a',
-  nebula: Object.freeze(['#2a1b3d', '#4b2c62', '#6a4c93']),
-  accent: '#e0e0ff',
+  background: '#0a0a12',
+  nebula: Object.freeze(['#2d1b4e', '#4b2c62', '#6a4c93']),
+  accent: '#eef2ff',
 });
