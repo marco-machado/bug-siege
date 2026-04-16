@@ -293,8 +293,8 @@ export class GameScene extends Phaser.Scene {
     return false;
   }
 
-  onSpitterBulletHitCore(_bullet, _core) {
-    const bullet = _bullet;
+  onSpitterBulletHitCore(obj1, obj2) {
+    const bullet = typeof obj1.despawn === 'function' ? obj1 : obj2;
     if (!bullet.active || this.phase === 'gameover') return;
     this.damageCore(bullet.damage);
     bullet.despawn();
