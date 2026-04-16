@@ -38,6 +38,10 @@ export class Bug extends Phaser.Physics.Arcade.Sprite {
 
     this.setTexture(`bug-${type}`);
     this.setDisplaySize(conf.size, conf.size);
+    this._baseScale = this.scaleX;
+    this._animPhase = Math.random() * Math.PI * 2;
+    this.scaleX = this._baseScale;
+    this.scaleY = this._baseScale;
     this.setPosition(x, y);
     this.setActive(true);
     this.setVisible(true);
@@ -244,6 +248,11 @@ export class Bug extends Phaser.Physics.Arcade.Sprite {
   preUpdate(time, delta) {
     super.preUpdate(time, delta);
     if (!this.active) return;
+
+    const anim = BUGS[this.bugType].anim;
+    const wobble = 1 + anim.amplitude * Math.sin(time * anim.frequency + this._animPhase);
+    this.scaleX = this._baseScale * wobble;
+    this.scaleY = this._baseScale / wobble;
 
     if (this.wallAttackCooldown > 0) this.wallAttackCooldown -= delta;
 
