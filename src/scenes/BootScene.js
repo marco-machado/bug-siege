@@ -77,6 +77,7 @@ export class BootScene extends Phaser.Scene {
     }
 
     this.generateNebula();
+    this.generateParticleTextures();
 
     this.scene.start('MainMenu');
   }
@@ -107,6 +108,14 @@ export class BootScene extends Phaser.Scene {
     }
 
     this.textures.addCanvas('nebula', canvas);
+  }
+
+  generateParticleTextures() {
+    const g = this.make.graphics({ add: false });
+    g.fillStyle(0xffffff, 1);
+    g.fillCircle(2, 2, 2);
+    g.generateTexture('particle', 4, 4);
+    g.destroy();
   }
 
   generateFallback(key) {
