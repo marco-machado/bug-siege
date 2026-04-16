@@ -369,6 +369,9 @@ export class Turret {
   }
 
   destroy() {
+    if (this.scene && this.scene.shakeCamera) {
+      this.scene.shakeCamera('medium');
+    }
     if (this.idleTween) {
       this.idleTween.destroy();
       this.idleTween = null;

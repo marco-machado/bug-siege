@@ -283,6 +283,9 @@ export class GameScene extends Phaser.Scene {
       : { x: GAME.canvasWidth / 2, y: GAME.canvasHeight / 2 };
     this.showCoreShockwave(coreCenter.x, coreCenter.y, amount);
 
+    const tier = amount >= 20 ? 'heavy' : amount >= 10 ? 'medium' : 'light';
+    this.shakeCamera(tier);
+
     if (this.baseHp <= 0) {
       this.gameOver(false);
       return true;
@@ -331,6 +334,13 @@ export class GameScene extends Phaser.Scene {
       this._sfxCooldowns[key] = now;
     }
     this.sound.play(key, config);
+  }
+
+  shakeCamera(tier) {
+    if (this.phase === 'gameover') return;
+    const cfg = VFX.SHAKE[tier];
+    if (!cfg) return;
+    this.cameras.main.shake(cfg.duration, cfg.intensity, true);
   }
 
   showBugDeathEffect(x, y, type) {

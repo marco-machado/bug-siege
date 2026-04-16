@@ -1,5 +1,5 @@
 import Phaser from 'phaser';
-import { BUGS, STEERING, TURRETS } from '../config/GameConfig.js';
+import { BUGS, STEERING, TURRETS, VFX } from '../config/GameConfig.js';
 
 export class Bug extends Phaser.Physics.Arcade.Sprite {
   constructor(scene, x, y) {
@@ -34,6 +34,7 @@ export class Bug extends Phaser.Physics.Arcade.Sprite {
     this.slowed = false;
     this.attackTimer = 0;
     this.wallAttackCooldown = 0;
+    this._lastBossShake = 0;
     this.corePos = corePos;
 
     this.setTexture(`bug-${type}`);
@@ -153,6 +154,14 @@ export class Bug extends Phaser.Physics.Arcade.Sprite {
     this.scene.time.delayedCall(80, () => {
       if (this.active) this.setAlpha(1);
     });
+
+    if (this.bugType === 'boss') {
+      const now = this.scene.time.now;
+      if (now - this._lastBossShake >= VFX.SHAKE.bossMicroCooldown) {
+        this._lastBossShake = now;
+        this.scene.shakeCamera('light');
+      }
+    }
 
     if (this.hp <= 0) {
       this.die();
