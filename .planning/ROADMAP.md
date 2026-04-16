@@ -100,7 +100,7 @@ Plans:
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Cosmic Foundation | 2/3 | Gap closure | 2026-04-15 |
-| 2. Living Entities | 2/2 | Complete   | 2026-04-16 |
+| 2. Living Entities | 2/2 | Complete    | 2026-04-16 |
 | 3. Juicy Combat | 0/0 | Not started | - |
 | 4. Impactful Effects | 0/0 | Not started | - |
 | 5. Atmospheric Glow | 0/0 | Not started | - |
