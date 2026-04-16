@@ -297,8 +297,8 @@ export class GameScene extends Phaser.Scene {
     bullet.despawn();
   }
 
-  onBugHitCore(_bug, _core) {
-    const bug = _bug;
+  onBugHitCore(obj1, obj2) {
+    const bug = typeof obj1.despawn === 'function' ? obj1 : obj2;
     if (!bug.active || this.phase === 'gameover') return;
     const gameEnded = this.damageCore(bug.coreDamage);
     this.waveManager.onBugDied();
