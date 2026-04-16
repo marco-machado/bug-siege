@@ -29,22 +29,20 @@ export class Turret {
 
     if (type === 'slowfield') {
       const cfg = VFX.SLOWFIELD;
-      this.auraEmitter = scene.add.particles(worldX, worldY, 'particle', {
-        speed: cfg.speed,
-        lifespan: cfg.lifespan,
-        scale: cfg.scale,
-        tint: cfg.tints,
-        alpha: cfg.alpha,
-        radial: true,
-        emitting: false,
-      });
-      this.pulseTimer = scene.time.addEvent({
-        delay: cfg.pulseInterval,
-        loop: true,
-        callback: () => {
-          if (this.auraEmitter && this.auraEmitter.active) {
-            this.auraEmitter.explode(cfg.particlesPerPulse);
-          }
+      this._auraColor = cfg.color;
+      this._auraAlphaMax = cfg.alphaMax;
+      this.auraRing = scene.add.graphics();
+      this.auraTween = scene.tweens.add({
+        targets: { progress: 0 },
+        progress: 1,
+        duration: cfg.pulseDuration,
+        repeat: -1,
+        onUpdate: (_tween, target) => {
+          this.auraRing.clear();
+          const radius = target.progress * this.range;
+          const alpha = (1 - target.progress) * this._auraAlphaMax;
+          this.auraRing.lineStyle(cfg.lineWidth, this._auraColor, alpha);
+          this.auraRing.strokeCircle(this.sprite.x, this.sprite.y, radius);
         },
       });
     }
@@ -306,19 +304,9 @@ export class Turret {
     }
     if (this.type === 'slowfield' && conf.upgradedRange) {
       this.range = conf.upgradedRange;
-      if (this.auraEmitter) {
-        const cfg = VFX.SLOWFIELD;
-        this.auraEmitter.destroy();
-        this.auraEmitter = this.scene.add.particles(this.sprite.x, this.sprite.y, 'particle', {
-          speed: cfg.upgradedSpeed,
-          lifespan: cfg.lifespan,
-          scale: cfg.scale,
-          tint: cfg.upgradedTints,
-          alpha: cfg.alpha,
-          radial: true,
-          emitting: false,
-        });
-      }
+      const cfg = VFX.SLOWFIELD;
+      this._auraColor = cfg.upgradedColor;
+      this._auraAlphaMax = cfg.upgradedAlphaMax;
     }
     if (this.type === 'wall' && conf.upgradedHp) {
       this.maxHp = conf.upgradedHp;
@@ -361,6 +349,9 @@ export class Turret {
     this.scene.playSfx('sfx_hit');
     this.hp -= amount;
     if (this.hp <= 0) {
+      if (this.scene && this.scene.shakeCamera) {
+        this.scene.shakeCamera('medium');
+      }
       this.destroy();
       return true;
     }
@@ -369,9 +360,6 @@ export class Turret {
   }
 
   destroy() {
-    if (this.scene && this.scene.shakeCamera) {
-      this.scene.shakeCamera('medium');
-    }
     if (this.idleTween) {
       this.idleTween.destroy();
       this.idleTween = null;
@@ -380,13 +368,13 @@ export class Turret {
     if (this.wallBody) {
       this.wallBody.destroy();
     }
-    if (this.auraEmitter) {
-      this.auraEmitter.destroy();
-      this.auraEmitter = null;
+    if (this.auraTween) {
+      this.auraTween.destroy();
+      this.auraTween = null;
     }
-    if (this.pulseTimer) {
-      this.pulseTimer.remove();
-      this.pulseTimer = null;
+    if (this.auraRing) {
+      this.auraRing.destroy();
+      this.auraRing = null;
     }
     if (this.hpBarBg) this.hpBarBg.destroy();
     if (this.hpBarFill) this.hpBarFill.destroy();
