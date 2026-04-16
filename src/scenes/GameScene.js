@@ -1,5 +1,5 @@
 import Phaser from 'phaser';
-import { GRID, GAME, ECONOMY, DEBUG } from '../config/GameConfig.js';
+import { GRID, GAME, ECONOMY, DEBUG, VFX } from '../config/GameConfig.js';
 import { Grid } from '../entities/Grid.js';
 import { Turret } from '../entities/Turret.js';
 import { Bug } from '../entities/Bug.js';
@@ -329,33 +329,39 @@ export class GameScene extends Phaser.Scene {
   }
 
   showBugDeathEffect(x, y, type) {
-    const colors = { swarmer: 0x44ff44, brute: 0xff4444, spitter: 0xff8844, boss: 0x9900ff };
-    const color = colors[type] || 0xffffff;
-    const count = type === 'boss' ? 12 : 6;
-
-    for (let i = 0; i < count; i++) {
-      const angle = (Math.PI * 2 * i) / count;
-      const particle = this.add.circle(x, y, 3, color, 1);
-      this.tweens.add({
-        targets: particle,
-        x: x + Math.cos(angle) * 30,
-        y: y + Math.sin(angle) * 30,
-        alpha: 0,
-        scale: 0.2,
-        duration: 300,
-        onComplete: () => particle.destroy(),
-      });
+    const cfg = VFX.DEATH[type] || VFX.DEATH.swarmer;
+    const emitterConfig = {
+      speed: cfg.speed,
+      lifespan: cfg.lifespan,
+      scale: cfg.scale,
+      maxParticles: cfg.count,
+      rotate: { min: 0, max: 360 },
+      emitting: false,
+    };
+    if (cfg.color) {
+      emitterConfig.color = cfg.color;
+    } else {
+      emitterConfig.tint = cfg.tint;
     }
+    const emitter = this.add.particles(x, y, 'particle', emitterConfig);
+    emitter.explode(cfg.count, x, y);
+    emitter.on('complete', () => emitter.destroy());
   }
 
   showBuildFlash(x, y) {
-    const flash = this.add.rectangle(x, y, GRID.tileSize, GRID.tileSize, 0x00ff88, 0.5);
-    this.tweens.add({
-      targets: flash,
-      alpha: 0,
-      duration: 300,
-      onComplete: () => flash.destroy(),
+    const cfg = VFX.BUILD;
+    const tint = cfg.tints[Math.floor(Math.random() * cfg.tints.length)];
+    const emitter = this.add.particles(x, y, 'particle', {
+      speed: cfg.speed,
+      lifespan: cfg.lifespan,
+      scale: cfg.scale,
+      tint: tint,
+      gravityY: cfg.gravityY,
+      maxParticles: cfg.count,
+      emitting: false,
     });
+    emitter.explode(cfg.count, x, y);
+    emitter.on('complete', () => emitter.destroy());
   }
 
   showWaveAnnouncement(waveNum) {
