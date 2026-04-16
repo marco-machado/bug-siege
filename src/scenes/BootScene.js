@@ -115,6 +115,12 @@ export class BootScene extends Phaser.Scene {
     g.fillStyle(0xffffff, 1);
     g.fillCircle(2, 2, 2);
     g.generateTexture('particle', 4, 4);
+    g.clear();
+    g.fillStyle(0xffffff, 0.6);
+    g.fillCircle(4, 4, 4);
+    g.fillStyle(0xffffff, 1);
+    g.fillCircle(4, 4, 2);
+    g.generateTexture('particle-glow', 8, 8);
     g.destroy();
   }
 
