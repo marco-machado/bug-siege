@@ -39,6 +39,17 @@ export class Turret {
       .setOrigin(0.5, 0.5).setVisible(false);
     this.hpBarFill = scene.add.rectangle(worldX, barY, barWidth, barHeight, 0x00ff00)
       .setOrigin(0.5, 0.5).setVisible(false);
+    this.idleTween = null;
+    if (type !== 'wall') {
+      this.idleTween = scene.tweens.add({
+        targets: this.sprite,
+        alpha: { from: 0.75, to: 1.0 },
+        duration: 1200,
+        ease: 'Sine.easeInOut',
+        yoyo: true,
+        repeat: -1,
+      });
+    }
   }
 
   update(_time, delta, bugs) {
@@ -257,6 +268,17 @@ export class Turret {
 
     this.hp = this.maxHp;
     this.updateHpBar();
+    if (this.idleTween) {
+      this.idleTween.destroy();
+      this.idleTween = this.scene.tweens.add({
+        targets: this.sprite,
+        alpha: { from: 0.65, to: 1.0 },
+        duration: 900,
+        ease: 'Sine.easeInOut',
+        yoyo: true,
+        repeat: -1,
+      });
+    }
     this.sprite.setTint(0xffdd44);
 
     return true;
@@ -289,6 +311,10 @@ export class Turret {
   }
 
   destroy() {
+    if (this.idleTween) {
+      this.idleTween.destroy();
+      this.idleTween = null;
+    }
     this.sprite.destroy();
     if (this.wallBody) {
       this.wallBody.destroy();
