@@ -28,8 +28,25 @@ export class Turret {
     this.wallBody.turretRef = this;
 
     if (type === 'slowfield') {
-      this.auraGraphics = scene.add.graphics();
-      this.drawAura();
+      const cfg = VFX.SLOWFIELD;
+      this.auraEmitter = scene.add.particles(worldX, worldY, 'particle', {
+        speed: cfg.speed,
+        lifespan: cfg.lifespan,
+        scale: cfg.scale,
+        tint: cfg.tints,
+        alpha: cfg.alpha,
+        radial: true,
+        emitting: false,
+      });
+      this.pulseTimer = scene.time.addEvent({
+        delay: cfg.pulseInterval,
+        loop: true,
+        callback: () => {
+          if (this.auraEmitter && this.auraEmitter.active) {
+            this.auraEmitter.explode(cfg.particlesPerPulse);
+          }
+        },
+      });
     }
 
     const barWidth = GRID.tileSize * 0.8;
@@ -208,7 +225,7 @@ export class Turret {
   showRange() {
     if (this.range === 0) return;
 
-    const colors = { blaster: 0xffaa44, zapper: 0xaa44ff, slowfield: 0x44ddff };
+    const colors = { blaster: 0xffaa44, zapper: 0xaa44ff, slowfield: 0x9966ff };
     const color = colors[this.type] || 0xffffff;
 
     const g = this.scene.add.graphics();
@@ -227,15 +244,6 @@ export class Turret {
       ],
       onComplete: () => g.destroy(),
     });
-  }
-
-  drawAura() {
-    if (!this.auraGraphics) return;
-    this.auraGraphics.clear();
-    this.auraGraphics.fillStyle(0x44ddff, 0.12);
-    this.auraGraphics.fillCircle(this.sprite.x, this.sprite.y, this.range);
-    this.auraGraphics.lineStyle(1, 0x44ddff, 0.3);
-    this.auraGraphics.strokeCircle(this.sprite.x, this.sprite.y, this.range);
   }
 
   showMuzzleFlash() {
@@ -264,7 +272,19 @@ export class Turret {
     }
     if (this.type === 'slowfield' && conf.upgradedRange) {
       this.range = conf.upgradedRange;
-      this.drawAura();
+      if (this.auraEmitter) {
+        const cfg = VFX.SLOWFIELD;
+        this.auraEmitter.destroy();
+        this.auraEmitter = this.scene.add.particles(this.sprite.x, this.sprite.y, 'particle', {
+          speed: cfg.upgradedSpeed,
+          lifespan: cfg.lifespan,
+          scale: cfg.scale,
+          tint: cfg.upgradedTints,
+          alpha: cfg.alpha,
+          radial: true,
+          emitting: false,
+        });
+      }
     }
     if (this.type === 'wall' && conf.upgradedHp) {
       this.maxHp = conf.upgradedHp;
@@ -323,8 +343,13 @@ export class Turret {
     if (this.wallBody) {
       this.wallBody.destroy();
     }
-    if (this.auraGraphics) {
-      this.auraGraphics.destroy();
+    if (this.auraEmitter) {
+      this.auraEmitter.destroy();
+      this.auraEmitter = null;
+    }
+    if (this.pulseTimer) {
+      this.pulseTimer.remove();
+      this.pulseTimer = null;
     }
     if (this.hpBarBg) this.hpBarBg.destroy();
     if (this.hpBarFill) this.hpBarFill.destroy();
