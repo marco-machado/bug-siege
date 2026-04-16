@@ -197,17 +197,51 @@ export class Turret {
 
   drawLightningChain(targets) {
     const g = this.scene.add.graphics();
-    g.lineStyle(2, 0xaa44ff, 1);
-
     const tip = this.getTipPosition();
+    const cfg = VFX.ZAPPER_TRAIL;
+
+    g.lineStyle(cfg.outerLineWidth, cfg.outerColor, cfg.outerAlpha);
     g.beginPath();
     g.moveTo(tip.x, tip.y);
-    for (const t of targets) {
-      g.lineTo(t.x, t.y);
-    }
+    for (const t of targets) g.lineTo(t.x, t.y);
     g.strokePath();
 
-    this.scene.time.delayedCall(200, () => g.destroy());
+    g.lineStyle(cfg.innerLineWidth, cfg.innerColor, cfg.innerAlpha);
+    g.beginPath();
+    g.moveTo(tip.x, tip.y);
+    for (const t of targets) g.lineTo(t.x, t.y);
+    g.strokePath();
+
+    this.scene.time.delayedCall(cfg.lineDuration, () => g.destroy());
+
+    this.spawnTrailParticles(tip, targets);
+  }
+
+  spawnTrailParticles(tip, targets) {
+    const cfg = VFX.ZAPPER_TRAIL;
+    const emitter = this.scene.add.particles(0, 0, 'particle-glow', {
+      speed: { min: 5, max: 20 },
+      lifespan: cfg.trailLifespan,
+      scale: cfg.trailScale,
+      tint: cfg.trailTint,
+      alpha: cfg.trailAlpha,
+      emitting: false,
+    });
+
+    const points = [tip, ...targets];
+    for (let i = 0; i < points.length - 1; i++) {
+      const a = points[i];
+      const b = points[i + 1];
+      const steps = cfg.particlesPerSegment;
+      for (let s = 0; s <= steps; s++) {
+        const t = s / steps;
+        const x = a.x + (b.x - a.x) * t;
+        const y = a.y + (b.y - a.y) * t;
+        emitter.emitParticleAt(x, y, 1);
+      }
+    }
+
+    this.scene.time.delayedCall(cfg.trailLifespan + 50, () => emitter.destroy());
   }
 
   updateSlowfieldAura(bugs) {
