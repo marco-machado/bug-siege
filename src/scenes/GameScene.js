@@ -278,6 +278,11 @@ export class GameScene extends Phaser.Scene {
       });
     }
 
+    const coreCenter = this.coreSprite
+      ? { x: this.coreSprite.x, y: this.coreSprite.y }
+      : { x: GAME.canvasWidth / 2, y: GAME.canvasHeight / 2 };
+    this.showCoreShockwave(coreCenter.x, coreCenter.y, amount);
+
     if (this.baseHp <= 0) {
       this.gameOver(false);
       return true;
@@ -362,6 +367,32 @@ export class GameScene extends Phaser.Scene {
     });
     emitter.explode(cfg.count, x, y);
     emitter.on('complete', () => emitter.destroy());
+  }
+
+  showCoreShockwave(x, y, damageAmount) {
+    const cfg = VFX.SHOCKWAVE;
+    const ringCount = damageAmount >= 20 ? 2 : 1;
+
+    for (let i = 0; i < ringCount; i++) {
+      const ring = this.add.graphics();
+      const delay = i * 80;
+
+      this.time.delayedCall(delay, () => {
+        if (!ring.active) return;
+        ring.lineStyle(cfg.lineWidth, cfg.color, 1);
+        ring.strokeCircle(x, y, cfg.startRadius);
+
+        this.tweens.add({
+          targets: ring,
+          scaleX: cfg.endRadius / cfg.startRadius,
+          scaleY: cfg.endRadius / cfg.startRadius,
+          alpha: 0,
+          duration: cfg.duration,
+          ease: 'Power2',
+          onComplete: () => ring.destroy(),
+        });
+      });
+    }
   }
 
   showWaveAnnouncement(waveNum) {
