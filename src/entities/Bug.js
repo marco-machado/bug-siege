@@ -1,5 +1,5 @@
 import Phaser from 'phaser';
-import { BUGS, STEERING, TURRETS, VFX } from '../config/GameConfig.js';
+import { BUGS, GRID, STEERING, TURRETS, VFX } from '../config/GameConfig.js';
 
 export class Bug extends Phaser.Physics.Arcade.Sprite {
   constructor(scene, x, y) {
@@ -128,6 +128,12 @@ export class Bug extends Phaser.Physics.Arcade.Sprite {
 
     if (dist < 1) return;
 
+    if (target.isTurret && this.wallAttackCooldown > 0) {
+      this.setVelocity(0, 0);
+      this.setRotation(Math.atan2(dy, dx) + Math.PI / 2);
+      return;
+    }
+
     this.applyMovement(dx / dist, dy / dist, this.getSpeed());
   }
 
@@ -135,6 +141,7 @@ export class Bug extends Phaser.Physics.Arcade.Sprite {
     let nearestX = this.corePos.x;
     let nearestY = this.corePos.y;
     let nearestDist = Phaser.Math.Distance.Between(this.x, this.y, nearestX, nearestY);
+    let isTurret = false;
 
     for (const turret of this.activeTurrets()) {
       const d = Phaser.Math.Distance.Between(this.x, this.y, turret.sprite.x, turret.sprite.y);
@@ -142,10 +149,11 @@ export class Bug extends Phaser.Physics.Arcade.Sprite {
         nearestDist = d;
         nearestX = turret.sprite.x;
         nearestY = turret.sprite.y;
+        isTurret = true;
       }
     }
 
-    return { x: nearestX, y: nearestY };
+    return { x: nearestX, y: nearestY, isTurret };
   }
 
   takeDamage(amount) {
