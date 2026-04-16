@@ -135,44 +135,41 @@ VFX: {
 
 ### Pattern 1: Persistent Emitter with Periodic Bursts (Slowfield Aura)
 
-**What:** Create a particle emitter on turret construction that lives until turret destruction. Use `scene.time.addEvent()` with `loop: true` to call `emitter.explode(count)` at pulse intervals. The emitter itself has `emitting: false` (no auto-flow).
+**What:** Create a particle emitter at the turret center that lives until turret destruction. Particles radiate outward in all directions with speed tuned so they travel approximately `this.range` pixels during their lifespan -- creating the "sonar ping" expanding ring effect (D-01). Use `scene.time.addEvent()` with `loop: true` to call `emitter.explode(count)` at pulse intervals. The emitter has `emitting: false` (no auto-flow).
 
 **When to use:** Any repeating particle effect tied to a game object's lifetime.
+
+**Key math:** For a range of 128px and lifespan of 350ms, particles need speed ~365 px/s (`range / (lifespan / 1000)`). This makes particles reach the range edge just as they fade out, creating the expanding ring visual.
 
 **Example:**
 ```javascript
 // Source: Phaser 3 ParticleEmitter API [VERIFIED: Context7 /rexrainbow/phaser3-rex-notes particles.md]
 
 // In Turret constructor (when type === 'slowfield'):
+const cfg = VFX.SLOWFIELD;
 this.auraEmitter = scene.add.particles(worldX, worldY, 'particle', {
-  speed: { min: 30, max: 60 },
-  lifespan: 350,
-  scale: { start: 0.6, end: 0.1 },
-  tint: [0x6a4c93, 0x9966ff],
-  alpha: { start: 0.7, end: 0 },
-  emitting: false,       // no auto-flow -- we control via timer
-  maxParticles: 0,       // unlimited (we control count via explode)
+  speed: cfg.speed,          // { min: 300, max: 400 } -- tuned to reach range edge
+  lifespan: cfg.lifespan,    // 350ms
+  scale: cfg.scale,          // { start: 0.6, end: 0.1 }
+  tint: cfg.tints,           // [0x6a4c93, 0x9966ff]
+  alpha: cfg.alpha,          // { start: 0.7, end: 0 }
+  radial: true,              // emit in all directions (360 degrees)
+  emitting: false,           // no auto-flow -- we control via timer
 });
 
-// Emit zone: circle at turret range radius
-this.auraEmitter.addEmitZone({
-  type: 'edge',
-  source: new Phaser.Geom.Circle(0, 0, this.range),
-  quantity: 8,
-  yoyo: false,
-});
-
-// Pulse timer
+// Pulse timer -- periodic sonar pings
 this.pulseTimer = scene.time.addEvent({
-  delay: 800,            // pulse interval
+  delay: cfg.pulseInterval,  // 800ms between pings
   loop: true,
   callback: () => {
     if (this.auraEmitter && this.auraEmitter.active) {
-      this.auraEmitter.explode(8);
+      this.auraEmitter.explode(cfg.particlesPerPulse);
     }
   },
 });
 ```
+
+**Why NOT an edge emit zone:** D-01 says "particles that expand outward from the turret center to the edge of the range, like sonar pings." An edge emit zone would spawn particles ON the perimeter (the visual opposite). Instead, emit from center with `radial: true` and tune speed so particles travel to the range edge during their lifespan.
 
 **Cleanup in destroy():**
 ```javascript
@@ -186,6 +183,8 @@ if (this.pulseTimer) {
 }
 ```
 
+**Upgrade handling:** When slowfield upgrades (range 128->160), recalculate speed to match new range: `newSpeed = newRange / (lifespan / 1000)`. Also swap tints to upgraded palette per D-03.
+
 ### Pattern 2: Multi-Stroke Graphics for Glow Line (Zapper Trail)
 
 **What:** Layer two Graphics strokes -- a wide translucent outer stroke for glow, and a narrow bright inner stroke for the core line. This creates a glow appearance without WebGL post-FX.
@@ -198,22 +197,23 @@ if (this.pulseTimer) {
 drawLightningChain(targets) {
   const g = this.scene.add.graphics();
   const tip = this.getTipPosition();
+  const cfg = VFX.ZAPPER_TRAIL;
 
   // Outer glow: wide, translucent purple
-  g.lineStyle(6, 0x9966ff, 0.4);
+  g.lineStyle(cfg.outerLineWidth, cfg.outerColor, cfg.outerAlpha);
   g.beginPath();
   g.moveTo(tip.x, tip.y);
   for (const t of targets) g.lineTo(t.x, t.y);
   g.strokePath();
 
   // Inner core: narrow, bright white
-  g.lineStyle(2, 0xeef2ff, 1);
+  g.lineStyle(cfg.innerLineWidth, cfg.innerColor, cfg.innerAlpha);
   g.beginPath();
   g.moveTo(tip.x, tip.y);
   for (const t of targets) g.lineTo(t.x, t.y);
   g.strokePath();
 
-  this.scene.time.delayedCall(200, () => g.destroy());
+  this.scene.time.delayedCall(cfg.lineDuration, () => g.destroy());
 
   // Trail particles along chain
   this.spawnTrailParticles(tip, targets);
@@ -226,6 +226,8 @@ drawLightningChain(targets) {
 
 **When to use:** Spawning particles along a dynamic path that changes each time.
 
+**Cleanup strategy:** Use `scene.time.delayedCall(lifespan + buffer, () => emitter.destroy())` rather than `emitter.on('complete', ...)`. The `'complete'` event may not fire on an emitter that was never "started" (it has `emitting: false` and particles are spawned via manual `emitParticleAt()` calls). The delayed-call cleanup pattern matches the existing `drawLightningChain` Graphics cleanup approach.
+
 **Example:**
 ```javascript
 // Source: Phaser emitParticleAt API [VERIFIED: Context7 /rexrainbow/phaser3-rex-notes particles.md]
@@ -234,9 +236,9 @@ spawnTrailParticles(tip, targets) {
   const emitter = this.scene.add.particles(0, 0, 'particle', {
     speed: { min: 5, max: 20 },
     lifespan: cfg.trailLifespan,
-    scale: { start: 0.5, end: 0.1 },
+    scale: cfg.trailScale,
     tint: cfg.trailTint,
-    alpha: { start: 0.8, end: 0 },
+    alpha: cfg.trailAlpha,
     emitting: false,
   });
 
@@ -253,7 +255,8 @@ spawnTrailParticles(tip, targets) {
     }
   }
 
-  emitter.on('complete', () => emitter.destroy());
+  // Cleanup via delayed call -- 'complete' event may not fire on manually-emitted particles
+  this.scene.time.delayedCall(cfg.trailLifespan + 50, () => emitter.destroy());
 }
 ```
 
@@ -285,8 +288,10 @@ if (this.bugType === 'boss') {
 ### Anti-Patterns to Avoid
 - **Leaked persistent emitters:** Failing to destroy the slowfield emitter and its pulse timer in `Turret.destroy()` will burn particle budget on invisible turrets. Every persistent resource MUST have a cleanup path.
 - **Flow emitter for pulse waves:** Using `frequency > 0` produces a steady drip, not the sonar-ping bursts D-01 specifies. Use `emitting: false` + timer-driven `explode()`.
+- **Edge emit zone for sonar pings:** An edge emit zone spawns particles ON the perimeter. D-01 wants particles expanding FROM center TO edge. Use `radial: true` at center with speed tuned to reach range edge.
 - **WebGL glow FX for lines:** `preFX.addGlow()` is Phase 5 scope (THEME-04) and WebGL-only. Use layered Graphics strokes (wide translucent + narrow bright) for the zapper glow line.
 - **Emit zone for dynamic chain paths:** The zapper chain changes every fire -- emit zones are for fixed geometries. Use `emitParticleAt()` with interpolated positions instead.
+- **`'complete'` event on manually-emitted particles:** An emitter with `emitting: false` that only uses `emitParticleAt()` may not fire the `'complete'` event. Use `scene.time.delayedCall()` for cleanup instead.
 - **Direct shake on UIScene camera:** Only shake `GameScene.cameras.main`. UIScene's camera must remain static (SHAKE-04).
 
 ## Don't Hand-Roll
@@ -296,7 +301,7 @@ if (this.bugType === 'boss') {
 | Camera shake | Custom position offset + recovery tween | `camera.shake(duration, intensity, true)` | Built-in handles timing, easing, and force-replace. Tested across Phaser versions. |
 | Shake interruption/stacking | Custom shake queue/state machine | `force: true` parameter on `camera.shake()` | Native "latest wins" behavior matches D-08 exactly. |
 | Particle burst timing | `setInterval` or manual delta accumulation | `scene.time.addEvent({ loop: true })` | Phaser's time events pause with the scene, avoid orphaned intervals. |
-| Pulse particle emission | Custom particle positioning loop | `emitter.explode(count)` with emit zone | Emit zone handles positioning; explode handles burst count. |
+| Glow line rendering | Canvas shadow blur or WebGL shader | Layered Graphics strokes (wide translucent + narrow bright) | Works on both Canvas and WebGL renderers. Simple, no shader dependency. |
 
 **Key insight:** Phaser's camera shake API with `force: true` gives the exact "latest wins" behavior D-08 requires. No custom shake system needed.
 
@@ -310,15 +315,15 @@ if (this.bugType === 'boss') {
 
 ### Pitfall 2: Missing 'particle-glow' Texture
 **What goes wrong:** Code references a `'particle-glow'` texture key that doesn't exist, causing Phaser to throw or render incorrectly.
-**Why it happens:** CONTEXT.md mentions 'particle-glow' as a "potential use" but `BootScene.generateParticleTextures()` only creates the `'particle'` texture (4px solid white circle). The glow texture was never generated.
+**Why it happens:** CONTEXT.md mentions 'particle-glow' as a "potential use" but `BootScene.generateParticleTextures()` only creates the `'particle'` texture (4px solid white circle). The glow texture was never generated. [VERIFIED: grep for 'particle-glow' returns zero results in src/]
 **How to avoid:** Either: (a) generate the 'particle-glow' texture in BootScene if the zapper trail needs it, or (b) use only the existing 'particle' texture with alpha/scale fade for the soft glow effect. Recommendation: generate it for richer visuals -- it's a simple addition to `generateParticleTextures()`.
 **Warning signs:** Console error about missing texture key at runtime.
 
-### Pitfall 3: Slowfield Emitter Not Updating on Upgrade
-**What goes wrong:** Upgraded slowfield (range 128->160) still shows particles at old radius because the emit zone was configured at construction time.
-**Why it happens:** The emit zone circle uses the original `this.range` value. After upgrade, range changes but the emit zone's circle radius doesn't.
-**How to avoid:** In `Turret.upgrade()`, when `type === 'slowfield'`, destroy old emit zones and add a new one with updated range. Also update tint for visual distinction per D-03.
-**Warning signs:** Particle ring doesn't expand to match the new (larger) range indicator.
+### Pitfall 3: Slowfield Emitter Speed Not Matching Range on Upgrade
+**What goes wrong:** Upgraded slowfield (range 128->160) still shows particles fading at the old radius because speed was calculated for the original range.
+**Why it happens:** Particle speed is set at construction time based on `this.range`. After upgrade, range increases but particle speed doesn't, so particles fade out before reaching the new range edge.
+**How to avoid:** In `Turret.upgrade()`, when `type === 'slowfield'`, recalculate and set `emitter.speed` to match new range. Also update tint for visual distinction per D-03. Formula: `speed = newRange / (lifespan / 1000)`.
+**Warning signs:** Particle ring stops short of the actual slow effect radius after upgrade.
 
 ### Pitfall 4: Boss Micro-Shake Without Cooldown State Initialization
 **What goes wrong:** First `Bug.takeDamage()` call on a boss works, but `_lastBossShake` is undefined causing unexpected behavior on the comparison.
@@ -331,6 +336,12 @@ if (this.bugType === 'boss') {
 **Why it happens:** `damageCore()` sets `this.phase = 'gameover'` but shake has already been queued or `Bug.takeDamage()` fires after game-over.
 **How to avoid:** Guard shake calls with `if (this.phase !== 'gameover')` or `if (this.scene.phase !== 'gameover')`.
 **Warning signs:** Screen shakes during GameOver scene fade or after game result display.
+
+### Pitfall 6: Trail Emitter Cleanup via 'complete' Event
+**What goes wrong:** Zapper trail emitter never gets destroyed, leaking a game object per zapper fire.
+**Why it happens:** An emitter with `emitting: false` that only uses `emitParticleAt()` may not dispatch the `'complete'` event since it was never formally "started."
+**How to avoid:** Use `scene.time.delayedCall(trailLifespan + 50, () => emitter.destroy())` for cleanup. This mirrors the existing `drawLightningChain` Graphics cleanup pattern.
+**Warning signs:** Game objects count grows steadily during gameplay; memory usage climbs.
 
 ## Code Examples
 
@@ -345,11 +356,12 @@ export const VFX = Object.freeze({
     pulseInterval: 800,        // ms between sonar pings
     particlesPerPulse: 8,      // particles per burst
     lifespan: 350,             // particle life in ms
-    speed: { min: 30, max: 60 },
+    speed: { min: 300, max: 400 },  // tuned for range 128px: 128/(350/1000) ~ 365
     scale: { start: 0.6, end: 0.1 },
     tints: [0x6a4c93, 0x9966ff],
     alpha: { start: 0.7, end: 0 },
     upgradedTints: [0x9966ff, 0xcc99ff],  // brighter for upgraded
+    upgradedSpeed: { min: 380, max: 480 }, // tuned for range 160px: 160/(350/1000) ~ 457
   }),
 
   ZAPPER_TRAIL: Object.freeze({
@@ -442,22 +454,22 @@ Peak of ~123 particles is well within the <300 budget. Even with worst-case over
 
 | # | Claim | Section | Risk if Wrong |
 |---|-------|---------|---------------|
-| A1 | `emitter.explode()` works correctly with an edge-type emit zone (particles spawn on circle edge, not center) | Pattern 1 | Particles would cluster at center instead of radiating from range edge. Fallback: use random zone with circle geometry. |
+| A1 | `emitter.explode()` with `radial: true` produces an even 360-degree burst from center | Pattern 1 | Particles might cluster or have directional bias. Fallback: use `angle: { min: 0, max: 360 }` explicitly. |
 | A2 | `emitter.emitParticleAt(x, y, 1)` on an emitter with `emitting: false` correctly spawns a single particle at the given position | Pattern 3 | Trail particles would not appear. Fallback: create individual one-shot emitters per position. |
 | A3 | `camera.shake()` with `force: true` cleanly interrupts an in-progress shake without visual glitch | Pattern 4 | Shake might snap abruptly. Mitigation: test in browser, tune if needed. |
 | A4 | Generating a soft-glow texture via layered `fillCircle()` with different alphas produces a usable glow effect | Code Examples | Texture might look flat. Fallback: use only 'particle' texture with alpha fade; visual difference is subtle. |
 
 ## Open Questions
 
-1. **Emit zone + explode() interaction**
-   - What we know: `emitter.addEmitZone()` configures where particles spawn. `explode()` triggers a burst.
-   - What's unclear: Whether `explode()` respects the emit zone's edge distribution or falls back to center-point emission.
-   - Recommendation: Test in browser on first implementation. If edge zone is not respected, use a custom emit callback that manually places particles on the circle circumference.
-
-2. **Turret destruction shake tier**
+1. **Turret destruction shake tier**
    - What we know: D-06 defines light/medium/heavy. SHAKE-02 says turret/wall destruction shakes camera.
    - What's unclear: Whether to use medium or heavy tier (left to Claude's discretion).
    - Recommendation: Use medium tier. Turret destruction is significant but not as impactful as boss hitting core. Heavy should be reserved for the most dramatic events.
+
+2. **Particle-glow texture usage scope**
+   - What we know: Only the 'particle' texture exists today. The zapper trail could benefit from a softer glow texture.
+   - What's unclear: Whether the visual improvement justifies a new texture vs. using the existing 'particle' with alpha fade.
+   - Recommendation: Generate 'particle-glow' in BootScene. The cost is ~5 lines of code. Use it for zapper trail, keep 'particle' for slowfield pulses. Allows visual differentiation between effects.
 
 ## Validation Architecture
 
@@ -490,8 +502,8 @@ Peak of ~123 particles is well within the <300 budget. Even with worst-case over
 - None -- no test infrastructure to create. Validation is build-check + visual inspection.
 
 ### Manual Verification Checklist
-1. Place 2-3 slowfield turrets. Observe purple pulse waves expanding outward rhythmically.
-2. Upgrade one slowfield. Observe larger radius + brighter tint distinction.
+1. Place 2-3 slowfield turrets. Observe purple pulse waves expanding outward from center rhythmically.
+2. Upgrade one slowfield. Observe larger radius + brighter tint distinction. Pulse ring should reach new range edge.
 3. Place a zapper near bug spawn. Observe wider glowing line + lingering trail particles on chain.
 4. Let a swarmer reach the core. Observe light shake.
 5. Let a brute reach the core. Observe medium shake (noticeably stronger).
@@ -515,18 +527,18 @@ Peak of ~123 particles is well within the <300 budget. Even with worst-case over
 ## Sources
 
 ### Primary (HIGH confidence)
-- Context7 `/rexrainbow/phaser3-rex-notes` -- camera shake API, particle emitter config, emit zones, Graphics lineStyle
+- Context7 `/rexrainbow/phaser3-rex-notes` -- camera shake API, particle emitter config, emit zones, Graphics lineStyle, emitParticleAt, flow/explode methods
 - Context7 `/phaserjs/phaser` -- particle emitter duration/flow, camera shake changelog (v3.5+)
 - `src/entities/Turret.js` -- current drawLightningChain(), drawAura(), destroy() implementations
 - `src/scenes/GameScene.js` -- current damageCore(), playSfx() cooldown pattern
 - `src/config/GameConfig.js` -- VFX frozen config structure
-- `src/scenes/BootScene.js` -- particle texture generation, only 'particle' exists (no 'particle-glow')
+- `src/scenes/BootScene.js` -- particle texture generation, only 'particle' exists (no 'particle-glow') [VERIFIED: grep]
 
 ### Secondary (MEDIUM confidence)
 - Context7 Phaser 3.60 changelog -- modern particle API confirmation, emit zone features
 
 ### Tertiary (LOW confidence)
-- A1-A4 assumptions about `explode()` + emit zone interaction and `emitParticleAt()` behavior -- needs runtime verification
+- A1-A4 assumptions about `explode()` radial behavior and `emitParticleAt()` behavior -- needs runtime verification
 
 ## Metadata
 
