@@ -111,6 +111,16 @@ export class GameScene extends Phaser.Scene {
   renderCore() {
     const pos = this.grid.getCoreWorldPos();
     this.coreSprite = this.add.sprite(pos.x, pos.y, 'core').setDisplaySize(GRID.tileSize, GRID.tileSize);
+    const baseScale = this.coreSprite.scaleX;
+    this.tweens.add({
+      targets: this.coreSprite,
+      scaleX: { from: baseScale, to: baseScale * 1.06 },
+      scaleY: { from: baseScale, to: baseScale * 1.06 },
+      duration: 1800,
+      ease: 'Sine.easeInOut',
+      yoyo: true,
+      repeat: -1,
+    });
   }
 
   placeStarterTurrets() {
