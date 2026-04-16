@@ -138,3 +138,35 @@ export const THEME = Object.freeze({
   nebula: Object.freeze(['#2d1b4e', '#4b2c62', '#6a4c93']),
   accent: '#eef2ff',
 });
+
+export const VFX = Object.freeze({
+  DEATH: Object.freeze({
+    swarmer: Object.freeze({ tint: 0x44ff44, count: 10, speed: { min: 80, max: 150 }, lifespan: 350, scale: { start: 0.8, end: 0.3 } }),
+    brute:   Object.freeze({ tint: 0xff4444, count: 10, speed: { min: 80, max: 150 }, lifespan: 350, scale: { start: 0.8, end: 0.3 } }),
+    spitter: Object.freeze({ tint: 0xff8844, count: 10, speed: { min: 80, max: 150 }, lifespan: 350, scale: { start: 0.8, end: 0.3 } }),
+    boss:    Object.freeze({ color: [0x44ff44, 0xff4444, 0xff8844, 0x9900ff], count: 30, speed: { min: 100, max: 200 }, lifespan: 600, scale: { start: 2.0, end: 0.5 } }),
+  }),
+  MUZZLE: Object.freeze({
+    count: 5,
+    lifespan: 80,
+    scale: { start: 1.0, end: 0.3 },
+    tint: 0xffffaa,
+    speed: { min: 60, max: 120 },
+    angleSpread: 30,
+  }),
+  BUILD: Object.freeze({
+    count: 12,
+    lifespan: 400,
+    tints: [0x9966ff, 0xeef2ff],
+    speed: { min: 20, max: 60 },
+    scale: { start: 0.8, end: 0.1 },
+    gravityY: -40,
+  }),
+  SHOCKWAVE: Object.freeze({
+    startRadius: 30,
+    endRadius: 120,
+    duration: 400,
+    color: 0x9966ff,
+    lineWidth: 3,
+  }),
+});
