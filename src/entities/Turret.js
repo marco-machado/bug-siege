@@ -250,9 +250,7 @@ export class Turret {
       tint: cfg.tint,
       angle: { min: angleDeg - cfg.angleSpread, max: angleDeg + cfg.angleSpread },
       maxParticles: cfg.count,
-      emitting: false,
     });
-    emitter.explode(cfg.count, tip.x, tip.y);
     emitter.on('complete', () => emitter.destroy());
   }
 

@@ -341,7 +341,6 @@ export class GameScene extends Phaser.Scene {
       scale: cfg.scale,
       maxParticles: cfg.count,
       rotate: { min: 0, max: 360 },
-      emitting: false,
     };
     if (cfg.color) {
       emitterConfig.color = cfg.color;
@@ -349,7 +348,6 @@ export class GameScene extends Phaser.Scene {
       emitterConfig.tint = cfg.tint;
     }
     const emitter = this.add.particles(x, y, 'particle', emitterConfig);
-    emitter.explode(cfg.count, x, y);
     emitter.on('complete', () => emitter.destroy());
   }
 
@@ -363,9 +361,7 @@ export class GameScene extends Phaser.Scene {
       tint: tint,
       gravityY: cfg.gravityY,
       maxParticles: cfg.count,
-      emitting: false,
     });
-    emitter.explode(cfg.count, x, y);
     emitter.on('complete', () => emitter.destroy());
   }
 
@@ -375,12 +371,13 @@ export class GameScene extends Phaser.Scene {
 
     for (let i = 0; i < ringCount; i++) {
       const ring = this.add.graphics();
+      ring.setPosition(x, y);
       const delay = i * 80;
 
       this.time.delayedCall(delay, () => {
         if (!ring.active) return;
         ring.lineStyle(cfg.lineWidth, cfg.color, 1);
-        ring.strokeCircle(x, y, cfg.startRadius);
+        ring.strokeCircle(0, 0, cfg.startRadius);
 
         this.tweens.add({
           targets: ring,
