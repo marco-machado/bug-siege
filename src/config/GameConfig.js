@@ -60,6 +60,7 @@ export const BUGS = Object.freeze({
     wallDamage: 10,
     reward: 10,
     size: 48,
+    anim: Object.freeze({ frequency: 0.012, amplitude: 0.12 }),
   }),
   brute: Object.freeze({
     speed: 30,
@@ -68,6 +69,7 @@ export const BUGS = Object.freeze({
     wallDamage: 40,
     reward: 25,
     size: 80,
+    anim: Object.freeze({ frequency: 0.004, amplitude: 0.06 }),
   }),
   spitter: Object.freeze({
     speed: 35,
@@ -77,6 +79,7 @@ export const BUGS = Object.freeze({
     size: 56,
     attackRange: 192,
     attackRate: 1.0,
+    anim: Object.freeze({ frequency: 0.007, amplitude: 0.09 }),
   }),
   boss: Object.freeze({
     speed: 15,
@@ -85,6 +88,7 @@ export const BUGS = Object.freeze({
     wallDamage: 50,
     reward: 100,
     size: 96,
+    anim: Object.freeze({ frequency: 0.002, amplitude: 0.04 }),
   }),
 });
 
