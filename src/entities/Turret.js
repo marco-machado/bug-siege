@@ -1,5 +1,5 @@
 import Phaser from 'phaser';
-import { GRID, TURRETS, ECONOMY } from '../config/GameConfig.js';
+import { GRID, TURRETS, ECONOMY, VFX } from '../config/GameConfig.js';
 
 export class Turret {
   constructor(scene, col, row, type, worldX, worldY) {
@@ -240,14 +240,20 @@ export class Turret {
 
   showMuzzleFlash() {
     const tip = this.getTipPosition();
-    const flash = this.scene.add.circle(tip.x, tip.y, 8, 0xffffaa, 0.9);
-    this.scene.tweens.add({
-      targets: flash,
-      alpha: 0,
-      scale: 2,
-      duration: 120,
-      onComplete: () => flash.destroy(),
+    const cfg = VFX.MUZZLE;
+    const angleDeg = Phaser.Math.RadToDeg(this.sprite.rotation - Math.PI / 2);
+
+    const emitter = this.scene.add.particles(tip.x, tip.y, 'particle', {
+      speed: cfg.speed,
+      lifespan: cfg.lifespan,
+      scale: cfg.scale,
+      tint: cfg.tint,
+      angle: { min: angleDeg - cfg.angleSpread, max: angleDeg + cfg.angleSpread },
+      maxParticles: cfg.count,
+      emitting: false,
     });
+    emitter.explode(cfg.count, tip.x, tip.y);
+    emitter.on('complete', () => emitter.destroy());
   }
 
   upgrade() {
