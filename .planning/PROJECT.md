@@ -25,7 +25,7 @@ A satisfying, juicy tower defense that feels as good to watch as it is to play �
 
 ### Active
 
-- [ ] Procedural bug animation (squash/stretch, pulsing, wobble on current static sprites)
+- [ ] Procedural bug animation (squash/stretch, pulsing, wobble on current static sprites) — Validated in Phase 2: Living Entities
 - [ ] Slowfield particle aura (visible energy field, not just a static circle)
 - [ ] Screen shake on impacts (core damage, turret destruction, boss hits)
 - [ ] Enhanced particle effects (bug death bursts, muzzle flashes, build sparkle)
@@ -90,4 +90,4 @@ This document evolves at phase transitions and milestone boundaries.
 4. Update Context with current state
 
 ---
-*Last updated: 2026-04-15 after initialization*
+*Last updated: 2026-04-16 after Phase 2 (Living Entities) complete — bug squash-stretch, core breathing, turret idle pulse implemented*
