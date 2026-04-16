@@ -41,8 +41,10 @@ export class Bug extends Phaser.Physics.Arcade.Sprite {
     this.setPosition(x, y);
     this.setActive(true);
     this.setVisible(true);
-    this.body.enable = true;
-    this.body.setCircle(this.width / 2);
+    if (this.body) {
+      this.body.enable = true;
+      this.body.setCircle(this.width / 2);
+    }
     this.setOrigin(0.5);
   }
 
