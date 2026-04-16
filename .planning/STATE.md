@@ -3,13 +3,13 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: executing
-last_updated: "2026-04-16T04:11:36.992Z"
+last_updated: "2026-04-16T04:13:16.852Z"
 progress:
   total_phases: 6
-  completed_phases: 0
+  completed_phases: 1
   total_plans: 2
-  completed_plans: 1
-  percent: 50
+  completed_plans: 2
+  percent: 100
 ---
 
 # Bug Siege — Project State
@@ -60,6 +60,7 @@ Plan: 1 of 2
 | Phase 01 P01 | 180 | 2 tasks | 2 files |
 | Phase 01 P02 | 15 | 2 tasks | 2 files |
 | Phase 02-living-entities P01 | 5 | 2 tasks | 2 files |
+| Phase 02-living-entities P02 | 5 | 2 tasks | 2 files |
 
 ## Decisions
 
@@ -73,6 +74,8 @@ Plan: 1 of 2
 | Bug Tween Safety Net | Prevented orphaned tweens on pooled entities to avoid visual corruption | Completed |
 
 - [Phase 01]: Used dynamic canvas for procedural nebula generation to ensure theme alignment and avoid large assets
+- [Phase 02-living-entities]: Used baseScale*1.06 relative scale for core breathing tween to stay proportional after setDisplaySize
+- [Phase 02-living-entities]: Used alpha (not tint) for turret idle pulse to avoid conflict with upgrade tint 0xffdd44
 
 ## Accumulated Context
 
@@ -105,7 +108,7 @@ From research/SUMMARY.md:
 
 ## Session Continuity
 
-**Last session:** 2026-04-16T04:11:36.989Z
+**Last session:** 2026-04-16T04:13:16.849Z
 **Next session:** Plan Phase 1
 
 **Context to preserve:**
