@@ -34,7 +34,10 @@ Plans:
   2. Command core pulses with breathing animation (sinusoidal scale)
   3. Turrets have idle glow that pulses slowly at rest
   4. Different bug types have distinct animation signatures (swarmer jittery, brute heavy, spitter pulsing)
-**Plans:** TBD
+**Plans:** 2 plans
+Plans:
+- [ ] 02-01-PLAN.md — Bug anim config (GameConfig.js) and sin-wave squash-stretch (Bug.js)
+- [ ] 02-02-PLAN.md — Core breathing tween (GameScene.js) and turret idle alpha pulse (Turret.js)
 
 ### Phase 3: Juicy Combat
 **Goal:** Key combat events trigger satisfying particle effects
@@ -97,7 +100,7 @@ Plans:
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Cosmic Foundation | 2/3 | Gap closure | 2026-04-15 |
-| 2. Living Entities | 0/0 | Not started | - |
+| 2. Living Entities | 0/2 | Not started | - |
 | 3. Juicy Combat | 0/0 | Not started | - |
 | 4. Impactful Effects | 0/0 | Not started | - |
 | 5. Atmospheric Glow | 0/0 | Not started | - |
