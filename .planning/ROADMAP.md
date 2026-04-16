@@ -66,7 +66,11 @@ Plans:
   4. Turret/wall destruction shakes camera
   5. Boss hit impacts cause micro-shake
   6. UIScene HUD remains stable during GameScene camera shake
-**Plans:** TBD
+**Plans:** 3 plans
+Plans:
+- [ ] 04-01-PLAN.md — VFX config extension (SLOWFIELD, ZAPPER_TRAIL, SHAKE) and particle-glow texture
+- [ ] 04-02-PLAN.md — Slowfield particle pulse aura and zapper glow trail with trail particles
+- [ ] 04-03-PLAN.md — Screen shake system (core damage, turret destruction, boss micro-shake)
 
 ### Phase 5: Atmospheric Glow
 **Goal:** Turrets and core glow softly, screen has cinematic framing
@@ -106,7 +110,7 @@ Plans:
 | 1. Cosmic Foundation | 2/3 | Gap closure | 2026-04-15 |
 | 2. Living Entities | 2/2 | Complete    | 2026-04-16 |
 | 3. Juicy Combat | 3/3 | Complete   | 2026-04-16 |
-| 4. Impactful Effects | 0/0 | Not started | - |
+| 4. Impactful Effects | 0/3 | Planned | - |
 | 5. Atmospheric Glow | 0/0 | Not started | - |
 | 6. Ethereal Audio | 0/0 | Not started | - |
 | 7. Cohesive Theme | 0/0 | Not started | - |
