@@ -3,20 +3,20 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: executing
-last_updated: "2026-04-16T04:48:32.747Z"
+last_updated: "2026-04-16T04:53:02.660Z"
 progress:
   total_phases: 6
   completed_phases: 1
   total_plans: 5
-  completed_plans: 2
-  percent: 40
+  completed_plans: 3
+  percent: 60
 ---
 
 # Bug Siege — Project State
 
 **Milestone:** Cosmic polish & atmosphere  
-**Current focus:** Phase 2 — Living Entities
-**Status:** Ready to execute
+**Current focus:** Phase 03 — juicy-combat
+**Status:** Executing Phase 03
 
 ## Project Reference
 
@@ -35,8 +35,8 @@ progress:
 
 ## Current Position
 
-Phase: 2 (Living Entities) — EXECUTING
-Plan: 1 of 2
+Phase: 03 (juicy-combat) — EXECUTING
+Plan: 1 of 3
 **Phase:** 3
 **Plan:** Not started
 **Plan progress:** 50%
@@ -61,6 +61,7 @@ Plan: 1 of 2
 | Phase 01 P02 | 15 | 2 tasks | 2 files |
 | Phase 02-living-entities P01 | 5 | 2 tasks | 2 files |
 | Phase 02-living-entities P02 | 5 | 2 tasks | 2 files |
+| Phase 03-juicy-combat P01 | 5 | 2 tasks | 2 files |
 
 ## Decisions
 
@@ -76,6 +77,7 @@ Plan: 1 of 2
 - [Phase 01]: Used dynamic canvas for procedural nebula generation to ensure theme alignment and avoid large assets
 - [Phase 02-living-entities]: Used baseScale*1.06 relative scale for core breathing tween to stay proportional after setDisplaySize
 - [Phase 02-living-entities]: Used alpha (not tint) for turret idle pulse to avoid conflict with upgrade tint 0xffdd44
+- [Phase 03-juicy-combat]: White fill for particle texture so runtime tint controls color
 
 ## Accumulated Context
 
@@ -108,7 +110,7 @@ From research/SUMMARY.md:
 
 ## Session Continuity
 
-**Last session:** 2026-04-16T04:36:32.531Z
+**Last session:** 2026-04-16T04:53:02.657Z
 **Next session:** Plan Phase 1
 
 **Context to preserve:**

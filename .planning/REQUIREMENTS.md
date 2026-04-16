@@ -23,13 +23,13 @@
 
 ### Particles & VFX
 
-- [ ] **VFX-01**: Replace circle+tween pseudo-particles with Phaser ParticleEmitter for bug death burst
-- [ ] **VFX-02**: Replace circle+tween muzzle flash with particle-based muzzle flash emitter
-- [ ] **VFX-03**: Replace rectangle flash build effect with particle sparkle on turret placement
+- [x] **VFX-01**: Replace circle+tween pseudo-particles with Phaser ParticleEmitter for bug death burst
+- [x] **VFX-02**: Replace circle+tween muzzle flash with particle-based muzzle flash emitter
+- [x] **VFX-03**: Replace rectangle flash build effect with particle sparkle on turret placement
 - [ ] **VFX-04**: Replace static Graphics circle slowfield aura with particle emitter aura that follows turret position
-- [ ] **VFX-05**: Add shockwave/ring particle effect on core damage
+- [x] **VFX-05**: Add shockwave/ring particle effect on core damage
 - [ ] **VFX-06**: Add glow trail effect on zapper lightning chain
-- [ ] **VFX-07**: Add extra-large death burst particle effect for boss bug
+- [x] **VFX-07**: Add extra-large death burst particle effect for boss bug
 
 ### Screen Shake
 
@@ -78,11 +78,11 @@
 | ANIM-02 | Phase 2: Living Entities | Complete |
 | ANIM-03 | Phase 2: Living Entities | Complete |
 | ANIM-04 | Phase 2: Living Entities | Complete |
-| VFX-01 | Phase 3: Juicy Combat | Pending |
-| VFX-02 | Phase 3: Juicy Combat | Pending |
-| VFX-03 | Phase 3: Juicy Combat | Pending |
-| VFX-05 | Phase 3: Juicy Combat | Pending |
-| VFX-07 | Phase 3: Juicy Combat | Pending |
+| VFX-01 | Phase 3: Juicy Combat | Complete |
+| VFX-02 | Phase 3: Juicy Combat | Complete |
+| VFX-03 | Phase 3: Juicy Combat | Complete |
+| VFX-05 | Phase 3: Juicy Combat | Complete |
+| VFX-07 | Phase 3: Juicy Combat | Complete |
 | VFX-04 | Phase 4: Impactful Effects | Pending |
 | VFX-06 | Phase 4: Impactful Effects | Pending |
 | SHAKE-01 | Phase 4: Impactful Effects | Pending |
