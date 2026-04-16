@@ -459,17 +459,15 @@ Peak of ~123 particles is well within the <300 budget. Even with worst-case over
 | A3 | `camera.shake()` with `force: true` cleanly interrupts an in-progress shake without visual glitch | Pattern 4 | Shake might snap abruptly. Mitigation: test in browser, tune if needed. |
 | A4 | Generating a soft-glow texture via layered `fillCircle()` with different alphas produces a usable glow effect | Code Examples | Texture might look flat. Fallback: use only 'particle' texture with alpha fade; visual difference is subtle. |
 
-## Open Questions
+## Open Questions (RESOLVED)
 
-1. **Turret destruction shake tier**
+1. **Turret destruction shake tier** -- RESOLVED: medium tier. Plan 03 implements `this.scene.shakeCamera('medium')` in `Turret.destroy()`.
    - What we know: D-06 defines light/medium/heavy. SHAKE-02 says turret/wall destruction shakes camera.
-   - What's unclear: Whether to use medium or heavy tier (left to Claude's discretion).
-   - Recommendation: Use medium tier. Turret destruction is significant but not as impactful as boss hitting core. Heavy should be reserved for the most dramatic events.
+   - Resolution: Medium tier selected. Turret destruction is significant but not as impactful as boss hitting core. Heavy is reserved for the most dramatic events.
 
-2. **Particle-glow texture usage scope**
+2. **Particle-glow texture usage scope** -- RESOLVED: generate it. Plan 01 generates 'particle-glow' in BootScene; Plan 02 uses it for zapper trail.
    - What we know: Only the 'particle' texture exists today. The zapper trail could benefit from a softer glow texture.
-   - What's unclear: Whether the visual improvement justifies a new texture vs. using the existing 'particle' with alpha fade.
-   - Recommendation: Generate 'particle-glow' in BootScene. The cost is ~5 lines of code. Use it for zapper trail, keep 'particle' for slowfield pulses. Allows visual differentiation between effects.
+   - Resolution: 'particle-glow' generated in BootScene (8x8 soft circle). Used for zapper trail particles, 'particle' kept for slowfield pulses. Allows visual differentiation between effects.
 
 ## Validation Architecture
 
