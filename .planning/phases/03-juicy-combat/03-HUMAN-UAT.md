@@ -1,9 +1,9 @@
 ---
-status: partial
+status: passed
 phase: 03-juicy-combat
 source: [03-VERIFICATION.md]
 started: 2026-04-16T00:00:00Z
-updated: 2026-04-16T00:00:00Z
+updated: 2026-04-16T00:01:00Z
 ---
 
 ## Current Test
@@ -14,14 +14,14 @@ updated: 2026-04-16T00:00:00Z
 
 ### 1. Visual particle rendering
 expected: All five combat particle effects appear correctly in the running game — colored bursts on bug death (boss gets multi-color), sparkle on turret placement, expanding ring on core damage, directional muzzle flash at barrel tip
-result: [pending]
+result: passed
 
 ## Summary
 
 total: 1
-passed: 0
+passed: 1
 issues: 0
-pending: 1
+pending: 0
 skipped: 0
 blocked: 0
 
