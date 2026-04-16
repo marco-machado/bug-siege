@@ -1,0 +1,120 @@
+{
+  "phase": "01-cosmic-foundation",
+  "generated_at": "2026-04-15T10:00:00Z",
+  "stats": {
+    "total": 3,
+    "answered": 3,
+    "chat_more": 0,
+    "remaining": 0
+  },
+  "sections": [
+    {
+      "id": "visual-theme",
+      "title": "Visual Theme",
+      "questions": [
+        {
+          "id": "Q-01",
+          "title": "Cosmic Color Palette",
+          "context": "Requirement THEME-01. This defines the foundation for all subsequent visual polish.",
+          "options": [
+            {
+              "id": "a",
+              "label": "Deep Space",
+              "description": "Deep purples, dark blues, neon cyan accents. Classic 'high-tech cosmic' feel."
+            },
+            {
+              "id": "b",
+              "label": "Stellar Nursery",
+              "description": "Magenta, indigo, gold accents. More vibrant and ethereal."
+            },
+            {
+              "id": "c",
+              "label": "Void Ethereal",
+              "description": "Near-black, soft violets, ghostly white accents. Minimalist and mysterious."
+            },
+            {
+              "id": "custom",
+              "label": "Custom",
+              "description": ""
+            }
+          ],
+          "answer": "c",
+          "chat_more": "",
+          "status": "answered"
+        }
+      ]
+    },
+    {
+      "id": "background-fx",
+      "title": "Background FX",
+      "questions": [
+        {
+          "id": "Q-02",
+          "title": "Nebula Generation Method",
+          "context": "Requirement THEME-02. Replaces the static background.jpg with procedural art.",
+          "options": [
+            {
+              "id": "a",
+              "label": "Radial Gradient Noise",
+              "description": "Multi-layered radial gradients with simulated noise. Soft, gaseous, and high-performance."
+            },
+            {
+              "id": "b",
+              "label": "Perlin Noise Cloud",
+              "description": "True Perlin noise mapped to cosmic colors. More structured and organic, slightly more complex to implement."
+            },
+            {
+              "id": "c",
+              "label": "Animated Particle Wash",
+              "description": "A static base with a slow-moving, low-opacity particle layer. Adds depth and movement."
+            },
+            {
+              "id": "custom",
+              "label": "Custom",
+              "description": ""
+            }
+          ],
+          "answer": "a",
+          "chat_more": "",
+          "status": "answered"
+        }
+      ]
+    },
+    {
+      "id": "technical-stability",
+      "title": "Technical Stability",
+      "questions": [
+        {
+          "id": "Q-03",
+          "title": "Tween Cleanup Strategy",
+          "context": "Requirement ANIM-05. Prevents visual corruption when Bug entities are reused from the pool.",
+          "options": [
+            {
+              "id": "a",
+              "label": "Phaser Tween Manager",
+              "description": "Use this.scene.tweens.killTweensOf(this). The standard Phaser way; clean and reliable."
+            },
+            {
+              "id": "b",
+              "label": "Explicit Tracking",
+              "description": "Store active tweens in an array and stop them manually. More control, but more boilerplate."
+            },
+            {
+              "id": "c",
+              "label": "Tween-specific tags",
+              "description": "Use tags to target only animation tweens, leaving other system tweens untouched."
+            },
+            {
+              "id": "custom",
+              "label": "Custom",
+              "description": ""
+            }
+          ],
+          "answer": "a",
+          "chat_more": "",
+          "status": "answered"
+        }
+      ]
+    }
+  ]
+}

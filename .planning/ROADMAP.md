@@ -37,7 +37,7 @@ Plans:
 
 ### Phase 3: Juicy Combat
 **Goal:** Key combat events trigger satisfying particle effects
-**Depends on:** Phase 1 (THEME config for particle colors)
+**Depends on:** Phase 1, 2 (THEME config, file overlap)
 **Requirements:** VFX-01, VFX-02, VFX-03, VFX-05, VFX-07
 **Success Criteria** (what must be TRUE):
   1. Bug deaths trigger particle bursts (replacing circle+tween pseudo-particles)
@@ -83,7 +83,7 @@ Plans:
 
 ### Phase 7: Cohesive Theme
 **Goal:** All UI elements use consistent cosmic color palette
-**Depends on:** All previous phases (touches many files)
+**Depends on:** 1, 2, 3, 4, 5, 6 (touches many files)
 **Requirements:** THEME-03
 **Success Criteria** (what must be TRUE):
   1. All hardcoded color values across 6+ files reference THEME config constants
