@@ -10,7 +10,7 @@
 
 - [x] **Phase 1: Cosmic Foundation** - Theme config, nebula background, tween safety net (completed 2026-04-15)
 - [x] **Phase 2: Living Entities** - Bug animation, core breathing, turret idle glow (completed 2026-04-16)
-- [ ] **Phase 3: Juicy Combat** - Death bursts, muzzle flashes, build sparkle, core shockwave
+- [x] **Phase 3: Juicy Combat** - Death bursts, muzzle flashes, build sparkle, core shockwave (completed 2026-04-16)
 - [ ] **Phase 4: Impactful Effects** - Slowfield aura, zapper trails, screen shake system
 - [ ] **Phase 5: Atmospheric Glow** - Post-FX glow/bloom on turrets, vignette framing
 - [ ] **Phase 6: Ethereal Audio** - Ambient layer, SFX variation, BGM crossfade
@@ -49,11 +49,11 @@ Plans:
   3. Turret placement shows sparkle particle effect on grid
   4. Core damage creates shockwave/ring particle effect radiating outward
   5. Boss deaths have extra-large, multi-color particle burst
-**Plans:** 2/3 plans executed
+**Plans:** 3/3 plans complete
 Plans:
 - [x] 03-01-PLAN.md — Particle texture (BootScene) and VFX config (GameConfig.js)
 - [x] 03-02-PLAN.md — GameScene VFX: death bursts, build sparkle, core shockwave
-- [ ] 03-03-PLAN.md — Turret muzzle flash particle emitter
+- [x] 03-03-PLAN.md — Turret muzzle flash particle emitter
 
 ### Phase 4: Impactful Effects
 **Goal:** Slowfield has particles, zapper has trail, screen reacts to impacts
@@ -105,7 +105,7 @@ Plans:
 |-------|----------------|--------|-----------|
 | 1. Cosmic Foundation | 2/3 | Gap closure | 2026-04-15 |
 | 2. Living Entities | 2/2 | Complete    | 2026-04-16 |
-| 3. Juicy Combat | 2/3 | In Progress|  |
+| 3. Juicy Combat | 3/3 | Complete   | 2026-04-16 |
 | 4. Impactful Effects | 0/0 | Not started | - |
 | 5. Atmospheric Glow | 0/0 | Not started | - |
 | 6. Ethereal Audio | 0/0 | Not started | - |
