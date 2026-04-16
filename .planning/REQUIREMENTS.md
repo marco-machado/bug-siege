@@ -26,17 +26,17 @@
 - [x] **VFX-01**: Replace circle+tween pseudo-particles with Phaser ParticleEmitter for bug death burst
 - [x] **VFX-02**: Replace circle+tween muzzle flash with particle-based muzzle flash emitter
 - [x] **VFX-03**: Replace rectangle flash build effect with particle sparkle on turret placement
-- [ ] **VFX-04**: Replace static Graphics circle slowfield aura with particle emitter aura that follows turret position
+- [x] **VFX-04**: Replace static Graphics circle slowfield aura with particle emitter aura that follows turret position
 - [x] **VFX-05**: Add shockwave/ring particle effect on core damage
-- [ ] **VFX-06**: Add glow trail effect on zapper lightning chain
+- [x] **VFX-06**: Add glow trail effect on zapper lightning chain
 - [x] **VFX-07**: Add extra-large death burst particle effect for boss bug
 
 ### Screen Shake
 
-- [ ] **SHAKE-01**: Add camera shake on core damage (intensity proportional to damage)
-- [ ] **SHAKE-02**: Add camera shake on turret/wall destruction
-- [ ] **SHAKE-03**: Add micro-shake on boss hit impacts
-- [ ] **SHAKE-04**: Ensure UIScene HUD does not shake (GameScene camera only)
+- [x] **SHAKE-01**: Add camera shake on core damage (intensity proportional to damage)
+- [x] **SHAKE-02**: Add camera shake on turret/wall destruction
+- [x] **SHAKE-03**: Add micro-shake on boss hit impacts
+- [x] **SHAKE-04**: Ensure UIScene HUD does not shake (GameScene camera only)
 
 ### Audio Atmosphere
 
@@ -83,12 +83,12 @@
 | VFX-03 | Phase 3: Juicy Combat | Complete |
 | VFX-05 | Phase 3: Juicy Combat | Complete |
 | VFX-07 | Phase 3: Juicy Combat | Complete |
-| VFX-04 | Phase 4: Impactful Effects | Pending |
-| VFX-06 | Phase 4: Impactful Effects | Pending |
-| SHAKE-01 | Phase 4: Impactful Effects | Pending |
-| SHAKE-02 | Phase 4: Impactful Effects | Pending |
-| SHAKE-03 | Phase 4: Impactful Effects | Pending |
-| SHAKE-04 | Phase 4: Impactful Effects | Pending |
+| VFX-04 | Phase 4: Impactful Effects | Complete |
+| VFX-06 | Phase 4: Impactful Effects | Complete |
+| SHAKE-01 | Phase 4: Impactful Effects | Complete |
+| SHAKE-02 | Phase 4: Impactful Effects | Complete |
+| SHAKE-03 | Phase 4: Impactful Effects | Complete |
+| SHAKE-04 | Phase 4: Impactful Effects | Complete |
 | THEME-04 | Phase 5: Atmospheric Glow | Pending |
 | THEME-05 | Phase 5: Atmospheric Glow | Pending |
 | AUDIO-01 | Phase 6: Ethereal Audio | Pending |

@@ -68,7 +68,7 @@ Plans:
   6. UIScene HUD remains stable during GameScene camera shake
 **Plans:** 3 plans
 Plans:
-- [ ] 04-01-PLAN.md — VFX config extension (SLOWFIELD, ZAPPER_TRAIL, SHAKE) and particle-glow texture
+- [x] 04-01-PLAN.md — VFX config extension (SLOWFIELD, ZAPPER_TRAIL, SHAKE) and particle-glow texture
 - [ ] 04-02-PLAN.md — Slowfield particle pulse aura and zapper glow trail with trail particles
 - [ ] 04-03-PLAN.md — Screen shake system (core damage, turret destruction, boss micro-shake)
 

@@ -2,21 +2,21 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-status: planning
-last_updated: "2026-04-16T15:31:46.484Z"
+status: executing
+last_updated: "2026-04-16T17:54:49.302Z"
 progress:
   total_phases: 6
   completed_phases: 2
-  total_plans: 5
-  completed_plans: 5
-  percent: 100
+  total_plans: 8
+  completed_plans: 6
+  percent: 75
 ---
 
 # Bug Siege — Project State
 
 **Milestone:** Cosmic polish & atmosphere  
-**Current focus:** Phase 03 — juicy-combat
-**Status:** Ready to plan
+**Current focus:** Phase 04 — impactful-effects
+**Status:** Executing Phase 04
 
 ## Project Reference
 
@@ -35,7 +35,7 @@ progress:
 
 ## Current Position
 
-Phase: 03 (juicy-combat) — EXECUTING
+Phase: 04 (impactful-effects) — EXECUTING
 Plan: 1 of 3
 **Phase:** 4
 **Plan:** Not started
@@ -64,6 +64,7 @@ Plan: 1 of 3
 | Phase 03-juicy-combat P01 | 5 | 2 tasks | 2 files |
 | Phase 03-juicy-combat P02 | 8 | 2 tasks | 1 files |
 | Phase 03 P03 | 5 | 1 tasks | 1 files |
+| Phase 04 P01 | 107 | 2 tasks | 2 files |
 
 ## Decisions
 
@@ -80,6 +81,7 @@ Plan: 1 of 3
 - [Phase 02-living-entities]: Used baseScale*1.06 relative scale for core breathing tween to stay proportional after setDisplaySize
 - [Phase 02-living-entities]: Used alpha (not tint) for turret idle pulse to avoid conflict with upgrade tint 0xffdd44
 - [Phase 03-juicy-combat]: White fill for particle texture so runtime tint controls color
+- [Phase 04]: Particle speed 300-400 px/s with 350ms lifespan tuned to reach 128px range edge at fade-out
 
 ## Accumulated Context
 
@@ -112,7 +114,7 @@ From research/SUMMARY.md:
 
 ## Session Continuity
 
-**Last session:** 2026-04-16T15:31:46.481Z
+**Last session:** 2026-04-16T17:54:49.299Z
 **Next session:** Plan Phase 1
 
 **Context to preserve:**
