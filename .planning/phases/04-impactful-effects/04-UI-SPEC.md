@@ -181,37 +181,41 @@ Uses `Phaser.Cameras.Scene2D.Camera.shake(duration, intensity)` on GameScene cam
 
 ### Config Structure
 
-All VFX tuning values must be added to `GameConfig.js` as frozen objects extending the existing `VFX` export.
+New VFX sections must be added as sibling keys inside the existing `VFX` object definition in `GameConfig.js`, before the `Object.freeze()` call. They cannot be assigned after freeze (frozen objects reject property assignment). The final VFX object must include DEATH, MUZZLE, BUILD, SHOCKWAVE (existing) plus SLOWFIELD, ZAPPER_TRAIL, SHAKE (new).
 
 ```
-VFX.SLOWFIELD = Object.freeze({
-  tint: 0x6a4c93,
-  tintBright: 0x9966ff,
-  tintUpgraded: 0xeef2ff,
-  pulseInterval: 1200,
-  count: 8,
-  lifespan: 800,
-  speed: { min: 40, max: 80 },
-  scale: { start: 0.6, end: 0.1 },
-  alpha: { start: 0.7, end: 0 },
-})
+export const VFX = Object.freeze({
+  // ... existing DEATH, MUZZLE, BUILD, SHOCKWAVE keys ...
 
-VFX.ZAPPER_TRAIL = Object.freeze({
-  lineWidth: 4,
-  particlesPerSegment: 4,
-  lifespan: 300,
-  scale: { start: 1.2, end: 0.3 },
-  alpha: { start: 0.9, end: 0 },
-  tint: 0xeef2ff,
-  tintFade: 0x9966ff,
-})
+  SLOWFIELD: Object.freeze({
+    tint: 0x6a4c93,
+    tintBright: 0x9966ff,
+    tintUpgraded: 0xeef2ff,
+    pulseInterval: 1200,
+    count: 8,
+    lifespan: 800,
+    speed: Object.freeze({ min: 40, max: 80 }),
+    scale: Object.freeze({ start: 0.6, end: 0.1 }),
+    alpha: Object.freeze({ start: 0.7, end: 0 }),
+  }),
 
-VFX.SHAKE = Object.freeze({
-  light:  Object.freeze({ intensity: 0.005, duration: 80 }),
-  medium: Object.freeze({ intensity: 0.015, duration: 150 }),
-  heavy:  Object.freeze({ intensity: 0.04,  duration: 250 }),
-  bossMicroCooldown: 500,
-})
+  ZAPPER_TRAIL: Object.freeze({
+    lineWidth: 4,
+    particlesPerSegment: 4,
+    lifespan: 300,
+    scale: Object.freeze({ start: 1.2, end: 0.3 }),
+    alpha: Object.freeze({ start: 0.9, end: 0 }),
+    tint: 0xeef2ff,
+    tintFade: 0x9966ff,
+  }),
+
+  SHAKE: Object.freeze({
+    light:  Object.freeze({ intensity: 0.005, duration: 80 }),
+    medium: Object.freeze({ intensity: 0.015, duration: 150 }),
+    heavy:  Object.freeze({ intensity: 0.04,  duration: 250 }),
+    bossMicroCooldown: 500,
+  }),
+});
 ```
 
 ---
