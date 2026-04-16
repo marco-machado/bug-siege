@@ -70,7 +70,7 @@ Plans:
 Plans:
 - [x] 04-01-PLAN.md — VFX config extension (SLOWFIELD, ZAPPER_TRAIL, SHAKE) and particle-glow texture
 - [x] 04-02-PLAN.md — Slowfield particle pulse aura and zapper glow trail with trail particles
-- [ ] 04-03-PLAN.md — Screen shake system (core damage, turret destruction, boss micro-shake)
+- [x] 04-03-PLAN.md — Screen shake system (core damage, turret destruction, boss micro-shake)
 
 ### Phase 5: Atmospheric Glow
 **Goal:** Turrets and core glow softly, screen has cinematic framing
