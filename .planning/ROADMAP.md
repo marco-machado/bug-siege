@@ -4,7 +4,7 @@
 **Core Value:** A satisfying, juicy tower defense that feels as good to watch as it is to play — every hit, kill, and wave clear delivers visual and audio impact within a cohesive cosmic atmosphere.
 
 **Granularity:** Standard (7 phases)  
-**Coverage:** 25/25 v1 requirements mapped ✓
+**Coverage:** 25/25 v1 requirements mapped
 
 ## Phases
 
@@ -18,10 +18,11 @@
 
 ## Phase Details
 
-**Plans:** 2 plans
+**Plans:** 3 plans
 Plans:
 - [x] 01-01-PLAN.md — Theme config and tween safety net
 - [x] 01-02-PLAN.md — Procedural nebula background
+- [ ] 01-03-PLAN.md — Gap closure: correct THEME palette to match UI-SPEC
 **UI hint:** yes
 
 ### Phase 2: Living Entities
@@ -95,7 +96,7 @@ Plans:
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Cosmic Foundation | 2/2 | Complete   | 2026-04-15 |
+| 1. Cosmic Foundation | 2/3 | Gap closure | 2026-04-15 |
 | 2. Living Entities | 0/0 | Not started | - |
 | 3. Juicy Combat | 0/0 | Not started | - |
 | 4. Impactful Effects | 0/0 | Not started | - |
@@ -112,4 +113,4 @@ Plans:
 
 ---
 *Roadmap created: 2026-04-15*  
-*Last updated: 2026-04-15*
+*Last updated: 2026-04-16*
