@@ -22,7 +22,7 @@
 Plans:
 - [x] 01-01-PLAN.md — Theme config and tween safety net
 - [x] 01-02-PLAN.md — Procedural nebula background
-- [ ] 01-03-PLAN.md — Gap closure: correct THEME palette to match UI-SPEC
+- [x] 01-03-PLAN.md — Gap closure: correct THEME palette to match UI-SPEC
 **UI hint:** yes
 
 ### Phase 2: Living Entities
