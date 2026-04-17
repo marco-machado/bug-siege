@@ -1,10 +1,13 @@
 ---
 phase: 2
 slug: living-entities
-status: draft
+status: validated-partial
 nyquist_compliant: false
 wave_0_complete: false
+automated_count: 0
+manual_only_count: 4
 created: 2026-04-16
+updated: 2026-04-17
 ---
 
 # Phase 2 — Validation Strategy
@@ -38,9 +41,9 @@ created: 2026-04-16
 
 | Task ID | Plan | Wave | Requirement | Threat Ref | Secure Behavior | Test Type | Automated Command | File Exists | Status |
 |---------|------|------|-------------|------------|-----------------|-----------|-------------------|-------------|--------|
-| 2-01-01 | 01 | 1 | ANIM-01, ANIM-04 | — | N/A | manual | `npm run build` | ✅ | ⬜ pending |
-| 2-02-01 | 02 | 1 | ANIM-02 | — | N/A | manual | `npm run build` | ✅ | ⬜ pending |
-| 2-03-01 | 03 | 1 | ANIM-03 | — | N/A | manual | `npm run build` | ✅ | ⬜ pending |
+| 2-01-01 | 01 | 1 | ANIM-01, ANIM-04 | — | N/A | manual | `npm run build` (build only) | ✅ | ✅ verified via UAT |
+| 2-02-01 | 02 | 1 | ANIM-02 | — | N/A | manual | `npm run build` (build only) | ✅ | ✅ verified via UAT |
+| 2-03-01 | 03 | 1 | ANIM-03 | — | N/A | manual | `npm run build` (build only) | ✅ | ✅ verified via UAT |
 
 *Status: ⬜ pending · ✅ green · ❌ red · ⚠️ flaky*
 
@@ -65,13 +68,27 @@ None — no test framework setup needed. Existing build pipeline (`npm run build
 
 ---
 
+## Validation Audit 2026-04-17
+
+| Metric | Count |
+|--------|-------|
+| Gaps found | 4 (ANIM-01, ANIM-02, ANIM-03, ANIM-04) |
+| Resolved (automated) | 0 |
+| Escalated to manual-only | 4 |
+
+Rationale: project has no test framework (per CLAUDE.md). All Phase 2 requirements are perceptual/visual animation behaviors. Manual verification performed via `/gsd-verify-work 2` — 5/5 UAT tests passed (commit `dc7139c`).
+
+`nyquist_compliant` remains `false` — phase relies entirely on human UAT for behavioral verification. This is accepted for this project until a test framework is added.
+
+---
+
 ## Validation Sign-Off
 
-- [ ] All tasks have `<automated>` verify or Wave 0 dependencies
-- [ ] Sampling continuity: no 3 consecutive tasks without automated verify
-- [ ] Wave 0 covers all MISSING references
-- [ ] No watch-mode flags
-- [ ] Feedback latency < 10s
-- [ ] `nyquist_compliant: true` set in frontmatter
+- [x] All tasks have documented verification path (manual-only with UAT instructions)
+- [ ] Sampling continuity: no 3 consecutive tasks without automated verify — N/A, no automated tests exist
+- [x] Wave 0 covers all MISSING references — N/A, none planned
+- [x] No watch-mode flags
+- [x] Feedback latency < 10s (build only; UAT latency is human-bound)
+- [ ] `nyquist_compliant: true` set in frontmatter — blocked until test framework exists
 
-**Approval:** pending
+**Approval:** validated-partial 2026-04-17 (manual-only, UAT verified)
