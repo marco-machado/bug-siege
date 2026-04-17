@@ -167,7 +167,9 @@ export class Bug extends Phaser.Physics.Arcade.Sprite {
       const now = this.scene.time.now;
       if (now - this._lastBossShake >= VFX.SHAKE.bossMicroCooldown) {
         this._lastBossShake = now;
-        this.scene.shakeCamera('light');
+        if (this.scene.shakeCamera) {
+          this.scene.shakeCamera('light');
+        }
       }
     }
 
