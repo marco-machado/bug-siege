@@ -154,7 +154,10 @@ export class GameScene extends Phaser.Scene {
     this.phase = 'build';
     this.buildSystem.closeMenus();
     this.events.emit('phase-changed', { phase: 'build' });
+    this._startBuildTimer();
+  }
 
+  _startBuildTimer() {
     this.buildCountdown = GAME.buildPhaseSeconds;
     this.events.emit('timer-tick', { seconds: this.buildCountdown });
     this.buildTimer = this.time.addEvent({
@@ -194,22 +197,9 @@ export class GameScene extends Phaser.Scene {
       return;
     }
 
-    this.buildCountdown = GAME.buildPhaseSeconds;
     this.phase = 'build';
     this.events.emit('phase-changed', { phase: 'build' });
-    this.events.emit('timer-tick', { seconds: this.buildCountdown });
-
-    this.buildTimer = this.time.addEvent({
-      delay: 1000,
-      repeat: GAME.buildPhaseSeconds - 1,
-      callback: () => {
-        this.buildCountdown--;
-        this.events.emit('timer-tick', { seconds: this.buildCountdown });
-        if (this.buildCountdown <= 0) {
-          this.startWavePhase();
-        }
-      },
-    });
+    this._startBuildTimer();
   }
 
   onBugKilled(data) {
