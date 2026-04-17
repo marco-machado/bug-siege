@@ -73,13 +73,12 @@ Accent reserved for: HUD accents, critical UI highlights, high-energy cosmic eff
 
 | Element | Old Value | New Value | Rationale |
 |---------|-----------|-----------|-----------|
-| Slowfield aura fill | 0x44ddff (cyan) | 0x6a4c93 (cosmic purple) | Align with Void Ethereal palette per D-02 |
-| Slowfield aura stroke | 0x44ddff (cyan) | 0x9966ff (bright purple) | Visible pulse energy ring, brighter than fill |
-| Slowfield upgraded tint | none | 0xeef2ff (accent white) | Upgraded visual distinction per D-03 |
+| Slowfield pulsing ring | 0x44ddff (cyan) | 0x9966ff (bright purple) | Graphics ring replaces particle emitter; aligns with Void Ethereal palette per D-02 |
+| Slowfield upgraded ring | none | 0xcc99ff (light purple) | Upgraded visual distinction — brighter purple at higher alpha |
 | Slowfield range indicator | 0x44ddff (cyan) | 0x9966ff (bright purple) | Consistent with new aura color |
-| Zapper lightning line | 0xaa44ff | 0xaa44ff | No change — already cosmic-aligned |
+| Zapper lightning outer stroke | 0xaa44ff | 0x9966ff (bright purple) | Dual-stroke glow — 6px outer at alpha 0.4 |
+| Zapper lightning inner stroke | n/a | 0xeef2ff (accent white) | Dual-stroke glow — 2px inner at alpha 1.0, hot-center effect per D-04/D-05 |
 | Zapper trail particles | n/a (new) | 0xeef2ff (accent white) | Hot-center glow per D-05 |
-| Zapper trail particle fade | n/a (new) | 0x9966ff (light purple) | Cool-edge fade per D-05 |
 
 ---
 
@@ -114,28 +113,23 @@ Size: 8x8 px
 Color: 0xffffff (tinted at runtime)
 ```
 
-### Slowfield Particle Aura (VFX-04)
+### Slowfield Pulsing Ring Aura (VFX-04)
 
-Replaces current `drawAura()` Graphics fill+stroke (Turret.js:232-239) with a particle emitter.
+Replaces current `drawAura()` Graphics fill+stroke (Turret.js:232-239) with a Graphics-based pulsing ring animated via tween. Changed from particle emitter approach during Plan 03 checkpoint — 4px particle texture was invisible at 1920x1080 canvas scale; pulsing ring achieves the "sonar ping" visual intent through a different mechanism.
 
 | Property | Value | Source |
 |----------|-------|--------|
-| Style | Radial pulse waves — periodic bursts expanding outward from turret center | D-01 |
-| Texture | `'particle'` (existing 4px solid circle) | Existing asset |
-| Tint (base) | 0x6a4c93 core, 0x9966ff edge | D-02 |
-| Tint (upgraded) | 0xeef2ff (accent white, brighter) | D-03 |
-| Pulse interval | 1200ms between bursts | Claude discretion |
-| Particles per pulse | 8 | Claude discretion (budget: 4 emitters x 8 = 32 peak) |
-| Particle lifespan | 800ms | Claude discretion |
-| Particle speed | 40-80 px/s (outward radial) | Matches range radius travel time |
-| Particle start scale | 0.6 | Visible at center |
-| Particle end scale | 0.1 | Fades at range edge |
-| Particle start alpha | 0.7 | Visible energy |
-| Particle end alpha | 0 | Fade at edge |
-| Emission zone | Circle at turret center, radius 8px | Small origin point |
+| Style | Graphics circle ring expanding from center to range edge with fading alpha | D-01 |
+| Implementation | `Phaser.GameObjects.Graphics` + looping tween (`progress: 0 → 1`) | User-approved checkpoint |
+| Color (base) | 0x9966ff (bright purple) | D-02 |
+| Alpha max (base) | 0.6 | Claude discretion |
+| Color (upgraded) | 0xcc99ff (light purple, brighter) | User-approved — brighter purple over accent white |
+| Alpha max (upgraded) | 0.8 | Upgraded visual distinction |
+| Pulse duration | 1200ms per cycle | Claude discretion |
+| Line width | 2px | Claude discretion |
 | Max radius | Equal to turret range (128px base, 160px upgraded) | Existing config |
-| Lifecycle | Created on turret placement, destroyed on turret destruction | Persistent emitter |
-| Cleanup | Destroy emitter in `Turret.destroy()` | Follows tween cleanup pattern |
+| Lifecycle | Created on turret placement, destroyed on turret destruction | Persistent tween + Graphics |
+| Cleanup | `auraTween.destroy()` + `auraRing.destroy()` in `Turret.destroy()` | No leaked Graphics or tweens |
 
 ### Zapper Lightning Trail (VFX-06)
 
@@ -143,22 +137,24 @@ Enhances current `drawLightningChain()` (Turret.js:181-194) with wider glow line
 
 | Property | Value | Source |
 |----------|-------|--------|
-| Line width | 4px (up from 2px) | Claude discretion (4-6px range per D-04) |
-| Line color | 0xaa44ff (unchanged) | Existing |
-| Line alpha | 1.0 | Existing |
+| Outer line width | 6px | Dual-stroke glow per D-04 |
+| Outer line color | 0x9966ff (bright purple) | Soft outer glow |
+| Outer line alpha | 0.4 | Subtle halo |
+| Inner line width | 2px | Hot center core |
+| Inner line color | 0xeef2ff (accent white) | Hot-center glow per D-05 |
+| Inner line alpha | 1.0 | Full brightness |
 | Line lifetime | 200ms (unchanged) | Existing pattern |
 | Trail texture | `'particle-glow'` (new 8px soft circle) | New asset above |
 | Trail tint | 0xeef2ff (accent white) | D-05 |
 | Particles per segment | 4 | Claude discretion (3-5 range per context) |
 | Particle placement | Evenly spaced along each chain segment (lerp between endpoints) | Chain path coverage |
 | Particle lifespan | 300ms (lingers 100ms after line fades) | Residual energy feel |
-| Particle start scale | 1.2 | Glow visible |
-| Particle end scale | 0.3 | Shrink and fade |
-| Particle start alpha | 0.9 | Bright initial glow |
+| Particle start scale | 0.5 | Visible glow |
+| Particle end scale | 0.1 | Shrink and fade |
+| Particle start alpha | 0.8 | Bright initial glow |
 | Particle end alpha | 0 | Full fade |
-| Particle tint fade | Start 0xeef2ff, end 0x9966ff | Hot white to cool purple |
 | Emission style | One-shot burst at each segment point, no sustained emitter | Follows Phase 3 one-shot pattern |
-| Cleanup | `emitter.on('complete', () => emitter.destroy())` | Phase 3 established pattern |
+| Cleanup | `scene.time.delayedCall(trailLifespan + 50, () => emitter.destroy())` | Avoids Pitfall 6 from RESEARCH.md |
 
 ### Screen Shake System (SHAKE-01, SHAKE-02, SHAKE-03, SHAKE-04)
 
@@ -166,17 +162,17 @@ Uses `Phaser.Cameras.Scene2D.Camera.shake(duration, intensity)` on GameScene cam
 
 | Tier | Intensity | Duration | Triggers | Source |
 |------|-----------|----------|----------|--------|
-| Light | 0.005 | 80ms | Swarmer hits core | D-06, D-07 |
-| Medium | 0.015 | 150ms | Brute/spitter hits core, turret/wall destruction | D-06, D-07 |
-| Heavy | 0.04 | 250ms | Boss hits core | D-06, D-07 |
+| Light | 0.001 | 60ms | Swarmer hits core | D-06, D-07 (tuned during testing) |
+| Medium | 0.003 | 100ms | Brute/spitter hits core, turret/wall destruction | D-06, D-07 (tuned during testing) |
+| Heavy | 0.008 | 150ms | Boss hits core | D-06, D-07 (tuned during testing) |
 
 | Behavior | Value | Source |
 |----------|-------|--------|
 | Stacking | Replace (latest wins) — each new shake interrupts current | D-08 |
 | Boss micro-shake | Triggers on `Bug.takeDamage()` when `bugType === 'boss'`, cooldown 500ms | D-09 |
-| Boss micro-shake tier | Light (0.005, 80ms) | Micro-feel, not disruptive |
+| Boss micro-shake tier | Light (0.001, 60ms) | Micro-feel, not disruptive |
 | UIScene stability | Automatic — UIScene has separate camera, only shake GameScene.cameras.main | D-10 |
-| Turret destruction tier | Medium (0.015, 150ms) | Claude discretion |
+| Turret destruction tier | Medium (0.003, 100ms) | Claude discretion |
 | Easing | Phaser default (sinusoidal decay) | Claude discretion |
 
 ### Config Structure
@@ -188,31 +184,33 @@ export const VFX = Object.freeze({
   // ... existing DEATH, MUZZLE, BUILD, SHOCKWAVE keys ...
 
   SLOWFIELD: Object.freeze({
-    tint: 0x6a4c93,
-    tintBright: 0x9966ff,
-    tintUpgraded: 0xeef2ff,
-    pulseInterval: 1200,
-    count: 8,
-    lifespan: 800,
-    speed: Object.freeze({ min: 40, max: 80 }),
-    scale: Object.freeze({ start: 0.6, end: 0.1 }),
-    alpha: Object.freeze({ start: 0.7, end: 0 }),
+    pulseDuration: 1200,
+    lineWidth: 2,
+    color: 0x9966ff,
+    alphaMax: 0.6,
+    upgradedColor: 0xcc99ff,
+    upgradedAlphaMax: 0.8,
   }),
 
   ZAPPER_TRAIL: Object.freeze({
-    lineWidth: 4,
+    outerLineWidth: 6,
+    outerColor: 0x9966ff,
+    outerAlpha: 0.4,
+    innerLineWidth: 2,
+    innerColor: 0xeef2ff,
+    innerAlpha: 1,
+    lineDuration: 200,
+    trailTint: 0xeef2ff,
+    trailLifespan: 300,
     particlesPerSegment: 4,
-    lifespan: 300,
-    scale: Object.freeze({ start: 1.2, end: 0.3 }),
-    alpha: Object.freeze({ start: 0.9, end: 0 }),
-    tint: 0xeef2ff,
-    tintFade: 0x9966ff,
+    trailScale: { start: 0.5, end: 0.1 },
+    trailAlpha: { start: 0.8, end: 0 },
   }),
 
   SHAKE: Object.freeze({
-    light:  Object.freeze({ intensity: 0.005, duration: 80 }),
-    medium: Object.freeze({ intensity: 0.015, duration: 150 }),
-    heavy:  Object.freeze({ intensity: 0.04,  duration: 250 }),
+    light:  Object.freeze({ intensity: 0.001, duration: 60 }),
+    medium: Object.freeze({ intensity: 0.003, duration: 100 }),
+    heavy:  Object.freeze({ intensity: 0.008, duration: 150 }),
     bossMicroCooldown: 500,
   }),
 });

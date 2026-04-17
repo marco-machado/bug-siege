@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Phase 4: Impactful Effects - Discussion Questions</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f8fafc; color: #1e293b; padding: 24px; max-width: 1400px; margin: 0 auto; }
+  h1 { font-size: 24px; margin-bottom: 8px; }
+  .subtitle { color: #64748b; margin-bottom: 20px; font-size: 14px; }
+
+  .stats-bar { display: flex; gap: 24px; align-items: center; background: #fff; border: 1px solid #e2e8f0; border-radius: 8px; padding: 16px 24px; margin-bottom: 24px; }
+  .stat { font-size: 14px; color: #64748b; }
+  .stat strong { color: #1e293b; font-size: 20px; display: block; }
+  .progress-track { flex: 1; height: 8px; background: #e2e8f0; border-radius: 4px; overflow: hidden; }
+  .progress-fill { height: 100%; background: #22c55e; border-radius: 4px; transition: width 0.3s ease; }
+
+  .save-row { display: flex; gap: 12px; margin-bottom: 24px; }
+  .btn { padding: 10px 20px; border: none; border-radius: 6px; cursor: pointer; font-size: 14px; font-weight: 600; }
+  .btn-primary { background: #3b82f6; color: #fff; }
+  .btn-primary:hover { background: #2563eb; }
+  .btn-secondary { background: #e2e8f0; color: #475569; }
+  .btn-secondary:hover { background: #cbd5e1; }
+
+  .section { margin-bottom: 32px; }
+  .section-header { display: flex; align-items: center; gap: 8px; cursor: pointer; padding: 12px 16px; background: #fff; border: 1px solid #e2e8f0; border-radius: 8px; margin-bottom: 12px; user-select: none; }
+  .section-header:hover { background: #f1f5f9; }
+  .section-title { font-size: 18px; font-weight: 600; flex: 1; }
+  .section-badge { font-size: 13px; color: #64748b; background: #f1f5f9; padding: 2px 10px; border-radius: 12px; }
+  .section-arrow { font-size: 14px; color: #94a3b8; transition: transform 0.2s; }
+  .section-arrow.collapsed { transform: rotate(-90deg); }
+  .section-body { display: grid; grid-template-columns: repeat(auto-fill, minmax(380px, 1fr)); gap: 16px; }
+  .section-body.hidden { display: none; }
+
+  .card { background: #fff; border: 1px solid #e2e8f0; border-radius: 8px; padding: 20px; transition: border-color 0.2s, background 0.2s; }
+  .card.answered { border: 2px solid #22c55e; background: #f0fdf4; }
+  .card-id { display: inline-block; font-size: 11px; font-weight: 700; color: #64748b; background: #f1f5f9; padding: 2px 8px; border-radius: 4px; margin-bottom: 8px; }
+  .card-title { font-size: 16px; font-weight: 600; margin-bottom: 8px; }
+  .card-context { font-size: 13px; color: #64748b; font-style: italic; margin-bottom: 14px; line-height: 1.5; }
+
+  .option { display: flex; align-items: flex-start; gap: 8px; padding: 8px 10px; border-radius: 6px; cursor: pointer; margin-bottom: 4px; }
+  .option:hover { background: #f8fafc; }
+  .option input[type="radio"] { margin-top: 3px; flex-shrink: 0; accent-color: #3b82f6; }
+  .option-label { font-size: 14px; font-weight: 600; }
+  .option-desc { font-size: 13px; color: #64748b; margin-top: 2px; line-height: 1.4; }
+
+  .chat-more { margin-top: 12px; }
+  .chat-more label { font-size: 12px; color: #94a3b8; display: block; margin-bottom: 4px; }
+  .chat-more textarea { width: 100%; height: 56px; border: 1px solid #e2e8f0; border-radius: 6px; padding: 8px; font-size: 13px; font-family: inherit; resize: vertical; transition: border-color 0.2s; }
+  .chat-more textarea:focus { outline: none; border-color: #3b82f6; }
+  .chat-more textarea.has-content { border: 2px solid #f97316; }
+
+  .instructions { background: #fffbeb; border: 1px solid #fde68a; border-radius: 8px; padding: 14px 18px; margin-bottom: 24px; font-size: 13px; color: #92400e; line-height: 1.5; }
+  .instructions code { background: #fef3c7; padding: 1px 5px; border-radius: 3px; font-size: 12px; }
+
+  .prior { background: #eff6ff; border: 1px solid #bfdbfe; border-radius: 8px; padding: 14px 18px; margin-bottom: 24px; font-size: 13px; color: #1e40af; line-height: 1.6; }
+  .prior strong { display: block; margin-bottom: 6px; }
+</style>
+</head>
+<body>
+
+<h1>Phase 4: Impactful Effects &mdash; Discussion Questions</h1>
+<p class="subtitle">Slowfield aura, zapper trails, screen shake system</p>
+
+<div class="prior">
+  <strong>Carrying forward from earlier phases:</strong>
+  &bull; Particle API: modern Phaser 3.60+ <code>this.add.particles()</code> (Phase 3 D-01)<br>
+  &bull; Particle textures: 4px circles generated in BootScene (Phase 3 D-02)<br>
+  &bull; VFX config: frozen object in <code>GameConfig.js</code> (Phase 3 D-04)<br>
+  &bull; Color palette: Void Ethereal (Phase 1 D-01)<br>
+  &bull; UIScene HUD stability (SHAKE-04): UIScene has its own camera &mdash; shaking only GameScene&rsquo;s camera satisfies this automatically
+</div>
+
+<div class="stats-bar">
+  <div class="stat"><strong id="stat-total">9</strong>total</div>
+  <div class="stat"><strong id="stat-answered">0</strong>answered</div>
+  <div class="stat"><strong id="stat-remaining">9</strong>remaining</div>
+  <div class="progress-track"><div class="progress-fill" id="progress-fill" style="width: 0%"></div></div>
+</div>
+
+<div class="instructions">
+  After answering, click <strong>&ldquo;Save answers&rdquo;</strong> to download the updated JSON. Replace the original <code>04-QUESTIONS.json</code> file with the download.<br>
+  Then return to Claude and say <strong>&ldquo;refresh&rdquo;</strong> to process your answers, or <strong>&ldquo;finalize&rdquo;</strong> when done.
+</div>
+
+<div class="save-row">
+  <button class="btn btn-primary" onclick="saveAnswers()">Save answers</button>
+  <button class="btn btn-secondary" onclick="resetAll()">Reset all</button>
+</div>
+
+<div id="sections-container"></div>
+
+<div class="save-row" style="margin-top: 24px;">
+  <button class="btn btn-primary" onclick="saveAnswers()">Save answers</button>
+</div>
+
+<script>
+const DATA = {"phase":"04-impactful-effects","generated_at":"2026-04-16T12:00:00Z","stats":{"total":9,"answered":0,"chat_more":0,"remaining":9},"sections":[{"id":"slowfield-aura","title":"Slowfield Particle Aura","questions":[{"id":"Q-01","title":"Aura visual style","context":"Current slowfield aura is a static Graphics circle (Turret.js:232 \u2014 fillCircle + strokeCircle in cyan 0x44ddff, 12% fill / 30% stroke). VFX-04 requires a 'visible energy field, not static circle'. This will be the first persistent emitter \u2014 Phase 3 only used one-shot bursts.","options":[{"id":"a","label":"Orbiting particles","description":"Small particles orbit the turret in a circle at the aura radius. Continuous, mesmerizing, clearly shows the field boundary. 8-12 particles per slowfield."},{"id":"b","label":"Radial pulse waves","description":"Periodic bursts of particles that expand outward from turret center to the edge of the range, like sonar pings. Rhythmic, lower sustained particle count."},{"id":"c","label":"Floating drift field","description":"Particles spawn randomly within the aura radius and drift slowly inward/outward with gentle turbulence. Creates a foggy, ambient energy feel. Closest to 'flowing energy field'."},{"id":"d","label":"Custom","description":""}],"answer":null,"chat_more":"","status":"unanswered"},{"id":"Q-02","title":"Aura color","context":"Current aura uses 0x44ddff (cyan). Phase 1 established the Void Ethereal palette (deep purples #2d1b4e, #4b2c62, #6a4c93, accent #eef2ff). Should the slowfield aura match the cosmic palette or keep its distinct cyan identity?","options":[{"id":"a","label":"Keep cyan (0x44ddff)","description":"Maintains the distinct slowfield identity \u2014 cyan reads as 'ice/slow' and contrasts well with purple nebula background. Phase 7 will handle full color migration."},{"id":"b","label":"Cosmic purple-blue tints","description":"Use THEME nebula colors (0x6a4c93, 0x9966ff) to match the cosmic palette immediately. Cohesive but less visually distinct from other effects."},{"id":"c","label":"Custom","description":""}],"answer":null,"chat_more":"","status":"unanswered"},{"id":"Q-03","title":"Upgraded slowfield aura change","context":"Upgraded slowfield already gets increased range (128\u2192160px, Turret.js:265). Should the particle aura also change visually to signal the upgrade?","options":[{"id":"a","label":"Bigger radius only","description":"Particles simply cover the expanded range. No other visual change \u2014 keeps it simple. Upgrade is shown by larger coverage area."},{"id":"b","label":"Bigger radius + denser particles","description":"More particles (1.5x count) in the expanded radius. Upgraded feels more powerful, slightly higher perf cost."},{"id":"c","label":"Bigger radius + brighter/different tint","description":"Expanded radius plus a brighter accent color or added glow to visually distinguish upgraded from base. Clear visual feedback."},{"id":"d","label":"Custom","description":""}],"answer":null,"chat_more":"","status":"unanswered"}]},{"id":"zapper-trail","title":"Zapper Lightning Trail","questions":[{"id":"Q-04","title":"Trail visual approach","context":"Current drawLightningChain() at Turret.js:181 draws a simple 2px purple line (0xaa44ff) from turret tip through each chained target, destroyed after 200ms. VFX-06 says 'glow trail particles along its path'. The trail needs to feel like residual energy left behind.","options":[{"id":"a","label":"Particle trail along path","description":"Spawn 3-5 particles at intervals along each segment of the lightning chain. Particles fade out over ~300ms after the line disappears. Adds lingering sparkle to the chain path."},{"id":"b","label":"Wider glowing line with fade","description":"Replace the 2px line with a thicker (4-6px) semi-transparent line that fades over 400ms instead of abruptly disappearing at 200ms. Simpler, lower particle cost, still reads as 'glow trail'."},{"id":"c","label":"Both: thick line + particle trail","description":"Keep the line but make it wider/brighter, AND spawn particles along the path that linger after the line fades. Maximum visual impact, higher particle budget."},{"id":"d","label":"Custom","description":""}],"answer":null,"chat_more":"","status":"unanswered"},{"id":"Q-05","title":"Trail color treatment","context":"Current lightning is solid purple 0xaa44ff. The trail effect could match or contrast to distinguish the 'residual energy' from the initial strike.","options":[{"id":"a","label":"Same purple, lower alpha","description":"Trail uses 0xaa44ff at reduced opacity (0.4-0.6), fading to 0. Cohesive \u2014 the trail is simply the afterimage of the strike."},{"id":"b","label":"Lighter/whiter glow","description":"Trail particles use accent white (0xeef2ff) or light purple. Creates a 'hot center fading to cool edges' effect \u2014 the trail looks like residual heat."},{"id":"c","label":"Custom","description":""}],"answer":null,"chat_more":"","status":"unanswered"}]},{"id":"screen-shake","title":"Screen Shake System","questions":[{"id":"Q-06","title":"Core damage shake intensity","context":"SHAKE-01: camera shake on core damage, intensity proportional to damage. Core takes 5 damage (swarmer), 20 (brute/spitter bullet), or 40 (boss). Phaser's camera.shake(duration, intensity) takes a 0-1 float for intensity. SHAKE-04 is handled automatically \u2014 UIScene has its own camera.","options":[{"id":"a","label":"Linear scaling with cap","description":"Map damage linearly to intensity (e.g., 5dmg\u21920.005, 20dmg\u21920.02, 40dmg\u21920.04) with a hard cap at 0.05 to prevent disorientation. Simple and predictable."},{"id":"b","label":"Tiered levels (light/medium/heavy)","description":"Three fixed shake levels: light (swarmer, 0.005), medium (brute/spitter, 0.015), heavy (boss, 0.04). More controlled \u2014 designers can tune each tier independently."},{"id":"c","label":"Custom","description":""}],"answer":null,"chat_more":"","status":"unanswered"},{"id":"Q-07","title":"Shake duration","context":"Shake duration affects game feel significantly. Too short feels like a glitch, too long disrupts aiming. Duration applies to all shake types (core, turret destruction, boss hit).","options":[{"id":"a","label":"Fixed short duration (100-150ms)","description":"All shakes are brief punchy jolts. Consistent feel, never disrupts gameplay. May feel too subtle for heavy hits."},{"id":"b","label":"Duration scales with intensity","description":"Light shakes: 80ms, medium: 150ms, heavy: 250ms. Heavier hits feel more impactful but could slightly disrupt turret placement during build phase."},{"id":"c","label":"Custom","description":""}],"answer":null,"chat_more":"","status":"unanswered"},{"id":"Q-08","title":"Shake stacking behavior","context":"Multiple bugs can hit the core in rapid succession (especially swarmers). If 5 swarmers hit in 500ms, should shakes accumulate or does each new shake replace the previous?","options":[{"id":"a","label":"Replace (latest wins)","description":"Each new shake interrupts the current one. Prevents disorienting sustained vibration during swarmer rushes. Simpler \u2014 just call camera.shake() each time."},{"id":"b","label":"Additive with cap","description":"Shakes accumulate intensity but cap at a maximum (e.g., 0.05). Multiple rapid hits feel increasingly impactful, but can't exceed a comfort threshold."},{"id":"c","label":"Cooldown-based","description":"Skip shake if one is already playing (cooldown period = shake duration). Prevents overlap entirely. May miss some impacts during intense combat."},{"id":"d","label":"Custom","description":""}],"answer":null,"chat_more":"","status":"unanswered"},{"id":"Q-09","title":"Boss micro-shake trigger","context":"SHAKE-03: boss hit impacts cause micro-shake. Bug.takeDamage() at Bug.js:150 doesn't currently check bug type. The boss has 1500 HP and takes many hits before dying. A micro-shake on every single bullet hit could be very frequent. Where should this trigger?","options":[{"id":"a","label":"Every hit, very subtle (0.002, 50ms)","description":"Trigger micro-shake on every boss takeDamage(). Extremely subtle \u2014 barely perceptible vibration that creates a subliminal 'hitting something big' feel. High frequency, minimal intensity."},{"id":"b","label":"HP threshold milestones","description":"Shake only when boss crosses 75%/50%/25% HP thresholds. Fewer shakes, each more noticeable. Creates dramatic 'the boss is weakening' moments."},{"id":"c","label":"Cooldown-throttled (every 500ms max)","description":"Micro-shake on hits but no more than once every 500ms. Balances 'felt impact' with not being annoying. Works well with rapid-fire blasters."},{"id":"d","label":"Custom","description":""}],"answer":null,"chat_more":"","status":"unanswered"}]}]};
+
+const container = document.getElementById('sections-container');
+
+function render() {
+  container.innerHTML = '';
+  DATA.sections.forEach(section => {
+    const answeredCount = section.questions.filter(q => q.answer).length;
+    const sDiv = document.createElement('div');
+    sDiv.className = 'section';
+
+    const header = document.createElement('div');
+    header.className = 'section-header';
+    header.innerHTML = `<span class="section-arrow" id="arrow-${section.id}">&#9660;</span>
+      <span class="section-title">${section.title}</span>
+      <span class="section-badge">${answeredCount}/${section.questions.length} answered</span>`;
+    header.onclick = () => toggleSection(section.id);
+    sDiv.appendChild(header);
+
+    const body = document.createElement('div');
+    body.className = 'section-body';
+    body.id = `body-${section.id}`;
+
+    section.questions.forEach(q => {
+      const card = document.createElement('div');
+      card.className = 'card' + (q.answer ? ' answered' : '');
+      card.id = `card-${q.id}`;
+
+      let optionsHtml = '';
+      q.options.forEach(opt => {
+        const checked = q.answer === opt.id ? 'checked' : '';
+        optionsHtml += `<label class="option">
+          <input type="radio" name="${q.id}" value="${opt.id}" ${checked} onchange="selectOption('${q.id}','${opt.id}')">
+          <div>
+            <div class="option-label">${opt.label}</div>
+            ${opt.description ? `<div class="option-desc">${opt.description}</div>` : ''}
+          </div>
+        </label>`;
+      });
+
+      card.innerHTML = `<span class="card-id">${q.id}</span>
+        <div class="card-title">${q.title}</div>
+        <div class="card-context">${q.context}</div>
+        ${optionsHtml}
+        <div class="chat-more">
+          <label>Add context or nuance:</label>
+          <textarea id="cm-${q.id}" class="${q.chat_more ? 'has-content' : ''}"
+            placeholder="Add context, nuance, or clarification for this question..."
+            oninput="updateChatMore('${q.id}', this)">${q.chat_more || ''}</textarea>
+        </div>`;
+      body.appendChild(card);
+    });
+
+    sDiv.appendChild(body);
+    container.appendChild(sDiv);
+  });
+  updateStats();
+}
+
+function selectOption(qId, optId) {
+  for (const s of DATA.sections) {
+    for (const q of s.questions) {
+      if (q.id === qId) {
+        q.answer = optId;
+        q.status = 'answered';
+        const card = document.getElementById(`card-${qId}`);
+        if (card) card.className = 'card answered';
+      }
+    }
+  }
+  updateStats();
+}
+
+function updateChatMore(qId, el) {
+  for (const s of DATA.sections) {
+    for (const q of s.questions) {
+      if (q.id === qId) {
+        q.chat_more = el.value;
+        if (!q.answer && el.value.trim()) q.status = 'chat-more';
+      }
+    }
+  }
+  el.className = el.value.trim() ? 'has-content' : '';
+  updateStats();
+}
+
+function toggleSection(sId) {
+  const body = document.getElementById(`body-${sId}`);
+  const arrow = document.getElementById(`arrow-${sId}`);
+  if (body.classList.contains('hidden')) {
+    body.classList.remove('hidden');
+    arrow.classList.remove('collapsed');
+  } else {
+    body.classList.add('hidden');
+    arrow.classList.add('collapsed');
+  }
+}
+
+function updateStats() {
+  let answered = 0, chatMore = 0;
+  DATA.sections.forEach(s => s.questions.forEach(q => {
+    if (q.answer) answered++;
+    if (q.chat_more && q.chat_more.trim()) chatMore++;
+  }));
+  DATA.stats.answered = answered;
+  DATA.stats.chat_more = chatMore;
+  DATA.stats.remaining = DATA.stats.total - answered;
+  document.getElementById('stat-answered').textContent = answered;
+  document.getElementById('stat-remaining').textContent = DATA.stats.remaining;
+  document.getElementById('progress-fill').style.width = (answered / DATA.stats.total * 100) + '%';
+
+  DATA.sections.forEach(s => {
+    const badge = document.querySelector(`#arrow-${s.id}`).parentElement.querySelector('.section-badge');
+    const ac = s.questions.filter(q => q.answer).length;
+    if (badge) badge.textContent = `${ac}/${s.questions.length} answered`;
+  });
+}
+
+function saveAnswers() {
+  const json = JSON.stringify(DATA, null, 2);
+  const blob = new Blob([json], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = '04-QUESTIONS.json';
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+function resetAll() {
+  if (!confirm('Reset all answers?')) return;
+  DATA.sections.forEach(s => s.questions.forEach(q => {
+    q.answer = null;
+    q.chat_more = '';
+    q.status = 'unanswered';
+  }));
+  render();
+}
+
+render();
+</script>
+</body>
+</html>

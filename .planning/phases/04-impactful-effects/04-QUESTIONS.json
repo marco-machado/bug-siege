@@ -1,0 +1,280 @@
+{
+  "phase": "04-impactful-effects",
+  "generated_at": "2026-04-16T12:00:00Z",
+  "stats": {
+    "total": 9,
+    "answered": 9,
+    "chat_more": 0,
+    "remaining": 0
+  },
+  "sections": [
+    {
+      "id": "slowfield-aura",
+      "title": "Slowfield Particle Aura",
+      "questions": [
+        {
+          "id": "Q-01",
+          "title": "Aura visual style",
+          "context": "Current slowfield aura is a static Graphics circle (Turret.js:232 — fillCircle + strokeCircle in cyan 0x44ddff, 12% fill / 30% stroke). VFX-04 requires a 'visible energy field, not static circle'. This will be the first persistent emitter — Phase 3 only used one-shot bursts.",
+          "options": [
+            {
+              "id": "a",
+              "label": "Orbiting particles",
+              "description": "Small particles orbit the turret in a circle at the aura radius. Continuous, mesmerizing, clearly shows the field boundary. 8-12 particles per slowfield."
+            },
+            {
+              "id": "b",
+              "label": "Radial pulse waves",
+              "description": "Periodic bursts of particles that expand outward from turret center to the edge of the range, like sonar pings. Rhythmic, lower sustained particle count."
+            },
+            {
+              "id": "c",
+              "label": "Floating drift field",
+              "description": "Particles spawn randomly within the aura radius and drift slowly inward/outward with gentle turbulence. Creates a foggy, ambient energy feel. Closest to 'flowing energy field'."
+            },
+            {
+              "id": "d",
+              "label": "Custom",
+              "description": ""
+            }
+          ],
+          "answer": "b",
+          "chat_more": "",
+          "status": "answered"
+        },
+        {
+          "id": "Q-02",
+          "title": "Aura color",
+          "context": "Current aura uses 0x44ddff (cyan). Phase 1 established the Void Ethereal palette (deep purples #2d1b4e, #4b2c62, #6a4c93, accent #eef2ff). Should the slowfield aura match the cosmic palette or keep its distinct cyan identity?",
+          "options": [
+            {
+              "id": "a",
+              "label": "Keep cyan (0x44ddff)",
+              "description": "Maintains the distinct slowfield identity — cyan reads as 'ice/slow' and contrasts well with purple nebula background. Phase 7 will handle full color migration."
+            },
+            {
+              "id": "b",
+              "label": "Cosmic purple-blue tints",
+              "description": "Use THEME nebula colors (0x6a4c93, 0x9966ff) to match the cosmic palette immediately. Cohesive but less visually distinct from other effects."
+            },
+            {
+              "id": "c",
+              "label": "Custom",
+              "description": ""
+            }
+          ],
+          "answer": "b",
+          "chat_more": "",
+          "status": "answered"
+        },
+        {
+          "id": "Q-03",
+          "title": "Upgraded slowfield aura change",
+          "context": "Upgraded slowfield already gets increased range (128→160px, Turret.js:265). Should the particle aura also change visually to signal the upgrade?",
+          "options": [
+            {
+              "id": "a",
+              "label": "Bigger radius only",
+              "description": "Particles simply cover the expanded range. No other visual change — keeps it simple. Upgrade is shown by larger coverage area."
+            },
+            {
+              "id": "b",
+              "label": "Bigger radius + denser particles",
+              "description": "More particles (1.5x count) in the expanded radius. Upgraded feels more powerful, slightly higher perf cost."
+            },
+            {
+              "id": "c",
+              "label": "Bigger radius + brighter/different tint",
+              "description": "Expanded radius plus a brighter accent color or added glow to visually distinguish upgraded from base. Clear visual feedback."
+            },
+            {
+              "id": "d",
+              "label": "Custom",
+              "description": ""
+            }
+          ],
+          "answer": "c",
+          "chat_more": "",
+          "status": "answered"
+        }
+      ]
+    },
+    {
+      "id": "zapper-trail",
+      "title": "Zapper Lightning Trail",
+      "questions": [
+        {
+          "id": "Q-04",
+          "title": "Trail visual approach",
+          "context": "Current drawLightningChain() at Turret.js:181 draws a simple 2px purple line (0xaa44ff) from turret tip through each chained target, destroyed after 200ms. VFX-06 says 'glow trail particles along its path'. The trail needs to feel like residual energy left behind.",
+          "options": [
+            {
+              "id": "a",
+              "label": "Particle trail along path",
+              "description": "Spawn 3-5 particles at intervals along each segment of the lightning chain. Particles fade out over ~300ms after the line disappears. Adds lingering sparkle to the chain path."
+            },
+            {
+              "id": "b",
+              "label": "Wider glowing line with fade",
+              "description": "Replace the 2px line with a thicker (4-6px) semi-transparent line that fades over 400ms instead of abruptly disappearing at 200ms. Simpler, lower particle cost, still reads as 'glow trail'."
+            },
+            {
+              "id": "c",
+              "label": "Both: thick line + particle trail",
+              "description": "Keep the line but make it wider/brighter, AND spawn particles along the path that linger after the line fades. Maximum visual impact, higher particle budget."
+            },
+            {
+              "id": "d",
+              "label": "Custom",
+              "description": ""
+            }
+          ],
+          "answer": "c",
+          "chat_more": "",
+          "status": "answered"
+        },
+        {
+          "id": "Q-05",
+          "title": "Trail color treatment",
+          "context": "Current lightning is solid purple 0xaa44ff. The trail effect could match or contrast to distinguish the 'residual energy' from the initial strike.",
+          "options": [
+            {
+              "id": "a",
+              "label": "Same purple, lower alpha",
+              "description": "Trail uses 0xaa44ff at reduced opacity (0.4-0.6), fading to 0. Cohesive — the trail is simply the afterimage of the strike."
+            },
+            {
+              "id": "b",
+              "label": "Lighter/whiter glow",
+              "description": "Trail particles use accent white (0xeef2ff) or light purple. Creates a 'hot center fading to cool edges' effect — the trail looks like residual heat."
+            },
+            {
+              "id": "c",
+              "label": "Custom",
+              "description": ""
+            }
+          ],
+          "answer": "b",
+          "chat_more": "",
+          "status": "answered"
+        }
+      ]
+    },
+    {
+      "id": "screen-shake",
+      "title": "Screen Shake System",
+      "questions": [
+        {
+          "id": "Q-06",
+          "title": "Core damage shake intensity",
+          "context": "SHAKE-01: camera shake on core damage, intensity proportional to damage. Core takes 5 damage (swarmer), 20 (brute/spitter bullet), or 40 (boss). Phaser's camera.shake(duration, intensity) takes a 0-1 float for intensity. SHAKE-04 is handled automatically — UIScene has its own camera.",
+          "options": [
+            {
+              "id": "a",
+              "label": "Linear scaling with cap",
+              "description": "Map damage linearly to intensity (e.g., 5dmg→0.005, 20dmg→0.02, 40dmg→0.04) with a hard cap at 0.05 to prevent disorientation. Simple and predictable."
+            },
+            {
+              "id": "b",
+              "label": "Tiered levels (light/medium/heavy)",
+              "description": "Three fixed shake levels: light (swarmer, 0.005), medium (brute/spitter, 0.015), heavy (boss, 0.04). More controlled — designers can tune each tier independently."
+            },
+            {
+              "id": "c",
+              "label": "Custom",
+              "description": ""
+            }
+          ],
+          "answer": "a",
+          "chat_more": "",
+          "status": "answered"
+        },
+        {
+          "id": "Q-07",
+          "title": "Shake duration",
+          "context": "Shake duration affects game feel significantly. Too short feels like a glitch, too long disrupts aiming. Duration applies to all shake types (core, turret destruction, boss hit).",
+          "options": [
+            {
+              "id": "a",
+              "label": "Fixed short duration (100-150ms)",
+              "description": "All shakes are brief punchy jolts. Consistent feel, never disrupts gameplay. May feel too subtle for heavy hits."
+            },
+            {
+              "id": "b",
+              "label": "Duration scales with intensity",
+              "description": "Light shakes: 80ms, medium: 150ms, heavy: 250ms. Heavier hits feel more impactful but could slightly disrupt turret placement during build phase."
+            },
+            {
+              "id": "c",
+              "label": "Custom",
+              "description": ""
+            }
+          ],
+          "answer": "a",
+          "chat_more": "",
+          "status": "answered"
+        },
+        {
+          "id": "Q-08",
+          "title": "Shake stacking behavior",
+          "context": "Multiple bugs can hit the core in rapid succession (especially swarmers). If 5 swarmers hit in 500ms, should shakes accumulate or does each new shake replace the previous?",
+          "options": [
+            {
+              "id": "a",
+              "label": "Replace (latest wins)",
+              "description": "Each new shake interrupts the current one. Prevents disorienting sustained vibration during swarmer rushes. Simpler — just call camera.shake() each time."
+            },
+            {
+              "id": "b",
+              "label": "Additive with cap",
+              "description": "Shakes accumulate intensity but cap at a maximum (e.g., 0.05). Multiple rapid hits feel increasingly impactful, but can't exceed a comfort threshold."
+            },
+            {
+              "id": "c",
+              "label": "Cooldown-based",
+              "description": "Skip shake if one is already playing (cooldown period = shake duration). Prevents overlap entirely. May miss some impacts during intense combat."
+            },
+            {
+              "id": "d",
+              "label": "Custom",
+              "description": ""
+            }
+          ],
+          "answer": "a",
+          "chat_more": "",
+          "status": "answered"
+        },
+        {
+          "id": "Q-09",
+          "title": "Boss micro-shake trigger",
+          "context": "SHAKE-03: boss hit impacts cause micro-shake. Bug.takeDamage() at Bug.js:150 doesn't currently check bug type. The boss has 1500 HP and takes many hits before dying. A micro-shake on every single bullet hit could be very frequent. Where should this trigger?",
+          "options": [
+            {
+              "id": "a",
+              "label": "Every hit, very subtle (0.002, 50ms)",
+              "description": "Trigger micro-shake on every boss takeDamage(). Extremely subtle — barely perceptible vibration that creates a subliminal 'hitting something big' feel. High frequency, minimal intensity."
+            },
+            {
+              "id": "b",
+              "label": "HP threshold milestones",
+              "description": "Shake only when boss crosses 75%/50%/25% HP thresholds. Fewer shakes, each more noticeable. Creates dramatic 'the boss is weakening' moments."
+            },
+            {
+              "id": "c",
+              "label": "Cooldown-throttled (every 500ms max)",
+              "description": "Micro-shake on hits but no more than once every 500ms. Balances 'felt impact' with not being annoying. Works well with rapid-fire blasters."
+            },
+            {
+              "id": "d",
+              "label": "Custom",
+              "description": ""
+            }
+          ],
+          "answer": "a",
+          "chat_more": "",
+          "status": "answered"
+        }
+      ]
+    }
+  ]
+}
