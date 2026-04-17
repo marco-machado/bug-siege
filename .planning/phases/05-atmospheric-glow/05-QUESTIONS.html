@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Phase 5: Atmospheric Glow — Discussion Questions</title>
+<style>
+  :root {
+    --bg: #0a0a12;
+    --surface: #15152a;
+    --surface-2: #1d1d36;
+    --border: #2c2c4a;
+    --text: #e6e6ff;
+    --muted: #8888aa;
+    --nebula: #6a4c93;
+    --accent: #9966ff;
+    --ghost: #eef2ff;
+    --green: #22c55e;
+    --green-bg: #0f3a23;
+    --orange: #f97316;
+  }
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0;
+    padding: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+    line-height: 1.5;
+  }
+  .container {
+    max-width: 1600px;
+    margin: 0 auto;
+    padding: 32px 24px 80px;
+  }
+  header {
+    background: linear-gradient(135deg, var(--surface) 0%, var(--surface-2) 100%);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 24px 28px;
+    margin-bottom: 24px;
+  }
+  header h1 {
+    margin: 0 0 6px;
+    font-size: 22px;
+    font-weight: 600;
+    color: var(--ghost);
+  }
+  header .subtitle {
+    color: var(--muted);
+    font-size: 13px;
+    margin-bottom: 18px;
+  }
+  .stats {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    flex-wrap: wrap;
+  }
+  .stat {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 8px 14px;
+    font-size: 13px;
+  }
+  .stat strong {
+    color: var(--ghost);
+    font-weight: 600;
+  }
+  .stat.answered strong { color: var(--green); }
+  .stat.remaining strong { color: var(--accent); }
+  .stat.chat strong { color: var(--orange); }
+  .progress-wrap {
+    flex: 1;
+    min-width: 180px;
+    height: 10px;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent), var(--green));
+    transition: width 0.3s ease;
+    width: 0%;
+  }
+  .actions {
+    display: flex;
+    gap: 12px;
+    margin-top: 16px;
+  }
+  button {
+    background: var(--accent);
+    color: white;
+    border: none;
+    padding: 10px 18px;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    font-family: inherit;
+  }
+  button:hover { background: #b07cff; }
+  button.secondary {
+    background: transparent;
+    color: var(--muted);
+    border: 1px solid var(--border);
+  }
+  button.secondary:hover {
+    color: var(--ghost);
+    border-color: var(--accent);
+  }
+  .save-hint {
+    margin-top: 12px;
+    color: var(--muted);
+    font-size: 12px;
+    line-height: 1.6;
+    background: var(--bg);
+    border: 1px dashed var(--border);
+    padding: 10px 14px;
+    border-radius: 6px;
+  }
+  .save-hint code {
+    background: var(--surface-2);
+    padding: 1px 6px;
+    border-radius: 3px;
+    font-size: 11px;
+    color: var(--ghost);
+  }
+  section.qsection {
+    margin-top: 22px;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+    background: var(--surface);
+  }
+  .section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 20px;
+    cursor: pointer;
+    background: var(--surface-2);
+    user-select: none;
+  }
+  .section-header:hover { background: #25254a; }
+  .section-header .title {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--ghost);
+  }
+  .section-header .meta {
+    font-size: 12px;
+    color: var(--muted);
+  }
+  .section-header .chevron {
+    margin-right: 10px;
+    color: var(--muted);
+    font-size: 12px;
+    display: inline-block;
+    transition: transform 0.2s;
+  }
+  .qsection.collapsed .chevron { transform: rotate(-90deg); }
+  .qsection.collapsed .grid { display: none; }
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+    gap: 16px;
+    padding: 18px;
+  }
+  .card {
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    transition: border-color 0.2s, background 0.2s;
+  }
+  .card.answered {
+    border: 2px solid var(--green);
+    background: var(--green-bg);
+    padding: 15px;
+  }
+  .card-head {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+  }
+  .badge {
+    background: var(--accent);
+    color: white;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 2px 7px;
+    border-radius: 4px;
+    letter-spacing: 0.5px;
+  }
+  .card.answered .badge { background: var(--green); }
+  .card-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--ghost);
+    margin: 0;
+  }
+  .context {
+    color: var(--muted);
+    font-size: 12px;
+    font-style: italic;
+    line-height: 1.55;
+    border-left: 2px solid var(--border);
+    padding-left: 10px;
+  }
+  .options {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .opt {
+    display: flex;
+    gap: 10px;
+    padding: 8px 10px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.15s;
+    background: var(--surface);
+    border: 1px solid var(--border);
+  }
+  .opt:hover { background: #1f1f3c; }
+  .opt input[type="radio"] {
+    margin-top: 4px;
+    accent-color: var(--accent);
+    flex-shrink: 0;
+  }
+  .opt-body { flex: 1; min-width: 0; }
+  .opt-label {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--ghost);
+    margin-bottom: 2px;
+  }
+  .opt-desc {
+    font-size: 12px;
+    color: var(--muted);
+    line-height: 1.5;
+  }
+  .opt input[type="radio"]:checked + .opt-body .opt-label {
+    color: var(--accent);
+  }
+  .card.answered .opt input[type="radio"]:checked + .opt-body .opt-label {
+    color: var(--green);
+  }
+  .chat-wrap {
+    margin-top: 4px;
+  }
+  .chat-label {
+    font-size: 11px;
+    color: var(--muted);
+    margin-bottom: 4px;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+  }
+  textarea {
+    width: 100%;
+    background: var(--bg);
+    color: var(--text);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 8px 10px;
+    font-size: 12px;
+    font-family: inherit;
+    resize: vertical;
+    min-height: 50px;
+    transition: border-color 0.15s;
+  }
+  textarea:focus {
+    outline: none;
+    border-color: var(--accent);
+  }
+  textarea.has-content {
+    border: 2px solid var(--orange);
+    padding: 7px 9px;
+  }
+  .footer-actions {
+    display: flex;
+    gap: 12px;
+    justify-content: flex-end;
+    margin-top: 24px;
+    padding-top: 16px;
+    border-top: 1px solid var(--border);
+  }
+  .toast {
+    position: fixed;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%) translateY(40px);
+    background: var(--green);
+    color: white;
+    padding: 12px 22px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 500;
+    opacity: 0;
+    pointer-events: none;
+    transition: all 0.3s;
+    z-index: 1000;
+  }
+  .toast.show {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <header>
+    <h1>Phase 5: Atmospheric Glow — Discussion Questions</h1>
+    <div class="subtitle">Power mode · 14 questions across 4 sections · Glow/bloom + vignette + Canvas fallback</div>
+    <div class="stats">
+      <div class="stat"><strong id="stat-total">0</strong> total</div>
+      <div class="stat answered"><strong id="stat-answered">0</strong> answered</div>
+      <div class="stat remaining"><strong id="stat-remaining">0</strong> remaining</div>
+      <div class="stat chat"><strong id="stat-chat">0</strong> with notes</div>
+      <div class="progress-wrap"><div class="progress-fill" id="progress"></div></div>
+    </div>
+    <div class="actions">
+      <button onclick="saveAnswers()">Save answers</button>
+      <button class="secondary" onclick="downloadJson()">Download JSON</button>
+      <button class="secondary" onclick="expandAll()">Expand all</button>
+      <button class="secondary" onclick="collapseAll()">Collapse all</button>
+    </div>
+    <div class="save-hint">
+      Answer at your own pace, then click <strong>Save answers</strong>. If your browser blocks file writes, click <strong>Download JSON</strong>
+      and replace <code>05-QUESTIONS.json</code>. Then return to Claude and say <code>refresh</code> to update progress, or <code>finalize</code> to generate CONTEXT.md.
+    </div>
+  </header>
+
+  <div id="sections"></div>
+
+  <div class="footer-actions">
+    <button class="secondary" onclick="downloadJson()">Download JSON</button>
+    <button onclick="saveAnswers()">Save answers</button>
+  </div>
+</div>
+
+<div class="toast" id="toast">Saved</div>
+
+<script>
+const STATE = {"phase":"05-atmospheric-glow","generated_at":"2026-04-17T20:49:35Z","stats":{"total":14,"answered":14,"chat_more":0,"remaining":0},"sections":[{"id":"glow-technique","title":"Glow / Bloom Technique (THEME-04)","questions":[{"id":"Q-01","title":"Glow rendering technique","context":"Phaser 3.80+ supports two WebGL FX paths: (a) per-GameObject preFX/postFX (e.g. `sprite.preFX.addGlow(color, outerStrength, innerStrength)`) applied per turret/core sprite, or (b) a camera-level postFX (`camera.postFX.addBloom(color, ...)`) that blooms the whole scene. Per-sprite is targeted and cheap; camera-level is one-shot but bleeds onto particles, bullets, and background. No custom shader code currently exists.","options":[{"id":"a","label":"Per-sprite preFX.addGlow on turrets and core only","description":"Targeted: only the entities you want to glow actually glow. Cheaper per-frame, predictable, doesn't double-glow particles that already emit light. Recommended for tight control."},{"id":"b","label":"Camera-level postFX.addBloom on the GameScene camera","description":"One call blooms everything bright in the scene — turrets, particles, bullets, the nebula background. More cinematic but harder to tune; bright VFX (death bursts, muzzle flash) get amplified."},{"id":"c","label":"Hybrid — per-sprite glow on turrets/core PLUS subtle camera bloom","description":"Two passes: targeted glow for clear identity, plus a soft scene-wide bloom for atmosphere. Maximum juice but most expensive; needs careful tuning to avoid washing out."},{"id":"d","label":"Custom shader pipeline","description":"Write a custom WebGL shader for a specific look (radial light, chromatic aberration, etc.). Most control, most work — overkill for a polish milestone."}],"answer":"a","chat_more":"","status":"answered"},{"id":"Q-02","title":"Which entities receive glow","context":"Requirements only specify 'turrets and command core' (THEME-04). But other entities are visually significant — boss bug (1500 HP enemy), spitter bullets (purple projectiles), particle bursts. Adding glow to more entities increases atmosphere but costs frame budget.","options":[{"id":"a","label":"Turrets and core only — strict scope","description":"Exactly what THEME-04 specifies. Walls excluded (they're structural, not 'alive'). Cleanest perf, clear visual hierarchy: defenders glow, threats don't."},{"id":"b","label":"Turrets, core, and boss bug","description":"Boss is the climactic Wave 10 enemy — giving it a menacing red/purple glow makes it feel like a final encounter without bloating perf (only 1 boss alive at a time)."},{"id":"c","label":"Turrets, core, boss, AND spitter bullets","description":"Spitter projectiles are a key visual threat. Glowing them reinforces 'incoming danger.' Adds up to ~20 glowing bullets max — moderate perf cost."},{"id":"d","label":"Turrets and core only, BUT walls also glow when upgraded","description":"Walls excluded by default but upgraded walls (200 HP) get a faint glow as visual feedback for the upgrade. Subtle reward signal."}],"answer":"a","chat_more":"","status":"answered"},{"id":"Q-03","title":"Glow color policy","context":"THEME palette is Void Ethereal: nebula 0x2d1b4e/0x4b2c62/0x6a4c93, accent 0xeef2ff (ghostly white). Phase 4 already used 0x9966ff for slowfield aura and 0xeef2ff for zapper trail. Per-turret-type colors would visually differentiate (blaster = warm, zapper = electric, slowfield = cool) but break the 'unified ethereal' aesthetic.","options":[{"id":"a","label":"Uniform THEME accent (ghostly white 0xeef2ff) for all turrets and core","description":"Cohesive ethereal feel — everything glows the same gentle white. Reinforces the cosmic/ghostly atmosphere. Color identity comes from the sprite, not the glow."},{"id":"b","label":"Per-turret-type accent tints (blaster=warm, zapper=violet, slowfield=cool)","description":"Each turret has a recognizable glow signature. Reads at a glance. But risks competing with particle colors and breaking the unified palette established in Phase 1."},{"id":"c","label":"Uniform nebula purple (0x6a4c93) for all turrets, accent white for core","description":"Turrets blend into the cosmic palette; core stands out as the brightest 'heart' of the scene. Good visual hierarchy — defenders are part of the nebula, the core is the soul."},{"id":"d","label":"Per-turret with strict THEME constraint (only nebula colors, no warm/cool extras)","description":"Differentiation but only within the Void Ethereal palette: blaster=accent white, zapper=light violet, slowfield=deep nebula purple. Best of both — variety + cohesion."}],"answer":"d","chat_more":"","status":"answered"},{"id":"Q-04","title":"Upgraded turret glow variant","context":"Phase 2 (ANIM-03) gave upgraded turrets a faster/brighter idle alpha pulse. Phase 4 (D-03) gave upgraded slowfield a brighter color tint on its aura. Established pattern: upgrades get visually distinguished. Glow is another lever to reinforce 'this turret is upgraded.'","options":[{"id":"a","label":"Same glow color, higher outer strength on upgraded","description":"Upgraded turrets glow brighter/larger but in the same hue. Subtle, consistent with the alpha-pulse pattern. Easy to implement (just bump one config value)."},{"id":"b","label":"Different glow color on upgraded (e.g. accent white vs base nebula purple)","description":"Color shift makes upgrades unmistakable. Strong visual reward. Consistent with Phase 4's slowfield-upgrade color shift (D-03)."},{"id":"c","label":"Identical glow on base and upgraded","description":"Glow stays uniform; the upgrade signal is conveyed by the existing tint (0xffdd44) and faster idle pulse. Keeps glow purely atmospheric, not gameplay-feedback."}],"answer":"b","chat_more":"","status":"answered"},{"id":"Q-05","title":"Glow behavior — static vs reactive","context":"Glow can be a constant ambient effect, or it can react to events (pulse on fire, flare on damage taken, breathe with the existing core breathing tween). Reactive glow is more juicy but adds tween/event complexity and risks feeling busy alongside Phase 2/3/4 effects already in place.","options":[{"id":"a","label":"Constant ambient glow — set once, never tweened","description":"Cleanest. Glow is purely atmospheric setting, not feedback. Pairs well with existing idle alpha pulse (Phase 2) which already provides 'aliveness.' Lowest perf cost."},{"id":"b","label":"Glow tied to existing idle pulse — outer strength tweens with the alpha pulse","description":"Reuse the Phase 2 idleTween: when sprite alpha goes 0.75→1.0, glow strength goes too. Extends 'breathing' aesthetic to the glow without new tweens."},{"id":"c","label":"Glow flares on fire/damage events","description":"Brief glow brightening when turret fires or takes damage, returning to baseline. Maximum juice but adds event handlers and risks visual noise on top of muzzle flash + damage flash already present."},{"id":"d","label":"Core glow tied to breathing tween, turret glow constant","description":"Hybrid: core's existing scale-breathing also drives its glow strength (the 'heart' visibly pulses with light), turrets stay constant. Spotlight on the core, calm ambience on defenders."}],"answer":"a","chat_more":"","status":"answered"}]},{"id":"vignette","title":"Vignette Framing (THEME-05)","questions":[{"id":"Q-06","title":"Vignette implementation technique","context":"Phaser 3.80+ provides `camera.postFX.addVignette(x, y, radius, strength)` (WebGL only). Alternatives: a static Graphics overlay drawn over the scene (works in both renderers, no FX required), or baking the vignette into the procedural nebula texture in BootScene (zero per-frame cost but locked at startup).","options":[{"id":"a","label":"Phaser camera postFX.addVignette","description":"Standard Phaser 3.80+ FX. WebGL only. Configurable radius and strength, can be tweened. Requires Canvas fallback (see Q-11). Native, well-supported."},{"id":"b","label":"Static Graphics overlay drawn at top of scene","description":"Custom radial-gradient Graphics object positioned above gameplay but below UIScene. Renderer-agnostic (works on Canvas + WebGL identically). Simple but you implement the gradient yourself."},{"id":"c","label":"Bake vignette darkening into the procedural nebula texture","description":"Extend BootScene.generateNebula() to darken canvas edges before texture upload. Zero per-frame cost, renderer-agnostic. Locked at startup — can't pulse or react."},{"id":"d","label":"Hybrid — bake subtle vignette into nebula AND add Phaser postFX vignette on WebGL","description":"Baseline darkening always present (via baked texture); WebGL gets an extra dynamic vignette layer for cinematic feel. Best of both — no fallback needed but WebGL gets the polish."}],"answer":"a","chat_more":"","status":"answered"},{"id":"Q-07","title":"Vignette intensity","context":"Vignette strength is a spectrum from 'I can barely tell it's there' (subtle atmospheric framing, ~0.3 strength on Phaser scale) to 'cinematic spotlight' (~0.7+, dramatic darkening at edges). The 7×7 grid play area sits in screen center (offsetX=736, offsetY=316, ends at ~1184x764) — a strong vignette would darken HUD-adjacent areas significantly.","options":[{"id":"a","label":"Subtle (~0.3 strength) — atmospheric framing only","description":"Edges barely noticeable, just enough to draw the eye toward center. Doesn't compete with HUD or interfere with build menus that pop up at edges."},{"id":"b","label":"Moderate (~0.5 strength) — clear framing without drama","description":"Edges visibly darker, play area pops. Recommended balance — readable atmosphere without spotlight effect."},{"id":"c","label":"Cinematic (~0.7 strength) — dramatic spotlight on play area","description":"Edges noticeably dark, all attention on the grid. Very atmospheric but may darken HUD elements (UIScene runs separately so technically unaffected, but the HUD will sit against a darker frame visually)."}],"answer":"a","chat_more":"","status":"answered"},{"id":"Q-08","title":"Vignette color","context":"A pure black vignette (0x000000) is the cinematic standard — clean fade to dark. A tinted vignette using nebula deep purple (0x2d1b4e, the THEME background fade color) keeps everything inside the cosmic palette but reads less as 'frame' and more as 'fog.' Phaser's addVignette accepts no color parameter directly — only strength — but you can tweak by combining with a tinted Graphics overlay.","options":[{"id":"a","label":"Pure black — cinematic, clean frame","description":"Standard movie/photo vignette. Maximum contrast against bright play area. Phaser's default addVignette behavior."},{"id":"b","label":"Deep nebula purple (0x2d1b4e) — atmospheric, palette-cohesive","description":"Edges fade to the nebula's darkest cosmic color. Reads as 'cosmic mist closing in' rather than a movie frame. Requires Graphics overlay or hybrid technique."},{"id":"c","label":"Black with a hint of purple tint","description":"Mostly black but slightly warm-purple. Bridges cinematic and atmospheric. Most flexible — reads as a frame but in the cosmic mood."}],"answer":"a","chat_more":"","status":"answered"},{"id":"Q-09","title":"Vignette reactivity","context":"Vignette can be static (set once, never changes) or reactive — intensifying during the wave phase, pulsing in time with low core HP, flaring red on damage. Reactive vignette is dramatic but couples atmosphere to gameplay state and adds tweens. Static is simpler and matches THEME-05's 'subtle vignette effect' wording.","options":[{"id":"a","label":"Static — set once on scene create, never changes","description":"Pure atmospheric framing. Simplest. Matches the THEME-05 wording ('subtle vignette effect')."},{"id":"b","label":"Phase-reactive — slightly stronger during wave phase, lighter during build phase","description":"Subtle tension cue. Build phase = relaxed/lighter; wave phase = focused/darker. Tweens on phase-changed event. Reuses existing event."},{"id":"c","label":"HP-reactive — vignette intensifies and tints red as core HP drops below 50%","description":"Maximum drama — the screen visibly closes in as you're losing. Strong feedback signal but risks 'death spiral' feel and competes with the screen-shake on core damage."},{"id":"d","label":"Both phase- AND HP-reactive","description":"Full dynamic system. Most juice, most complexity, most risk of feeling busy on top of all the Phase 3/4 effects."}],"answer":"b","chat_more":"","status":"answered"}]},{"id":"renderer-fallback","title":"Renderer Detection & Canvas Fallback","questions":[{"id":"Q-10","title":"Canvas fallback for glow","context":"main.js uses `Phaser.AUTO` so the renderer can be WebGL or Canvas at runtime. preFX/postFX are WebGL-only. THEME-04 requires 'graceful degradation on Canvas' — but degradation can mean 'nothing visible' or 'a static glow halo texture stamped behind each turret.' Stamping a halo costs a few extra sprites; skipping is simplest.","options":[{"id":"a","label":"Skip glow entirely on Canvas — log a one-line warning, render plain sprites","description":"Simplest 'graceful degradation.' Canvas users get the game without the polish. Zero extra code paths. Acceptable per the requirement wording."},{"id":"b","label":"Stamp a pre-baked glow halo texture behind each turret/core on Canvas","description":"Add a generated 'glow-halo' texture in BootScene; on Canvas fallback, place it behind each turret sprite. Visible glow approximation without WebGL FX. Extra sprite per turret."},{"id":"c","label":"Use sprite-level alpha pulsing as a fake-glow on Canvas","description":"Reuse/intensify the Phase 2 idle alpha pulse as 'this is supposed to be glowing.' No new assets, no new sprites. Weakest visual but zero cost."}],"answer":"a","chat_more":"","status":"answered"},{"id":"Q-11","title":"Canvas fallback for vignette","context":"If Q-06 selects Phaser postFX.addVignette (WebGL only), Canvas needs a fallback. A Graphics-based radial gradient overlay works identically in both renderers. If Q-06 selects the baked-into-nebula or Graphics-overlay technique, no fallback is needed — those work everywhere.","options":[{"id":"a","label":"Use Graphics overlay fallback when on Canvas, Phaser postFX when on WebGL","description":"Both renderers get a vignette; only the technique differs. Same visual outcome. Most robust."},{"id":"b","label":"Skip vignette entirely on Canvas","description":"Canvas users don't get the framing effect. Aligns with the THEME-04 'graceful degradation' philosophy applied to THEME-05 too. Simplest."},{"id":"c","label":"Always use the Graphics overlay technique (no Phaser postFX at all)","description":"Skip Phaser's vignette FX entirely; use one Graphics overlay for both renderers. Same visual everywhere, zero branching, but we lose access to the native FX's tweenable parameters. Effectively pre-decides Q-06."}],"answer":"b","chat_more":"","status":"answered"},{"id":"Q-12","title":"Where renderer detection lives","context":"We need to check `game.renderer.type === Phaser.WEBGL` in at least one place. Options: (a) inline in GameScene.create() each time it runs, (b) a module-level helper like `isWebGL(scene)` in a new utils file, (c) computed once in BootScene and stashed on the registry. The codebase has no existing utils/helpers folder — current pattern is inline checks (e.g. DEBUG.enableDebugKeys at top of GameConfig.js).","options":[{"id":"a","label":"Inline check in GameScene.create() — `const isWebGL = this.game.renderer.type === Phaser.WEBGL;`","description":"No new files. Matches the existing 'inline simple checks' pattern. Only one scene applies FX (GameScene) so no duplication concern."},{"id":"b","label":"New helper in src/utils/renderer.js exporting `isWebGL(scene)`","description":"Reusable across scenes, testable. But establishes a new src/utils/ directory and the codebase has so far avoided helpers. Possibly overkill for a single check."},{"id":"c","label":"Compute once in BootScene and stash on `this.registry.set('isWebGL', ...)`","description":"Single source of truth, accessible via `scene.registry.get('isWebGL')` from anywhere. Slight pattern shift — registry isn't currently used for state."}],"answer":"a","chat_more":"","status":"answered"}]},{"id":"config-scope","title":"Config & Scope","questions":[{"id":"Q-13","title":"Config location for glow + vignette tunables","context":"GameConfig.js exports a frozen `VFX` object containing DEATH, MUZZLE, BUILD, SHOCKWAVE, SLOWFIELD, ZAPPER_TRAIL, SHAKE sections. Glow and vignette are conceptually post-processing rather than per-event VFX. The codebase has THEME for palette and VFX for effects — neither perfectly fits.","options":[{"id":"a","label":"Extend VFX with VFX.GLOW and VFX.VIGNETTE sections","description":"Consistent with established frozen-config pattern. All visual tuning lives in one object. Slight conceptual stretch (post-FX isn't really 'event VFX')."},{"id":"b","label":"New top-level POSTFX frozen object alongside VFX and THEME","description":"Cleanest separation: THEME = palette, VFX = event effects, POSTFX = scene-wide rendering. New export, but follows the existing 'one-concept-per-frozen-object' pattern."},{"id":"c","label":"Add to THEME object — GLOW and VIGNETTE sit alongside background/nebula/accent","description":"Treats glow + vignette as theme-level concerns (which they kind of are — they're aesthetic, not event-driven). Tightest coupling to the cosmic identity."}],"answer":"b","chat_more":"","status":"answered"},{"id":"Q-14","title":"Scene scope — where the effects apply","context":"The game has 5 scenes: BootScene (loader), MainMenuScene (menu), GameScene (gameplay), UIScene (HUD overlay on GameScene), GameOverScene (results). THEME-04/05 wording focuses on play feel but a cohesive cosmic atmosphere argues for menu/gameover too. UIScene MUST stay un-affected (HUD readability).","options":[{"id":"a","label":"GameScene only — strict scope","description":"Vignette and glow apply only during gameplay. Menus and game-over keep their current look. Smallest blast radius, cleanest scope. Phase 7 (Cohesive Theme) can extend later."},{"id":"b","label":"GameScene + GameOverScene — extend the cosmic moment to the result screen","description":"Vignette persists into the game-over screen for narrative continuity. Menu stays plain. Modest scope expansion."},{"id":"c","label":"All gameplay-adjacent scenes — MainMenu, Game, GameOver (UIScene exempt)","description":"Vignette + glow applied wherever they make sense. Most cohesive but starts overlapping with Phase 7's 'all UI consistent' goal — consider whether to defer non-Game scenes to Phase 7."}],"answer":"c","chat_more":"","status":"answered"}]}]};
+
+let fileHandle = null;
+
+function escapeHtml(s) {
+  return String(s).replace(/[&<>"']/g, c => ({
+    '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+  }[c]));
+}
+
+function render() {
+  const root = document.getElementById('sections');
+  root.innerHTML = '';
+  for (const section of STATE.sections) {
+    const sec = document.createElement('section');
+    sec.className = 'qsection';
+    sec.dataset.sectionId = section.id;
+    const answeredInSection = section.questions.filter(q => q.answer !== null && q.answer !== '').length;
+    sec.innerHTML = `
+      <div class="section-header" onclick="toggleSection(this)">
+        <div><span class="chevron">▼</span><span class="title">${escapeHtml(section.title)}</span></div>
+        <div class="meta">${answeredInSection}/${section.questions.length} answered</div>
+      </div>
+      <div class="grid"></div>
+    `;
+    const grid = sec.querySelector('.grid');
+    for (const q of section.questions) {
+      const isAnswered = q.answer !== null && q.answer !== '';
+      const card = document.createElement('div');
+      card.className = 'card' + (isAnswered ? ' answered' : '');
+      card.dataset.questionId = q.id;
+      let optsHtml = '';
+      for (const opt of q.options) {
+        const checked = q.answer === opt.id ? 'checked' : '';
+        optsHtml += `
+          <label class="opt">
+            <input type="radio" name="${q.id}" value="${opt.id}" ${checked} onchange="setAnswer('${q.id}', '${opt.id}')">
+            <div class="opt-body">
+              <div class="opt-label">${escapeHtml(opt.label)}</div>
+              <div class="opt-desc">${escapeHtml(opt.description)}</div>
+            </div>
+          </label>`;
+      }
+      // "Other" option for free-text answers
+      const otherChecked = q.answer === '__other__' ? 'checked' : '';
+      optsHtml += `
+        <label class="opt">
+          <input type="radio" name="${q.id}" value="__other__" ${otherChecked} onchange="setAnswer('${q.id}', '__other__')">
+          <div class="opt-body">
+            <div class="opt-label">Other (describe in notes below)</div>
+            <div class="opt-desc">None of these — explain what you'd do instead in the notes box.</div>
+          </div>
+        </label>`;
+      const chatClass = q.chat_more && q.chat_more.length > 0 ? 'has-content' : '';
+      card.innerHTML = `
+        <div class="card-head">
+          <span class="badge">${q.id}</span>
+          <h3 class="card-title">${escapeHtml(q.title)}</h3>
+        </div>
+        <div class="context">${escapeHtml(q.context)}</div>
+        <div class="options">${optsHtml}</div>
+        <div class="chat-wrap">
+          <div class="chat-label">Notes / nuance (optional)</div>
+          <textarea class="${chatClass}" placeholder="Add context, nuance, or clarification for this question..." oninput="setChat('${q.id}', this.value)">${escapeHtml(q.chat_more || '')}</textarea>
+        </div>`;
+      grid.appendChild(card);
+    }
+    root.appendChild(sec);
+  }
+  refreshStats();
+}
+
+function setAnswer(qid, optId) {
+  for (const sec of STATE.sections) {
+    for (const q of sec.questions) {
+      if (q.id === qid) {
+        q.answer = optId;
+        q.status = (q.chat_more && q.chat_more.length > 0) ? 'answered' : 'answered';
+        const card = document.querySelector(`[data-question-id="${qid}"]`);
+        if (card) card.classList.add('answered');
+        const sectionEl = card.closest('.qsection');
+        if (sectionEl) {
+          const answered = sec.questions.filter(qq => qq.answer !== null && qq.answer !== '').length;
+          sectionEl.querySelector('.meta').textContent = `${answered}/${sec.questions.length} answered`;
+        }
+        refreshStats();
+        return;
+      }
+    }
+  }
+}
+
+function setChat(qid, val) {
+  for (const sec of STATE.sections) {
+    for (const q of sec.questions) {
+      if (q.id === qid) {
+        q.chat_more = val;
+        if (q.answer === null || q.answer === '') {
+          q.status = val.length > 0 ? 'chat-more' : 'unanswered';
+        }
+        const card = document.querySelector(`[data-question-id="${qid}"]`);
+        if (card) {
+          const ta = card.querySelector('textarea');
+          if (val.length > 0) ta.classList.add('has-content'); else ta.classList.remove('has-content');
+        }
+        refreshStats();
+        return;
+      }
+    }
+  }
+}
+
+function refreshStats() {
+  let total = 0, answered = 0, chat = 0;
+  for (const sec of STATE.sections) {
+    for (const q of sec.questions) {
+      total++;
+      if (q.answer !== null && q.answer !== '') answered++;
+      if (q.chat_more && q.chat_more.length > 0) chat++;
+    }
+  }
+  STATE.stats.total = total;
+  STATE.stats.answered = answered;
+  STATE.stats.chat_more = chat;
+  STATE.stats.remaining = total - answered;
+  document.getElementById('stat-total').textContent = total;
+  document.getElementById('stat-answered').textContent = answered;
+  document.getElementById('stat-remaining').textContent = total - answered;
+  document.getElementById('stat-chat').textContent = chat;
+  document.getElementById('progress').style.width = total > 0 ? `${(answered / total) * 100}%` : '0%';
+}
+
+function toggleSection(headerEl) {
+  headerEl.parentElement.classList.toggle('collapsed');
+}
+function expandAll() { document.querySelectorAll('.qsection').forEach(s => s.classList.remove('collapsed')); }
+function collapseAll() { document.querySelectorAll('.qsection').forEach(s => s.classList.add('collapsed')); }
+
+function showToast(msg, isError) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.style.background = isError ? '#dc2626' : 'var(--green)';
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2400);
+}
+
+async function saveAnswers() {
+  const json = JSON.stringify(STATE, null, 2);
+  if (window.showSaveFilePicker) {
+    try {
+      if (!fileHandle) {
+        fileHandle = await window.showSaveFilePicker({
+          suggestedName: '05-QUESTIONS.json',
+          types: [{ description: 'JSON', accept: { 'application/json': ['.json'] } }],
+        });
+      }
+      const writable = await fileHandle.createWritable();
+      await writable.write(json);
+      await writable.close();
+      showToast('Saved to file');
+      return;
+    } catch (e) {
+      if (e.name !== 'AbortError') console.warn('Save failed, falling back to download:', e);
+    }
+  }
+  downloadJson();
+}
+
+function downloadJson() {
+  const json = JSON.stringify(STATE, null, 2);
+  const blob = new Blob([json], { type: 'application/json' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = '05-QUESTIONS.json';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(a.href);
+  showToast('Downloaded — replace the original file');
+}
+
+render();
+</script>
+</body>
+</html>
