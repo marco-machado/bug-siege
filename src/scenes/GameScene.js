@@ -413,6 +413,8 @@ export class GameScene extends Phaser.Scene {
   }
 
   update(time, delta) {
+    if (this.phase === 'gameover') return;
+
     this.bugs.getChildren().forEach((bug) => {
       if (bug.active) bug.slowed = false;
     });
