@@ -1,5 +1,5 @@
 import Phaser from 'phaser';
-import { BUGS, GRID, STEERING, TURRETS, VFX } from '../config/GameConfig.js';
+import { BUGS, STEERING, TURRETS, VFX } from '../config/GameConfig.js';
 
 export class Bug extends Phaser.Physics.Arcade.Sprite {
   constructor(scene, x, y) {
