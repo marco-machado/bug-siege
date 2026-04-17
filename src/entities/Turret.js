@@ -364,6 +364,10 @@ export class Turret {
       this.idleTween.destroy();
       this.idleTween = null;
     }
+    if (this.hpTween) {
+      this.hpTween.destroy();
+      this.hpTween = null;
+    }
     this.sprite.destroy();
     if (this.wallBody) {
       this.wallBody.destroy();
