@@ -1,5 +1,5 @@
 import Phaser from 'phaser';
-import { GRID, GAME, ECONOMY, DEBUG, VFX } from '../config/GameConfig.js';
+import { GRID, GAME, ECONOMY, DEBUG, VFX, POSTFX } from '../config/GameConfig.js';
 import { Grid } from '../entities/Grid.js';
 import { Turret } from '../entities/Turret.js';
 import { Bug } from '../entities/Bug.js';
@@ -121,6 +121,13 @@ export class GameScene extends Phaser.Scene {
       yoyo: true,
       repeat: -1,
     });
+
+    const isWebGL = this.game.renderer.type === Phaser.WEBGL;
+    if (isWebGL) {
+      const cfg = POSTFX.GLOW.core;
+      this.coreSprite.preFX.setPadding(cfg.padding);
+      this._coreGlowFX = this.coreSprite.preFX.addGlow(cfg.color, cfg.outerStrength, cfg.innerStrength);
+    }
   }
 
   placeStarterTurrets() {
