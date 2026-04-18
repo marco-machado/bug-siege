@@ -1,5 +1,5 @@
 import Phaser from 'phaser';
-import { GAME } from '../config/GameConfig.js';
+import { GAME, POSTFX } from '../config/GameConfig.js';
 
 export class MainMenuScene extends Phaser.Scene {
   constructor() {
@@ -8,6 +8,14 @@ export class MainMenuScene extends Phaser.Scene {
 
   create() {
     const { canvasWidth: W, canvasHeight: H } = GAME;
+
+    const isWebGL = this.game.renderer.type === Phaser.WEBGL;
+    if (!isWebGL) {
+      console.warn('[postfx] Canvas renderer detected — vignette disabled');
+    } else {
+      const v = POSTFX.VIGNETTE;
+      this.cameras.main.postFX.addVignette(v.x, v.y, v.radius, v.buildStrength);
+    }
 
     this.createStarfield(W, H);
 
