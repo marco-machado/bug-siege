@@ -80,7 +80,7 @@ export class GameScene extends Phaser.Scene {
 
     const isWebGL = this.game.renderer.type === Phaser.WEBGL;
     if (!isWebGL) {
-      console.warn('[postfx] Canvas renderer detected — glow disabled');
+      console.warn('[postfx] Canvas renderer detected — vignette disabled');
     } else {
       const v = POSTFX.VIGNETTE;
       this._vignetteFX = this.cameras.main.postFX.addVignette(v.x, v.y, v.radius, v.buildStrength);
@@ -149,13 +149,6 @@ export class GameScene extends Phaser.Scene {
       yoyo: true,
       repeat: -1,
     });
-
-    const isWebGL = this.game.renderer.type === Phaser.WEBGL;
-    if (isWebGL) {
-      const cfg = POSTFX.GLOW.core;
-      this.coreSprite.preFX.setPadding(cfg.padding);
-      this._coreGlowFX = this.coreSprite.preFX.addGlow(cfg.color, cfg.outerStrength, cfg.innerStrength);
-    }
   }
 
   placeStarterTurrets() {

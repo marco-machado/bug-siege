@@ -1,5 +1,5 @@
 import Phaser from 'phaser';
-import { GRID, TURRETS, ECONOMY, VFX, POSTFX } from '../config/GameConfig.js';
+import { GRID, TURRETS, ECONOMY, VFX } from '../config/GameConfig.js';
 
 export class Turret {
   constructor(scene, col, row, type, worldX, worldY) {
@@ -20,13 +20,6 @@ export class Turret {
     this.fireTimer = 0;
     this.currentTarget = null;
     this.sprite = scene.add.sprite(worldX, worldY, `turret-${type}`).setDisplaySize(GRID.tileSize, GRID.tileSize);
-
-    const isWebGL = scene.game.renderer.type === Phaser.WEBGL;
-    if (isWebGL && type !== 'wall') {
-      const cfg = POSTFX.GLOW[type];
-      this.sprite.preFX.setPadding(cfg.padding);
-      this.glowFX = this.sprite.preFX.addGlow(cfg.base, cfg.outerStrength, cfg.innerStrength);
-    }
 
     this.wallBody = scene.physics.add.staticImage(worldX, worldY, `turret-${type}`);
     this.wallBody.setDisplaySize(GRID.tileSize, GRID.tileSize);
@@ -334,10 +327,6 @@ export class Turret {
     }
     this.sprite.setTint(0xffdd44);
 
-    if (this.glowFX) {
-      this.glowFX.color = POSTFX.GLOW[this.type].upgraded;
-    }
-
     return true;
   }
 
@@ -378,9 +367,6 @@ export class Turret {
     if (this.hpTween) {
       this.hpTween.destroy();
       this.hpTween = null;
-    }
-    if (this.sprite && this.sprite.preFX) {
-      this.sprite.preFX.clear();
     }
     this.sprite.destroy();
     if (this.wallBody) {
