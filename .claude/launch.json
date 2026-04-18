@@ -1,0 +1,15 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "vite-dev-debug-keys",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "dev"],
+      "env": {
+        "VITE_DEBUG_KEYS": "true"
+      },
+      "port": 5173,
+      "autoPort": true
+    }
+  ]
+}
