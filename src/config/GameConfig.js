@@ -211,7 +211,7 @@ export const POSTFX = Object.freeze({
     y: 0.5,
     radius: 0.5,
     buildStrength: 0.25,
-    waveStrength: 0.40,
+    waveStrength: 0.30,
     transitionDuration: 600,
     transitionEase: 'Sine.easeInOut',
   }),
