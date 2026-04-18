@@ -1,10 +1,11 @@
 ---
 phase: 5
 slug: atmospheric-glow
-status: draft
+status: smoke-green-uat-pending
 nyquist_compliant: false
-wave_0_complete: false
+wave_0_complete: true
 created: 2026-04-17
+audited: 2026-04-17
 ---
 
 # Phase 5 — Validation Strategy
@@ -39,18 +40,18 @@ created: 2026-04-17
 
 | Task ID | Plan | Wave | Requirement | Threat Ref | Secure Behavior | Test Type | Automated Command | File Exists | Status |
 |---------|------|------|-------------|------------|-----------------|-----------|-------------------|-------------|--------|
-| 5-01-01 | 01 | 1 | THEME-04 | — | POSTFX config exported frozen, immutable | smoke | `npm run build` | n/a | ⬜ pending |
-| 5-02-01 | 02 | 1 | THEME-04 | — | Turret glow applied on WebGL, skipped on Canvas | smoke + visual-manual | `npm run build` | n/a | ⬜ pending |
-| 5-02-02 | 02 | 1 | THEME-04 | — | Turret upgrade swaps glow color | smoke + visual-manual | `npm run build` | n/a | ⬜ pending |
-| 5-02-03 | 02 | 1 | THEME-04 | — | Turret destroy clears preFX before sprite teardown | smoke + devtools | `npm run build` | n/a | ⬜ pending |
-| 5-03-01 | 03 | 2 | THEME-04 | — | Core glow applied on WebGL in GameScene.renderCore | smoke + visual-manual | `npm run build` | n/a | ⬜ pending |
-| 5-03-02 | 03 | 2 | THEME-05 | — | Main-camera vignette added + phase-reactive tween on GameScene | smoke + visual-manual | `npm run build` | n/a | ⬜ pending |
-| 5-03-03 | 03 | 2 | THEME-05 | — | Vignette tween killed + postFX cleared on scene shutdown | smoke + devtools-manual | `npm run build` | n/a | ⬜ pending |
-| 5-04-01 | 04 | 2 | THEME-05 | — | Static vignette on MainMenuScene (WebGL) | smoke + visual-manual | `npm run build` | n/a | ⬜ pending |
-| 5-04-02 | 04 | 2 | THEME-05 | — | Static vignette on GameOverScene (WebGL) | smoke + visual-manual | `npm run build` | n/a | ⬜ pending |
-| 5-04-03 | 04 | 2 | THEME-04/05 | — | Canvas-runtime warnings emitted once per scene, no errors | smoke + manual (Phaser.CANVAS flag) | `npm run build` | n/a | ⬜ pending |
+| 5-01-01 | 01 | 1 | THEME-04 | — | POSTFX config exported frozen, immutable | smoke | `npm run build` | n/a | ✅ smoke-green · behavior→manual |
+| 5-02-01 | 02 | 1 | THEME-04 | — | Turret glow applied on WebGL, skipped on Canvas | smoke + visual-manual | `npm run build` | n/a | ✅ smoke-green · behavior→manual #1, #3 |
+| 5-02-02 | 02 | 1 | THEME-04 | — | Turret upgrade swaps glow color | smoke + visual-manual | `npm run build` | n/a | ✅ smoke-green · behavior→manual #2 |
+| 5-02-03 | 02 | 1 | THEME-04 | — | Turret destroy clears preFX before sprite teardown | smoke + devtools | `npm run build` | n/a | ✅ smoke-green · behavior→manual #8 |
+| 5-03-01 | 03 | 2 | THEME-04 | — | Core glow applied on WebGL in GameScene.renderCore | smoke + visual-manual | `npm run build` | n/a | ✅ smoke-green · behavior→manual #1 |
+| 5-03-02 | 03 | 2 | THEME-05 | — | Main-camera vignette added + phase-reactive tween on GameScene | smoke + visual-manual | `npm run build` | n/a | ✅ smoke-green · behavior→manual #4, #5 |
+| 5-03-03 | 03 | 2 | THEME-05 | — | Vignette tween killed + postFX cleared on scene shutdown | smoke + devtools-manual | `npm run build` | n/a | ✅ smoke-green · behavior→manual #8 |
+| 5-04-01 | 04 | 2 | THEME-05 | — | Static vignette on MainMenuScene (WebGL) | smoke + visual-manual | `npm run build` | n/a | ✅ smoke-green · behavior→manual #4 |
+| 5-04-02 | 04 | 2 | THEME-05 | — | Static vignette on GameOverScene (WebGL) | smoke + visual-manual | `npm run build` | n/a | ✅ smoke-green · behavior→manual #4 |
+| 5-04-03 | 04 | 2 | THEME-04/05 | — | Canvas-runtime warnings emitted once per scene, no errors | smoke + manual (Phaser.CANVAS flag) | `npm run build` | n/a | ✅ smoke-green · behavior→manual #3 |
 
-*Status: ⬜ pending · ✅ green · ❌ red · ⚠️ flaky*
+*Status: ⬜ pending · ✅ green · ❌ red · ⚠️ flaky · "smoke-green · behavior→manual #N" = automated build gate green; behavioral verification deferred to Manual-Only test #N below.*
 
 *Task IDs are projected; actual IDs are assigned by the planner.*
 
@@ -92,3 +93,23 @@ None — no test framework to bootstrap. `CLAUDE.md` explicitly disclaims automa
 - [ ] `nyquist_compliant: true` set in frontmatter only after all of the above
 
 **Approval:** pending
+
+---
+
+## Validation Audit 2026-04-17
+
+| Metric | Count |
+|--------|-------|
+| Tasks audited | 10 |
+| Smoke-gate green (`npm run build`) | 10 |
+| Behavioral gaps found | 10 |
+| Resolved (auto-filled) | 0 |
+| Escalated to Manual-Only | 10 (already captured pre-audit) |
+
+**Audit notes:**
+
+- Project has no test framework (`CLAUDE.md` line: "No test framework or linter is configured yet"). Bootstrapping one was rejected as out-of-phase scope per /gsd:validate-phase user gate.
+- All 10 tasks pass the only available automated gate: `vite build` (3.03s, 20 modules, no errors).
+- All 10 task behaviors are WebGL visual-rendering concerns (preFX glow color, postFX vignette strength, phase-reactive tween timing, Canvas-fallback warning emission). These cannot be meaningfully asserted without a real GPU and were intentionally captured in the Manual-Only table when this VALIDATION.md was authored.
+- The Manual-Only table (8 tests) is mirrored in `05-HUMAN-UAT.md` (status: partial, 8 pending) and `05-VERIFICATION.md` (status: human_needed).
+- `nyquist_compliant` remains `false` and will flip to `true` only after `05-HUMAN-UAT.md` reaches `status: passed` with all 8 manual tests green and FX-leak inspection performed across ≥3 scene cycles.
