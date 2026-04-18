@@ -3,13 +3,13 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: executing
-last_updated: "2026-04-18T00:03:09Z"
+last_updated: "2026-04-18T00:06:45Z"
 progress:
   total_phases: 6
   completed_phases: 3
   total_plans: 13
-  completed_plans: 9
-  percent: 69
+  completed_plans: 10
+  percent: 77
 ---
 
 # Bug Siege — Project State
@@ -36,17 +36,17 @@ progress:
 ## Current Position
 
 Phase: 5 (atmospheric-glow) — EXECUTING
-Plan: 2 of 4
+Plan: 3 of 4
 **Phase:** 5
-**Plan:** 05-01 complete — POSTFX frozen config added to GameConfig.js
-**Plan progress:** 25% (1 of 4 plans in phase 5 complete)
+**Plan:** 05-02 complete — Turret glow lifecycle (constructor attach, upgrade color swap, destroy clear)
+**Plan progress:** 50% (2 of 4 plans in phase 5 complete)
 **Status:** Executing
 
 ```
-[█████████████░░░░░░░] 69% — Phase 5 Plan 1 complete
+[███████████████░░░░░] 77% — Phase 5 Plan 2 complete
 ```
 
-**Next action:** Execute `05-02-PLAN.md` (Turret glow lifecycle)
+**Next action:** Execute `05-03-PLAN.md` (GameScene core glow + camera vignette + phase-reactive tween)
 
 ## Performance Metrics
 
@@ -67,6 +67,7 @@ Plan: 2 of 4
 | Phase 04 P01 | 107 | 2 tasks | 2 files |
 | Phase 04 P02 | 197 | 2 tasks | 1 files |
 | Phase 05 P01 | 3 | 1 tasks | 1 files |
+| Phase 05 P02 | 1 | 2 tasks | 1 files |
 
 ## Decisions
 
@@ -88,6 +89,9 @@ Plan: 2 of 4
 - [Phase 05-atmospheric-glow]: POSTFX is a new top-level sibling of THEME/VFX (not nested) per D-13 — palette/event-fx/scene-rendering stay separate concerns
 - [Phase 05-atmospheric-glow]: Glow colors stored as numeric hex (0x...) because Phaser preFX.addGlow requires numeric — mirrors VFX convention
 - [Phase 05-atmospheric-glow]: padding field folded into each GLOW entry (10 for turrets at outerStrength=2, 12 for core at outerStrength=3) to prevent halo clipping on 64px sprites
+- [Phase 05-atmospheric-glow]: Turret glow attaches on this.sprite.preFX (not this) — composite Turret class requires preFX/FX ops route through the wrapped Phaser sprite
+- [Phase 05-atmospheric-glow]: Upgrade-path glow color swap uses direct Glow.color property mutation, NOT preFX.clear+addGlow — zero allocation, preserves handle (RESEARCH Pattern 2)
+- [Phase 05-atmospheric-glow]: THEME-04 left Pending in REQUIREMENTS.md until plan 03 wires the core glow half — turret half is code-complete as of plan 02 but requirement explicitly covers "turrets and core"
 
 ## Accumulated Context
 
@@ -120,10 +124,10 @@ From research/SUMMARY.md:
 
 ## Session Continuity
 
-**Last session:** 2026-04-18T00:03:09Z
-**Stopped at:** Completed 05-01-PLAN.md (POSTFX frozen config)
-**Resume file:** .planning/phases/05-atmospheric-glow/05-02-PLAN.md
-**Next session:** Execute 05-02 (Turret glow lifecycle)
+**Last session:** 2026-04-18T00:06:45Z
+**Stopped at:** Completed 05-02-PLAN.md (Turret glow lifecycle)
+**Resume file:** .planning/phases/05-atmospheric-glow/05-03-PLAN.md
+**Next session:** Execute 05-03 (GameScene core glow + camera vignette + phase-reactive tween)
 
 **Context to preserve:**
 
