@@ -334,6 +334,10 @@ export class Turret {
     }
     this.sprite.setTint(0xffdd44);
 
+    if (this.glowFX) {
+      this.glowFX.color = POSTFX.GLOW[this.type].upgraded;
+    }
+
     return true;
   }
 
