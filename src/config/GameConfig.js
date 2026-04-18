@@ -198,3 +198,21 @@ export const VFX = Object.freeze({
     bossMicroCooldown: 500,
   }),
 });
+
+export const POSTFX = Object.freeze({
+  GLOW: Object.freeze({
+    blaster:   Object.freeze({ base: 0xeef2ff, upgraded: 0xeef2ff, outerStrength: 2, innerStrength: 1, padding: 10 }),
+    zapper:    Object.freeze({ base: 0x9966ff, upgraded: 0xeef2ff, outerStrength: 2, innerStrength: 1, padding: 10 }),
+    slowfield: Object.freeze({ base: 0x6a4c93, upgraded: 0xeef2ff, outerStrength: 2, innerStrength: 1, padding: 10 }),
+    core:      Object.freeze({ color: 0xeef2ff,                    outerStrength: 3, innerStrength: 1, padding: 12 }),
+  }),
+  VIGNETTE: Object.freeze({
+    x: 0.5,
+    y: 0.5,
+    radius: 0.5,
+    buildStrength: 0.25,
+    waveStrength: 0.40,
+    transitionDuration: 600,
+    transitionEase: 'Sine.easeInOut',
+  }),
+});
