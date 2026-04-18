@@ -12,7 +12,7 @@
 - [x] **Phase 2: Living Entities** - Bug animation, core breathing, turret idle glow (completed 2026-04-16)
 - [x] **Phase 3: Juicy Combat** - Death bursts, muzzle flashes, build sparkle, core shockwave (completed 2026-04-16)
 - [ ] **Phase 4: Impactful Effects** - Slowfield aura, zapper trails, screen shake system
-- [ ] **Phase 5: Atmospheric Glow** - Post-FX glow/bloom on turrets, vignette framing
+- [x] **Phase 5: Atmospheric Glow** - Post-FX glow/bloom on turrets, vignette framing (completed 2026-04-18)
 - [ ] **Phase 6: Ethereal Audio** - Ambient layer, SFX variation, BGM crossfade
 - [ ] **Phase 7: Cohesive Theme** - Color migration across all UI elements
 
@@ -84,7 +84,7 @@ Plans:
 - [x] 05-01-PLAN.md — POSTFX frozen config (GLOW + VIGNETTE) in GameConfig.js
 - [x] 05-02-PLAN.md — Turret glow lifecycle (constructor attach, upgrade color swap, destroy clear)
 - [x] 05-03-PLAN.md — GameScene core glow + camera vignette + phase-reactive tween + shutdown cleanup
-- [ ] 05-04-PLAN.md — Static vignette on MainMenuScene and GameOverScene
+- [x] 05-04-PLAN.md — Static vignette on MainMenuScene and GameOverScene
 **UI hint:** yes
 
 ### Phase 6: Ethereal Audio
@@ -116,7 +116,7 @@ Plans:
 | 2. Living Entities | 2/2 | Complete    | 2026-04-16 |
 | 3. Juicy Combat | 3/3 | Complete   | 2026-04-16 |
 | 4. Impactful Effects | 0/3 | Planned | - |
-| 5. Atmospheric Glow | 3/4 | Executing | - |
+| 5. Atmospheric Glow | 4/4 | Complete | 2026-04-18 |
 | 6. Ethereal Audio | 0/0 | Not started | - |
 | 7. Cohesive Theme | 0/0 | Not started | - |
 
@@ -129,4 +129,4 @@ Plans:
 
 ---
 *Roadmap created: 2026-04-15*  
-*Last updated: 2026-04-18 (Phase 5 Plan 3 complete)*
+*Last updated: 2026-04-18 (Phase 5 complete — all 4 plans done)*

@@ -3,20 +3,21 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: executing
-last_updated: "2026-04-18T00:13:03Z"
+stopped_at: Completed 05-04-PLAN.md (static vignette on MainMenuScene and GameOverScene) — Phase 5 complete
+last_updated: "2026-04-18T00:17:08Z"
 progress:
   total_phases: 6
-  completed_phases: 3
+  completed_phases: 4
   total_plans: 13
-  completed_plans: 11
-  percent: 85
+  completed_plans: 12
+  percent: 92
 ---
 
 # Bug Siege — Project State
 
 **Milestone:** Cosmic polish & atmosphere  
-**Current focus:** Phase 5 — atmospheric-glow
-**Status:** Executing Phase 5
+**Current focus:** Phase 5 — atmospheric-glow (COMPLETE) → next: Phase 6 ethereal-audio
+**Status:** Phase 5 complete — ready to plan Phase 6
 
 ## Project Reference
 
@@ -35,18 +36,18 @@ progress:
 
 ## Current Position
 
-Phase: 5 (atmospheric-glow) — EXECUTING
-Plan: 4 of 4
+Phase: 5 (atmospheric-glow) — COMPLETE
+Plan: 4 of 4 complete
 **Phase:** 5
-**Plan:** 05-03 complete — GameScene core glow + camera vignette + phase-reactive tween + shutdown cleanup
-**Plan progress:** 75% (3 of 4 plans in phase 5 complete)
-**Status:** Executing
+**Plan:** 05-04 complete — Static vignette on MainMenuScene and GameOverScene (boundary-scene coverage closed)
+**Plan progress:** 100% (4 of 4 plans in phase 5 complete)
+**Status:** Phase 5 complete — ready to plan Phase 6 (ethereal-audio)
 
 ```
-[█████████████████░░░] 85% — Phase 5 Plan 3 complete
+[██████████████████░░] 92% — Phase 5 complete
 ```
 
-**Next action:** Execute `05-04-PLAN.md` (static vignette on MainMenuScene and GameOverScene)
+**Next action:** Begin Phase 6 (ethereal-audio) — cosmic ambient drone, SFX pitch variation, concurrent sound limits, BGM crossfade (AUDIO-01..04)
 
 ## Performance Metrics
 
@@ -69,6 +70,7 @@ Plan: 4 of 4
 | Phase 05 P01 | 3 | 1 tasks | 1 files |
 | Phase 05 P02 | 1 | 2 tasks | 1 files |
 | Phase 05 P03 | 3 | 2 tasks | 1 files |
+| Phase 05 P04 | 1 | 2 tasks | 2 files |
 
 ## Decisions
 
@@ -96,6 +98,9 @@ Plan: 4 of 4
 - [Phase 05-atmospheric-glow]: Phase-changed listener stored as this._onPhaseChangedVignette so shutdown uses handler-specific events.off form — naked events.off('phase-changed') would remove UIScene's HUD-phase listener on the same GameScene event bus
 - [Phase 05-atmospheric-glow]: Vignette tween targets the FX controller directly (targets: this._vignetteFX, strength) — Phaser's Vignette exposes strength as a public mutable number that the tween engine accepts as a target
 - [Phase 05-atmospheric-glow]: No explicit core glow teardown in GameScene shutdown — sprite preFX is disposed with the sprite; cameras.main.postFX.clear() only affects camera-level postFX, not sprite preFX pipelines
+- [Phase 05-atmospheric-glow]: MainMenu/GameOver use static buildStrength vignette (not a separate gameOverStrength constant) per D-14 Claude's Discretion default — avoids premature config surface growth; a gameOverStrength field can be added post-playtest if the defeat screen feels flat
+- [Phase 05-atmospheric-glow]: Boundary-scene vignettes store no FX handle and add no shutdown handler — Phaser camera teardown disposes the postFX controller automatically when there is no tween/listener to tear down
+- [Phase 05-atmospheric-glow]: Canvas warning string differs per scene-responsibility — GameScene logs 'glow disabled', MainMenu/GameOver log 'vignette disabled' — disambiguates which FX actually skipped when scanning console output
 
 ## Accumulated Context
 
@@ -128,10 +133,10 @@ From research/SUMMARY.md:
 
 ## Session Continuity
 
-**Last session:** 2026-04-18T00:13:03Z
-**Stopped at:** Completed 05-03-PLAN.md (GameScene core glow + camera vignette + phase-reactive tween)
-**Resume file:** .planning/phases/05-atmospheric-glow/05-04-PLAN.md
-**Next session:** Execute 05-04 (static vignette on MainMenuScene and GameOverScene)
+**Last session:** 2026-04-18T00:17:08Z
+**Stopped at:** Completed 05-04-PLAN.md (static vignette on MainMenuScene and GameOverScene) — Phase 5 complete
+**Resume file:** Phase 6 planning (ethereal-audio) — no plan file yet
+**Next session:** Begin Phase 6 — cosmic ambient drone, SFX pitch variation, concurrent sound limits, BGM crossfade (AUDIO-01..04)
 
 **Context to preserve:**
 
@@ -153,4 +158,4 @@ From research/SUMMARY.md:
 
 ---
 *State initialized: 2026-04-15*  
-*Last updated: 2026-04-15*
+*Last updated: 2026-04-18 (Phase 5 Plan 4 complete — Phase 5 done)*
