@@ -1,5 +1,5 @@
 import Phaser from 'phaser';
-import { GAME } from '../config/GameConfig.js';
+import { GAME, POSTFX } from '../config/GameConfig.js';
 
 export class GameOverScene extends Phaser.Scene {
   constructor() {
@@ -13,6 +13,14 @@ export class GameOverScene extends Phaser.Scene {
   create() {
     const { won, wave, totalKills, credits, baseHp } = this.result;
     const { canvasWidth: W, canvasHeight: H } = GAME;
+
+    const isWebGL = this.game.renderer.type === Phaser.WEBGL;
+    if (!isWebGL) {
+      console.warn('[postfx] Canvas renderer detected — vignette disabled');
+    } else {
+      const v = POSTFX.VIGNETTE;
+      this.cameras.main.postFX.addVignette(v.x, v.y, v.radius, v.buildStrength);
+    }
 
     const title = won ? 'VICTORY!' : 'DEFEAT';
     const color = won ? '#00ff88' : '#ff3333';
