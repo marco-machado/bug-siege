@@ -79,7 +79,12 @@ Plans:
 **Success Criteria** (what must be TRUE):
   1. Turrets and command core have soft glow/bloom effect (WebGL only, graceful degradation on Canvas)
   2. Screen has subtle vignette effect framing the play area
-**Plans:** TBD
+**Plans:** 4 plans
+Plans:
+- [ ] 05-01-PLAN.md — POSTFX frozen config (GLOW + VIGNETTE) in GameConfig.js
+- [ ] 05-02-PLAN.md — Turret glow lifecycle (constructor attach, upgrade color swap, destroy clear)
+- [ ] 05-03-PLAN.md — GameScene core glow + camera vignette + phase-reactive tween + shutdown cleanup
+- [ ] 05-04-PLAN.md — Static vignette on MainMenuScene and GameOverScene
 **UI hint:** yes
 
 ### Phase 6: Ethereal Audio
@@ -111,7 +116,7 @@ Plans:
 | 2. Living Entities | 2/2 | Complete    | 2026-04-16 |
 | 3. Juicy Combat | 3/3 | Complete   | 2026-04-16 |
 | 4. Impactful Effects | 0/3 | Planned | - |
-| 5. Atmospheric Glow | 0/0 | Not started | - |
+| 5. Atmospheric Glow | 0/4 | Planned | - |
 | 6. Ethereal Audio | 0/0 | Not started | - |
 | 7. Cohesive Theme | 0/0 | Not started | - |
 
