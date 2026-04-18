@@ -3,20 +3,20 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: executing
-last_updated: "2026-04-18T00:00:32.891Z"
+last_updated: "2026-04-18T00:03:09Z"
 progress:
   total_phases: 6
   completed_phases: 3
-  total_plans: 12
-  completed_plans: 8
-  percent: 67
+  total_plans: 13
+  completed_plans: 9
+  percent: 69
 ---
 
 # Bug Siege — Project State
 
 **Milestone:** Cosmic polish & atmosphere  
-**Current focus:** Phase 04 — impactful-effects
-**Status:** Ready to execute
+**Current focus:** Phase 5 — atmospheric-glow
+**Status:** Executing Phase 5
 
 ## Project Reference
 
@@ -35,18 +35,18 @@ progress:
 
 ## Current Position
 
-Phase: 04 (impactful-effects) — EXECUTING
-Plan: 1 of 3
+Phase: 5 (atmospheric-glow) — EXECUTING
+Plan: 2 of 4
 **Phase:** 5
-**Plan:** Not started
-**Plan progress:** 50%
+**Plan:** 05-01 complete — POSTFX frozen config added to GameConfig.js
+**Plan progress:** 25% (1 of 4 plans in phase 5 complete)
 **Status:** Executing
 
 ```
-[░░░░░░░░░░░░░░░░░░░░] 0% — Phase 1 not started
+[█████████████░░░░░░░] 69% — Phase 5 Plan 1 complete
 ```
 
-**Next action:** Create plan for Phase 1 via `/gsd-plan-phase 1`
+**Next action:** Execute `05-02-PLAN.md` (Turret glow lifecycle)
 
 ## Performance Metrics
 
@@ -66,6 +66,7 @@ Plan: 1 of 3
 | Phase 03 P03 | 5 | 1 tasks | 1 files |
 | Phase 04 P01 | 107 | 2 tasks | 2 files |
 | Phase 04 P02 | 197 | 2 tasks | 1 files |
+| Phase 05 P01 | 3 | 1 tasks | 1 files |
 
 ## Decisions
 
@@ -84,6 +85,9 @@ Plan: 1 of 3
 - [Phase 03-juicy-combat]: White fill for particle texture so runtime tint controls color
 - [Phase 04]: Particle speed 300-400 px/s with 350ms lifespan tuned to reach 128px range edge at fade-out
 - [Phase 04]: Used destroy+recreate pattern for slowfield emitter upgrade instead of setParticleSpeed/setParticleTint for Phaser API safety
+- [Phase 05-atmospheric-glow]: POSTFX is a new top-level sibling of THEME/VFX (not nested) per D-13 — palette/event-fx/scene-rendering stay separate concerns
+- [Phase 05-atmospheric-glow]: Glow colors stored as numeric hex (0x...) because Phaser preFX.addGlow requires numeric — mirrors VFX convention
+- [Phase 05-atmospheric-glow]: padding field folded into each GLOW entry (10 for turrets at outerStrength=2, 12 for core at outerStrength=3) to prevent halo clipping on 64px sprites
 
 ## Accumulated Context
 
@@ -116,8 +120,10 @@ From research/SUMMARY.md:
 
 ## Session Continuity
 
-**Last session:** 2026-04-17T21:56:28.005Z
-**Next session:** Plan Phase 1
+**Last session:** 2026-04-18T00:03:09Z
+**Stopped at:** Completed 05-01-PLAN.md (POSTFX frozen config)
+**Resume file:** .planning/phases/05-atmospheric-glow/05-02-PLAN.md
+**Next session:** Execute 05-02 (Turret glow lifecycle)
 
 **Context to preserve:**
 
