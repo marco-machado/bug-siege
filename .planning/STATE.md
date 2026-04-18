@@ -3,13 +3,13 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: executing
-last_updated: "2026-04-18T00:06:45Z"
+last_updated: "2026-04-18T00:13:03Z"
 progress:
   total_phases: 6
   completed_phases: 3
   total_plans: 13
-  completed_plans: 10
-  percent: 77
+  completed_plans: 11
+  percent: 85
 ---
 
 # Bug Siege — Project State
@@ -36,17 +36,17 @@ progress:
 ## Current Position
 
 Phase: 5 (atmospheric-glow) — EXECUTING
-Plan: 3 of 4
+Plan: 4 of 4
 **Phase:** 5
-**Plan:** 05-02 complete — Turret glow lifecycle (constructor attach, upgrade color swap, destroy clear)
-**Plan progress:** 50% (2 of 4 plans in phase 5 complete)
+**Plan:** 05-03 complete — GameScene core glow + camera vignette + phase-reactive tween + shutdown cleanup
+**Plan progress:** 75% (3 of 4 plans in phase 5 complete)
 **Status:** Executing
 
 ```
-[███████████████░░░░░] 77% — Phase 5 Plan 2 complete
+[█████████████████░░░] 85% — Phase 5 Plan 3 complete
 ```
 
-**Next action:** Execute `05-03-PLAN.md` (GameScene core glow + camera vignette + phase-reactive tween)
+**Next action:** Execute `05-04-PLAN.md` (static vignette on MainMenuScene and GameOverScene)
 
 ## Performance Metrics
 
@@ -68,6 +68,7 @@ Plan: 3 of 4
 | Phase 04 P02 | 197 | 2 tasks | 1 files |
 | Phase 05 P01 | 3 | 1 tasks | 1 files |
 | Phase 05 P02 | 1 | 2 tasks | 1 files |
+| Phase 05 P03 | 3 | 2 tasks | 1 files |
 
 ## Decisions
 
@@ -92,6 +93,9 @@ Plan: 3 of 4
 - [Phase 05-atmospheric-glow]: Turret glow attaches on this.sprite.preFX (not this) — composite Turret class requires preFX/FX ops route through the wrapped Phaser sprite
 - [Phase 05-atmospheric-glow]: Upgrade-path glow color swap uses direct Glow.color property mutation, NOT preFX.clear+addGlow — zero allocation, preserves handle (RESEARCH Pattern 2)
 - [Phase 05-atmospheric-glow]: THEME-04 left Pending in REQUIREMENTS.md until plan 03 wires the core glow half — turret half is code-complete as of plan 02 but requirement explicitly covers "turrets and core"
+- [Phase 05-atmospheric-glow]: Phase-changed listener stored as this._onPhaseChangedVignette so shutdown uses handler-specific events.off form — naked events.off('phase-changed') would remove UIScene's HUD-phase listener on the same GameScene event bus
+- [Phase 05-atmospheric-glow]: Vignette tween targets the FX controller directly (targets: this._vignetteFX, strength) — Phaser's Vignette exposes strength as a public mutable number that the tween engine accepts as a target
+- [Phase 05-atmospheric-glow]: No explicit core glow teardown in GameScene shutdown — sprite preFX is disposed with the sprite; cameras.main.postFX.clear() only affects camera-level postFX, not sprite preFX pipelines
 
 ## Accumulated Context
 
@@ -124,10 +128,10 @@ From research/SUMMARY.md:
 
 ## Session Continuity
 
-**Last session:** 2026-04-18T00:06:45Z
-**Stopped at:** Completed 05-02-PLAN.md (Turret glow lifecycle)
-**Resume file:** .planning/phases/05-atmospheric-glow/05-03-PLAN.md
-**Next session:** Execute 05-03 (GameScene core glow + camera vignette + phase-reactive tween)
+**Last session:** 2026-04-18T00:13:03Z
+**Stopped at:** Completed 05-03-PLAN.md (GameScene core glow + camera vignette + phase-reactive tween)
+**Resume file:** .planning/phases/05-atmospheric-glow/05-04-PLAN.md
+**Next session:** Execute 05-04 (static vignette on MainMenuScene and GameOverScene)
 
 **Context to preserve:**
 

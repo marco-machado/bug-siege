@@ -10,8 +10,8 @@
 - [x] **THEME-01**: Add frozen THEME config object to GameConfig.js with cosmic nebula color palette (deep purples, blues, accent colors for bugs/turrets/UI)
 - [x] **THEME-02**: Generate procedural nebula background texture in BootScene (replacing background.jpg) using Graphics gradients and noise
 - [ ] **THEME-03**: Migrate all hardcoded color values across 6+ files to reference THEME config constants
-- [ ] **THEME-04**: Add post-FX glow/bloom on turrets and core (WebGL only, graceful degradation on Canvas)
-- [ ] **THEME-05**: Add vignette camera effect for atmospheric framing
+- [x] **THEME-04**: Add post-FX glow/bloom on turrets and core (WebGL only, graceful degradation on Canvas)
+- [x] **THEME-05**: Add vignette camera effect for atmospheric framing
 
 ### Procedural Animation
 
@@ -89,8 +89,8 @@
 | SHAKE-02 | Phase 4: Impactful Effects | Complete |
 | SHAKE-03 | Phase 4: Impactful Effects | Complete |
 | SHAKE-04 | Phase 4: Impactful Effects | Complete |
-| THEME-04 | Phase 5: Atmospheric Glow | Pending |
-| THEME-05 | Phase 5: Atmospheric Glow | Pending |
+| THEME-04 | Phase 5: Atmospheric Glow | Complete |
+| THEME-05 | Phase 5: Atmospheric Glow | Complete |
 | AUDIO-01 | Phase 6: Ethereal Audio | Pending |
 | AUDIO-02 | Phase 6: Ethereal Audio | Pending |
 | AUDIO-03 | Phase 6: Ethereal Audio | Pending |

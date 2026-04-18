@@ -83,7 +83,7 @@ Plans:
 Plans:
 - [x] 05-01-PLAN.md — POSTFX frozen config (GLOW + VIGNETTE) in GameConfig.js
 - [x] 05-02-PLAN.md — Turret glow lifecycle (constructor attach, upgrade color swap, destroy clear)
-- [ ] 05-03-PLAN.md — GameScene core glow + camera vignette + phase-reactive tween + shutdown cleanup
+- [x] 05-03-PLAN.md — GameScene core glow + camera vignette + phase-reactive tween + shutdown cleanup
 - [ ] 05-04-PLAN.md — Static vignette on MainMenuScene and GameOverScene
 **UI hint:** yes
 
@@ -116,7 +116,7 @@ Plans:
 | 2. Living Entities | 2/2 | Complete    | 2026-04-16 |
 | 3. Juicy Combat | 3/3 | Complete   | 2026-04-16 |
 | 4. Impactful Effects | 0/3 | Planned | - |
-| 5. Atmospheric Glow | 2/4 | Executing | - |
+| 5. Atmospheric Glow | 3/4 | Executing | - |
 | 6. Ethereal Audio | 0/0 | Not started | - |
 | 7. Cohesive Theme | 0/0 | Not started | - |
 
@@ -129,4 +129,4 @@ Plans:
 
 ---
 *Roadmap created: 2026-04-15*  
-*Last updated: 2026-04-18 (Phase 5 Plan 2 complete)*
+*Last updated: 2026-04-18 (Phase 5 Plan 3 complete)*
