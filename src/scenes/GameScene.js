@@ -78,6 +78,29 @@ export class GameScene extends Phaser.Scene {
 
     this.scene.launch('UIScene');
 
+    const isWebGL = this.game.renderer.type === Phaser.WEBGL;
+    if (!isWebGL) {
+      console.warn('[postfx] Canvas renderer detected — glow disabled');
+    } else {
+      const v = POSTFX.VIGNETTE;
+      this._vignetteFX = this.cameras.main.postFX.addVignette(v.x, v.y, v.radius, v.buildStrength);
+    }
+
+    this._onPhaseChangedVignette = (payload) => {
+      if (!this._vignetteFX) return;
+      if (this._vignetteTween) this._vignetteTween.destroy();
+      const target = payload.phase === 'wave'
+        ? POSTFX.VIGNETTE.waveStrength
+        : POSTFX.VIGNETTE.buildStrength;
+      this._vignetteTween = this.tweens.add({
+        targets: this._vignetteFX,
+        strength: target,
+        duration: POSTFX.VIGNETTE.transitionDuration,
+        ease: POSTFX.VIGNETTE.transitionEase,
+      });
+    };
+    this.events.on('phase-changed', this._onPhaseChangedVignette);
+
     this.startBuildPhase();
     const startBgm = () => this.sound.play('bgm_wave', { loop: true, volume: 0.5 });
     if (this.sound.locked) {
@@ -96,6 +119,11 @@ export class GameScene extends Phaser.Scene {
       this.events.off('bug-killed', this.onBugKilled, this);
       this.events.off('start-wave-early', this.onStartWaveEarly, this);
       if (this.input.keyboard) this.input.keyboard.removeAllListeners();
+      this.events.off('phase-changed', this._onPhaseChangedVignette);
+      if (this._vignetteTween) { this._vignetteTween.destroy(); this._vignetteTween = null; }
+      if (this.cameras.main && this.cameras.main.postFX) {
+        this.cameras.main.postFX.clear();
+      }
     });
   }
 
