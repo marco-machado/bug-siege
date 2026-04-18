@@ -13,8 +13,7 @@
 - [x] **Phase 3: Juicy Combat** - Death bursts, muzzle flashes, build sparkle, core shockwave (completed 2026-04-16)
 - [ ] **Phase 4: Impactful Effects** - Slowfield aura, zapper trails, screen shake system
 - [x] **Phase 5: Atmospheric Glow** - Post-FX glow/bloom on turrets, vignette framing (completed 2026-04-18)
-- [ ] **Phase 6: Ethereal Audio** - Ambient layer, SFX variation, BGM crossfade
-- [ ] **Phase 7: Cohesive Theme** - Color migration across all UI elements
+- [ ] **Phase 6: Cohesive Theme** - Color migration across all UI elements
 
 ## Phase Details
 
@@ -87,20 +86,9 @@ Plans:
 - [x] 05-04-PLAN.md — Static vignette on MainMenuScene and GameOverScene
 **UI hint:** yes
 
-### Phase 6: Ethereal Audio
-**Goal:** Audio enhances cosmic atmosphere with ambient layer and phase-aware music
-**Depends on:** Phase 1 (THEME.audio config)
-**Requirements:** AUDIO-01, AUDIO-02, AUDIO-03, AUDIO-04
-**Success Criteria** (what must be TRUE):
-  1. Cosmic ambient drone layer plays continuously under BGM
-  2. SFX have slight pitch variation (random detune) for auditory variety
-  3. Concurrent sounds are limited to prevent WebAudio node saturation
-  4. BGM crossfades between calm (build phase) and intense (wave phase) tracks
-**Plans:** TBD
-
-### Phase 7: Cohesive Theme
+### Phase 6: Cohesive Theme
 **Goal:** All UI elements use consistent cosmic color palette
-**Depends on:** 1, 2, 3, 4, 5, 6 (touches many files)
+**Depends on:** 1, 2, 3, 4, 5 (touches many files)
 **Requirements:** THEME-03
 **Success Criteria** (what must be TRUE):
   1. All hardcoded color values across 6+ files reference THEME config constants
@@ -117,8 +105,7 @@ Plans:
 | 3. Juicy Combat | 3/3 | Complete   | 2026-04-16 |
 | 4. Impactful Effects | 0/3 | Planned | - |
 | 5. Atmospheric Glow | 4/4 | Complete | 2026-04-18 |
-| 6. Ethereal Audio | 0/0 | Not started | - |
-| 7. Cohesive Theme | 0/0 | Not started | - |
+| 6. Cohesive Theme | 0/0 | Not started | - |
 
 ## Notes
 

@@ -4,9 +4,9 @@ milestone: v1.0
 milestone_name: milestone
 status: context_gathered
 stopped_at: Completed 05-04-PLAN.md (static vignette on MainMenuScene and GameOverScene) — Phase 5 complete
-last_updated: "2026-04-18T02:42:06.430Z"
+last_updated: "2026-04-18T02:58:51.298Z"
 progress:
-  total_phases: 6
+  total_phases: 5
   completed_phases: 4
   total_plans: 12
   completed_plans: 12
