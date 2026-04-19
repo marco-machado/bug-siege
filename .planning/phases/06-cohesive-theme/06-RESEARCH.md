@@ -395,7 +395,14 @@ const bg = this.scene.add.rectangle(0, 0, menuWidth, menuHeight, THEME.ui.surfac
 
 All substantive claims in this research are either verified against Phaser 3.90 context7 docs (which match 3.80 behavior for the APIs used — those APIs haven't changed across 3.x) or cited from CONTEXT.md / AGENTS.md / the codebase itself. No assumed-knowledge claims remain.
 
-## Open Questions
+## Open Questions (RESOLVED)
+
+All four questions were resolved during planning (see 06-01-PLAN.md and 06-08-PLAN.md).
+
+- **Q1 (GameScene.js:427 `#ff8844`)** — RESOLVED in `06-08-PLAN.md` Task 2: migrate to `THEME.ui.warning.hex` (semantic fit: wave-start = caution cue)
+- **Q2 (GameScene.js:291 `setTintFill(0xff4444)`)** — RESOLVED as D-01 VFX carve-out in `06-08-PLAN.md` Task 2 Step 3 and `06-09-PLAN.md` (documented in grep filter exclusions)
+- **Q3 (main.js:14 `#0a0a12`)** — RESOLVED in `06-08-PLAN.md` Task 1: replace with `THEME.background` (kept as plain CSS string, not promoted to `{hex, num}`, to preserve BootScene.js:91 compatibility)
+- **Q4 (exact hex values for derived keys)** — RESOLVED in `06-01-PLAN.md` Task 1: all 14 `ui.*` keys locked with final hex/num values per research recommendations
 
 1. **GameScene.js:427 `#ff8844` wave announcement text — in scope or not?**
    - What we know: CONTEXT.md's file list (D-01, D-05, canonical_refs) does NOT include `GameScene.js`. D-01's boundary heuristic says "UI chrome → migrate, game-entity → leave." A wave-start announcement (`'WAVE 3'` text fading over the play field) is arguably UI chrome.
