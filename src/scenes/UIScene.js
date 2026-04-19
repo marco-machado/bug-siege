@@ -1,5 +1,5 @@
 import Phaser from 'phaser';
-import { GAME, DEBUG } from '../config/GameConfig.js';
+import { GAME, DEBUG, THEME } from '../config/GameConfig.js';
 
 export class UIScene extends Phaser.Scene {
   constructor() {
@@ -16,13 +16,13 @@ export class UIScene extends Phaser.Scene {
     this.waveText = this.add.text(32, 32, 'Wave: 1/10', {
       fontSize: '36px',
       fontFamily: 'monospace',
-      color: '#ffffff',
+      color: THEME.ui.textPrimary.hex,
     });
 
     this.creditsText = this.add.text(32, 78, 'Credits: 200', {
       fontSize: '36px',
       fontFamily: 'monospace',
-      color: '#ffdd00',
+      color: THEME.ui.warning.hex,
     });
 
     const barX = W - 400;
@@ -30,13 +30,13 @@ export class UIScene extends Phaser.Scene {
     const barW = 360;
     const barH = 32;
 
-    this.hpBarBg = this.add.rectangle(barX, barY, barW, barH, 0x333333).setOrigin(0);
-    this.hpBarFill = this.add.rectangle(barX, barY, barW, barH, 0x00ff44).setOrigin(0);
+    this.hpBarBg = this.add.rectangle(barX, barY, barW, barH, THEME.ui.hpBarBg.num).setOrigin(0);
+    this.hpBarFill = this.add.rectangle(barX, barY, barW, barH, THEME.ui.success.num).setOrigin(0);
 
     this.hpLabel = this.add.text(barX, barY + barH + 8, 'HP: 100/100', {
       fontSize: '24px',
       fontFamily: 'monospace',
-      color: '#aaaaaa',
+      color: THEME.ui.textMuted.hex,
     });
 
     this.hpBarWidth = barW;
@@ -45,13 +45,13 @@ export class UIScene extends Phaser.Scene {
     this.phaseText = this.add.text(W / 2, H - 50, '', {
       fontSize: '32px',
       fontFamily: 'monospace',
-      color: '#88ccff',
+      color: THEME.ui.accentSecondary.hex,
     }).setOrigin(0.5);
 
     this.startWaveBtn = this.add.text(W / 2, H - 90, '[ START WAVE ] (Space)', {
       fontSize: '28px',
       fontFamily: 'monospace',
-      color: '#00ff88',
+      color: THEME.ui.accentPrimary.hex,
     }).setOrigin(0.5).setInteractive({ useHandCursor: true }).setVisible(true);
 
     this.phaseText.setText('BUILD PHASE');
@@ -79,7 +79,11 @@ export class UIScene extends Phaser.Scene {
     this.onHpChanged = (data) => {
       const pct = data.hp / data.maxHp;
       const targetWidth = this.hpBarWidth * pct;
-      this.hpBarFill.setFillStyle(pct > 0.5 ? 0x00ff44 : pct > 0.25 ? 0xffaa00 : 0xff3333);
+      this.hpBarFill.setFillStyle(
+        pct > 0.5 ? THEME.ui.success.num
+          : pct > 0.25 ? THEME.ui.warning.num
+            : THEME.ui.danger.num,
+      );
       this.hpLabel.setText(`HP: ${data.hp}/${data.maxHp}`);
       if (this.hpTween) this.hpTween.destroy();
       this.hpTween = this.tweens.add({
@@ -114,7 +118,7 @@ export class UIScene extends Phaser.Scene {
       this.debugText = this.add.text(32, 130, '', {
         fontSize: '18px',
         fontFamily: 'monospace',
-        color: '#88ff88',
+        color: THEME.ui.accentPrimary.hex,
         backgroundColor: '#000000aa',
         padding: { x: 8, y: 4 },
       }).setScrollFactor(0).setDepth(200);
