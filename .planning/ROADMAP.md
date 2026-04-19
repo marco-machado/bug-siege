@@ -11,7 +11,7 @@
 - [x] **Phase 1: Cosmic Foundation** - Theme config, nebula background, tween safety net (completed 2026-04-15)
 - [x] **Phase 2: Living Entities** - Bug animation, core breathing, turret idle glow (completed 2026-04-16)
 - [x] **Phase 3: Juicy Combat** - Death bursts, muzzle flashes, build sparkle, core shockwave (completed 2026-04-16)
-- [ ] **Phase 4: Impactful Effects** - Slowfield aura, zapper trails, screen shake system
+- [x] **Phase 4: Impactful Effects** - Slowfield aura, zapper trails, screen shake system (completed 2026-04-17, UAT signed off)
 - [x] **Phase 5: Atmospheric Glow** - Post-FX glow/bloom on turrets, vignette framing (completed 2026-04-18)
 - [x] **Phase 6: Cohesive Theme** - Color migration across all UI elements (code-complete 2026-04-18; manual visual smoke-test pending)
 
@@ -113,7 +113,7 @@ Plans:
 | 1. Cosmic Foundation | 2/3 | Gap closure | 2026-04-15 |
 | 2. Living Entities | 2/2 | Complete    | 2026-04-16 |
 | 3. Juicy Combat | 3/3 | Complete   | 2026-04-16 |
-| 4. Impactful Effects | 0/3 | Planned | - |
+| 4. Impactful Effects | 3/3 | Complete | 2026-04-17 |
 | 5. Atmospheric Glow | 4/4 | Complete | 2026-04-18 |
 | 6. Cohesive Theme | 9/9 | Code-complete (manual Gate C pending) | 2026-04-18 |
 
