@@ -1,5 +1,5 @@
 import Phaser from 'phaser';
-import { GRID, TURRETS, ECONOMY, VFX } from '../config/GameConfig.js';
+import { GRID, TURRETS, ECONOMY, VFX, THEME } from '../config/GameConfig.js';
 
 export class Turret {
   constructor(scene, col, row, type, worldX, worldY) {
@@ -50,9 +50,9 @@ export class Turret {
     const barWidth = GRID.tileSize * 0.8;
     const barHeight = 6;
     const barY = worldY + GRID.tileSize / 2 + 6;
-    this.hpBarBg = scene.add.rectangle(worldX, barY, barWidth, barHeight, 0x333333)
+    this.hpBarBg = scene.add.rectangle(worldX, barY, barWidth, barHeight, THEME.ui.hpBarBg.num)
       .setOrigin(0.5, 0.5).setVisible(false);
-    this.hpBarFill = scene.add.rectangle(worldX, barY, barWidth, barHeight, 0x00ff00)
+    this.hpBarFill = scene.add.rectangle(worldX, barY, barWidth, barHeight, THEME.ui.success.num)
       .setOrigin(0.5, 0.5).setVisible(false);
     this.idleTween = null;
     if (type !== 'wall') {
@@ -402,9 +402,9 @@ export class Turret {
     const ratio = this.hp / this.maxHp;
     const fullWidth = GRID.tileSize * 0.8;
     const targetWidth = fullWidth * ratio;
-    let color = 0x00ff00;
-    if (ratio <= 0.25) color = 0xff3333;
-    else if (ratio <= 0.5) color = 0xffaa00;
+    let color = THEME.ui.success.num;
+    if (ratio <= 0.25) color = THEME.ui.danger.num;
+    else if (ratio <= 0.5) color = THEME.ui.warning.num;
     this.hpBarFill.setFillStyle(color);
     if (this.hpTween) this.hpTween.destroy();
     this.hpTween = this.scene.tweens.add({
