@@ -137,6 +137,22 @@ export const THEME = Object.freeze({
   background: '#0a0a12',
   nebula: Object.freeze(['#2d1b4e', '#4b2c62', '#6a4c93']),
   accent: '#eef2ff',
+  ui: Object.freeze({
+    textPrimary:     Object.freeze({ hex: '#eef2ff', num: 0xeef2ff }),
+    textMuted:       Object.freeze({ hex: '#a89fcc', num: 0xa89fcc }),
+    textDisabled:    Object.freeze({ hex: '#6a6a80', num: 0x6a6a80 }),
+    accentPrimary:   Object.freeze({ hex: '#9966ff', num: 0x9966ff }),
+    accentSecondary: Object.freeze({ hex: '#88aacc', num: 0x88aacc }),
+    warning:         Object.freeze({ hex: '#ffaa44', num: 0xffaa44 }),
+    danger:          Object.freeze({ hex: '#ff3333', num: 0xff3333 }),
+    success:         Object.freeze({ hex: '#66dd99', num: 0x66dd99 }),
+    surface:         Object.freeze({ hex: '#2d1b4e', num: 0x2d1b4e }),
+    surfaceBorder:   Object.freeze({ hex: '#4b2c62', num: 0x4b2c62 }),
+    hpBarBg:         Object.freeze({ hex: '#1a1a2e', num: 0x1a1a2e }),
+    gridLine:        Object.freeze({ hex: '#334455', num: 0x334455 }),
+    loadingBar:      Object.freeze({ hex: '#9966ff', num: 0x9966ff }),
+    loadingBarBg:    Object.freeze({ hex: '#1a1a2e', num: 0x1a1a2e }),
+  }),
 });
 
 export const VFX = Object.freeze({
