@@ -1,4 +1,4 @@
-import { TURRETS, GAME } from '../config/GameConfig.js';
+import { TURRETS, GAME, THEME } from '../config/GameConfig.js';
 import { Turret } from '../entities/Turret.js';
 
 const BUILD_OPTIONS = [
@@ -97,22 +97,22 @@ export class BuildSystem {
     const pos = this.clampMenuPosition(world.x, world.y, menuWidth, menuHeight);
     this.menuContainer = this.scene.add.container(pos.x, pos.y);
 
-    const bg = this.scene.add.rectangle(0, 0, menuWidth, menuHeight, 0x111122, 0.95)
+    const bg = this.scene.add.rectangle(0, 0, menuWidth, menuHeight, THEME.ui.surface.num, 0.95)
       .setOrigin(0, 0)
-      .setStrokeStyle(2, 0x4488aa);
+      .setStrokeStyle(2, THEME.ui.surfaceBorder.num);
     this.menuContainer.add(bg);
 
     const creditsHeader = this.scene.add.text(16, 8, `Credits: $${currentCredits}`, {
       fontSize: '22px',
       fontFamily: 'monospace',
-      color: '#ffdd00',
+      color: THEME.ui.warning.hex,
     });
     this.menuContainer.add(creditsHeader);
 
     BUILD_OPTIONS.forEach((opt, i) => {
       const conf = TURRETS[opt.type];
       const canAfford = this.scene.economy.canAfford(conf.cost);
-      const color = canAfford ? '#ffffff' : '#555555';
+      const color = canAfford ? THEME.ui.textPrimary.hex : THEME.ui.textDisabled.hex;
       const y = headerHeight + 12 + i * lineHeight;
 
       const label = this.scene.add.text(16, y, `${opt.label} ($${conf.cost})`, {
@@ -124,12 +124,12 @@ export class BuildSystem {
       const desc = this.scene.add.text(16, y + 32, opt.desc, {
         fontSize: '20px',
         fontFamily: 'monospace',
-        color: canAfford ? '#88aacc' : '#444444',
+        color: canAfford ? THEME.ui.accentSecondary.hex : THEME.ui.textDisabled.hex,
       });
 
       if (canAfford) {
-        label.on('pointerover', () => label.setColor('#00ff88'));
-        label.on('pointerout', () => label.setColor('#ffffff'));
+        label.on('pointerover', () => label.setColor(THEME.ui.accentPrimary.hex));
+        label.on('pointerout', () => label.setColor(THEME.ui.textPrimary.hex));
         label.on('pointerdown', () => this.placeTurret(opt.type));
       } else {
         label.on('pointerdown', () => this.flashDenied(label));
@@ -184,7 +184,7 @@ export class BuildSystem {
       items.push({
         label: `Upgrade ($${upgCost})`,
         desc: upgradeDesc,
-        color: canUpgrade ? '#ffffff' : '#555555',
+        color: canUpgrade ? THEME.ui.textPrimary.hex : THEME.ui.textDisabled.hex,
         enabled: canUpgrade,
         action: (textObj) => {
           if (canUpgrade) {
@@ -206,7 +206,7 @@ export class BuildSystem {
       items.push({
         label: `Repair ($${repairCost})`,
         desc: `HP: ${turret.hp}/${turret.maxHp}`,
-        color: canRepair ? '#ffffff' : '#555555',
+        color: canRepair ? THEME.ui.textPrimary.hex : THEME.ui.textDisabled.hex,
         enabled: canRepair,
         action: (textObj) => {
           if (canRepair) {
@@ -232,7 +232,7 @@ export class BuildSystem {
       items.push({
         label: `Repair All ${typeLabel}s ($${totalTypeCost})`,
         desc: `${sameTypeDamaged.length} damaged`,
-        color: canRepairType ? '#ffffff' : '#555555',
+        color: canRepairType ? THEME.ui.textPrimary.hex : THEME.ui.textDisabled.hex,
         enabled: canRepairType,
         action: (textObj) => {
           if (canRepairType) {
@@ -255,7 +255,7 @@ export class BuildSystem {
       items.push({
         label: `Repair All ($${totalAllCost})`,
         desc: `${allDamaged.length} damaged`,
-        color: canRepairAll ? '#ffffff' : '#555555',
+        color: canRepairAll ? THEME.ui.textPrimary.hex : THEME.ui.textDisabled.hex,
         enabled: canRepairAll,
         action: (textObj) => {
           if (canRepairAll) {
@@ -274,7 +274,7 @@ export class BuildSystem {
     items.push({
       label: `Sell ($${turret.getSellValue()})`,
       desc: '',
-      color: '#ffaa00',
+      color: THEME.ui.warning.hex,
       enabled: true,
       action: () => {
         this.scene.economy.sellRefund(turret.cost);
@@ -305,15 +305,15 @@ export class BuildSystem {
     const pos = this.clampMenuPosition(world.x, world.y, menuWidth, menuHeight);
     this.turretMenuContainer = this.scene.add.container(pos.x, pos.y);
 
-    const bg = this.scene.add.rectangle(0, 0, menuWidth, menuHeight, 0x111122, 0.95)
+    const bg = this.scene.add.rectangle(0, 0, menuWidth, menuHeight, THEME.ui.surface.num, 0.95)
       .setOrigin(0, 0)
-      .setStrokeStyle(2, 0x4488aa);
+      .setStrokeStyle(2, THEME.ui.surfaceBorder.num);
     this.turretMenuContainer.add(bg);
 
     const creditsLabel = this.scene.add.text(16, 8, `Credits: $${currentCredits}`, {
       fontSize: '22px',
       fontFamily: 'monospace',
-      color: '#ffdd00',
+      color: THEME.ui.warning.hex,
     });
     this.turretMenuContainer.add(creditsLabel);
 
@@ -329,12 +329,12 @@ export class BuildSystem {
         const descText = this.scene.add.text(16, y + 30, item.desc, {
           fontSize: '20px',
           fontFamily: 'monospace',
-          color: '#88aacc',
+          color: THEME.ui.accentSecondary.hex,
         });
         this.turretMenuContainer.add(descText);
       }
 
-      text.on('pointerover', () => text.setColor('#00ff88'));
+      text.on('pointerover', () => text.setColor(THEME.ui.accentPrimary.hex));
       text.on('pointerout', () => text.setColor(item.color));
       text.on('pointerdown', () => item.action(text));
 
@@ -346,7 +346,7 @@ export class BuildSystem {
 
   flashDenied(textObj) {
     const origColor = textObj.style.color;
-    textObj.setColor('#ff3333');
+    textObj.setColor(THEME.ui.danger.hex);
     this.scene.time.delayedCall(300, () => {
       if (textObj.active) textObj.setColor(origColor);
     });
@@ -373,7 +373,7 @@ export class BuildSystem {
       return;
     }
 
-    const color = cell === 'empty' ? 0x00ff88 : 0x4488aa;
+    const color = cell === 'empty' ? THEME.ui.accentPrimary.num : THEME.ui.surfaceBorder.num;
     const tileSize = this.scene.grid.tileSize;
     const world = this.scene.grid.gridToWorld(col, row);
 
