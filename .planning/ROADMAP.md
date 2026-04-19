@@ -13,7 +13,7 @@
 - [x] **Phase 3: Juicy Combat** - Death bursts, muzzle flashes, build sparkle, core shockwave (completed 2026-04-16)
 - [ ] **Phase 4: Impactful Effects** - Slowfield aura, zapper trails, screen shake system
 - [x] **Phase 5: Atmospheric Glow** - Post-FX glow/bloom on turrets, vignette framing (completed 2026-04-18)
-- [ ] **Phase 6: Cohesive Theme** - Color migration across all UI elements
+- [x] **Phase 6: Cohesive Theme** - Color migration across all UI elements (code-complete 2026-04-18; manual visual smoke-test pending)
 
 ## Phase Details
 
@@ -93,7 +93,17 @@ Plans:
 **Success Criteria** (what must be TRUE):
   1. All hardcoded color values across 6+ files reference THEME config constants
   2. Menus, HUD, and game-over screen have consistent cosmic nebula palette (no mixed colors)
-**Plans:** TBD
+**Plans:** 9 plans
+Plans:
+- [x] 06-01-PLAN.md — Expand THEME.ui with 14 semantic keys (GameConfig.js) — Wave 1 gate
+- [x] 06-02-PLAN.md — Migrate MainMenuScene.js (7 literals) — Wave 2
+- [x] 06-03-PLAN.md — Migrate BootScene preloader (3 literals) — Wave 2
+- [x] 06-04-PLAN.md — Migrate UIScene HUD (9 literals incl. HP tier ternary) — Wave 2
+- [x] 06-05-PLAN.md — Migrate GameOverScene (8 literal occurrences) — Wave 2
+- [x] 06-06-PLAN.md — Migrate BuildSystem.js menus (24 replacements / 19 lines) — Wave 2
+- [x] 06-07-PLAN.md — Migrate Turret HP bar (5 literals, lines 53/55/405-407) — Wave 2
+- [x] 06-08-PLAN.md — Integration: main.js backgroundColor + GameScene.js wave announcement — Wave 2
+- [x] 06-09-PLAN.md — D-07 verification gate (grep + build + semantic count + carve-out integrity) — Wave 3
 **UI hint:** yes
 
 ## Progress
@@ -105,7 +115,7 @@ Plans:
 | 3. Juicy Combat | 3/3 | Complete   | 2026-04-16 |
 | 4. Impactful Effects | 0/3 | Planned | - |
 | 5. Atmospheric Glow | 4/4 | Complete | 2026-04-18 |
-| 6. Cohesive Theme | 0/0 | Not started | - |
+| 6. Cohesive Theme | 9/9 | Code-complete (manual Gate C pending) | 2026-04-18 |
 
 ## Notes
 
@@ -116,4 +126,4 @@ Plans:
 
 ---
 *Roadmap created: 2026-04-15*  
-*Last updated: 2026-04-18 (Phase 5 complete — all 4 plans done)*
+*Last updated: 2026-04-18 (Phase 6 code-complete — all 9 plans executed; manual Gate C pending)*
