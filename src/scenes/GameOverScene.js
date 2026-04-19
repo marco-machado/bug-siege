@@ -1,5 +1,5 @@
 import Phaser from 'phaser';
-import { GAME, POSTFX } from '../config/GameConfig.js';
+import { GAME, POSTFX, THEME } from '../config/GameConfig.js';
 
 export class GameOverScene extends Phaser.Scene {
   constructor() {
@@ -23,7 +23,7 @@ export class GameOverScene extends Phaser.Scene {
     }
 
     const title = won ? 'VICTORY!' : 'DEFEAT';
-    const color = won ? '#00ff88' : '#ff3333';
+    const color = won ? THEME.ui.success.hex : THEME.ui.danger.hex;
 
     this.add.text(W / 2, H * 0.2, title, {
       fontSize: '96px',
@@ -43,7 +43,7 @@ export class GameOverScene extends Phaser.Scene {
     this.add.text(W / 2, H * 0.42, stats.join('\n'), {
       fontSize: '40px',
       fontFamily: 'monospace',
-      color: '#ffffff',
+      color: THEME.ui.textPrimary.hex,
       align: 'center',
       lineSpacing: 16,
     }).setOrigin(0.5);
@@ -51,21 +51,21 @@ export class GameOverScene extends Phaser.Scene {
     const restartBtn = this.add.text(W / 2 - 200, H * 0.7, '[ RESTART ]', {
       fontSize: '44px',
       fontFamily: 'monospace',
-      color: '#ffffff',
+      color: THEME.ui.textPrimary.hex,
     }).setOrigin(0.5).setInteractive({ useHandCursor: true });
 
-    restartBtn.on('pointerover', () => restartBtn.setColor('#00ff88'));
-    restartBtn.on('pointerout', () => restartBtn.setColor('#ffffff'));
+    restartBtn.on('pointerover', () => restartBtn.setColor(THEME.ui.accentPrimary.hex));
+    restartBtn.on('pointerout', () => restartBtn.setColor(THEME.ui.textPrimary.hex));
     restartBtn.on('pointerdown', () => this.scene.start('Game'));
 
     const menuBtn = this.add.text(W / 2 + 200, H * 0.7, '[ MAIN MENU ]', {
       fontSize: '44px',
       fontFamily: 'monospace',
-      color: '#ffffff',
+      color: THEME.ui.textPrimary.hex,
     }).setOrigin(0.5).setInteractive({ useHandCursor: true });
 
-    menuBtn.on('pointerover', () => menuBtn.setColor('#00ff88'));
-    menuBtn.on('pointerout', () => menuBtn.setColor('#ffffff'));
+    menuBtn.on('pointerover', () => menuBtn.setColor(THEME.ui.accentPrimary.hex));
+    menuBtn.on('pointerout', () => menuBtn.setColor(THEME.ui.textPrimary.hex));
     menuBtn.on('pointerdown', () => this.scene.start('MainMenu'));
   }
 }
