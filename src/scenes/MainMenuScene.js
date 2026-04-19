@@ -1,5 +1,5 @@
 import Phaser from 'phaser';
-import { GAME, POSTFX } from '../config/GameConfig.js';
+import { GAME, POSTFX, THEME } from '../config/GameConfig.js';
 
 export class MainMenuScene extends Phaser.Scene {
   constructor() {
@@ -20,32 +20,32 @@ export class MainMenuScene extends Phaser.Scene {
     this.createStarfield(W, H);
 
     const gridG = this.add.graphics();
-    gridG.lineStyle(1, 0x334455, 0.15);
+    gridG.lineStyle(1, THEME.ui.gridLine.num, 0.15);
     for (let x = 0; x < W; x += 64) gridG.lineBetween(x, 0, x, H);
     for (let y = 0; y < H; y += 64) gridG.lineBetween(0, y, W, y);
 
     this.add.text(W / 2, H * 0.28, 'BUG SIEGE', {
       fontSize: '112px',
       fontFamily: 'monospace',
-      color: '#00ff88',
+      color: THEME.ui.accentPrimary.hex,
       fontStyle: 'bold',
     }).setOrigin(0.5);
 
     this.add.text(W / 2, H * 0.38, 'TOWER DEFENSE', {
       fontSize: '36px',
       fontFamily: 'monospace',
-      color: '#668899',
+      color: THEME.ui.textMuted.hex,
       letterSpacing: 16,
     }).setOrigin(0.5);
 
     const startBtn = this.add.text(W / 2, H * 0.55, '[ START GAME ]', {
       fontSize: '48px',
       fontFamily: 'monospace',
-      color: '#ffffff',
+      color: THEME.ui.textPrimary.hex,
     }).setOrigin(0.5).setInteractive({ useHandCursor: true });
 
-    startBtn.on('pointerover', () => startBtn.setColor('#00ff88'));
-    startBtn.on('pointerout', () => startBtn.setColor('#ffffff'));
+    startBtn.on('pointerover', () => startBtn.setColor(THEME.ui.accentPrimary.hex));
+    startBtn.on('pointerout', () => startBtn.setColor(THEME.ui.textPrimary.hex));
     startBtn.on('pointerdown', () => this.scene.start('Game'));
 
     this.tweens.add({
@@ -60,7 +60,7 @@ export class MainMenuScene extends Phaser.Scene {
     this.add.text(W / 2, H - 50, 'Defend the core. Survive 10 waves.', {
       fontSize: '24px',
       fontFamily: 'monospace',
-      color: '#445566',
+      color: THEME.ui.textMuted.hex,
     }).setOrigin(0.5);
   }
 
