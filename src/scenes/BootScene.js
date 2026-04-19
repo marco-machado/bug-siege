@@ -16,7 +16,7 @@ export class BootScene extends Phaser.Scene {
     const barY = H / 2;
 
     const progressBox = this.add.graphics();
-    progressBox.fillStyle(0x222222, 0.8);
+    progressBox.fillStyle(THEME.ui.loadingBarBg.num, 0.8);
     progressBox.fillRect(barX, barY, barW, barH);
 
     const progressBar = this.add.graphics();
@@ -24,12 +24,12 @@ export class BootScene extends Phaser.Scene {
     const loadingText = this.add.text(W / 2, barY - 40, 'Loading...', {
       fontSize: '32px',
       fontFamily: 'monospace',
-      color: '#00ff88',
+      color: THEME.ui.accentPrimary.hex,
     }).setOrigin(0.5);
 
     this.load.on('progress', (value) => {
       progressBar.clear();
-      progressBar.fillStyle(0x00ff88, 1);
+      progressBar.fillStyle(THEME.ui.loadingBar.num, 1);
       progressBar.fillRect(barX + 4, barY + 4, (barW - 8) * value, barH - 8);
     });
 
