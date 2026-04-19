@@ -1,5 +1,5 @@
 import Phaser from 'phaser';
-import { GRID, GAME, ECONOMY, DEBUG, VFX, POSTFX } from '../config/GameConfig.js';
+import { GRID, GAME, ECONOMY, DEBUG, VFX, POSTFX, THEME } from '../config/GameConfig.js';
 import { Grid } from '../entities/Grid.js';
 import { Turret } from '../entities/Turret.js';
 import { Bug } from '../entities/Bug.js';
@@ -424,7 +424,7 @@ export class GameScene extends Phaser.Scene {
     const text = this.add.text(GAME.canvasWidth / 2, GAME.canvasHeight / 2 - 120, `WAVE ${waveNum}`, {
       fontSize: '72px',
       fontFamily: 'monospace',
-      color: '#ff8844',
+      color: THEME.ui.warning.hex,
       fontStyle: 'bold',
     }).setOrigin(0.5).setAlpha(0);
 

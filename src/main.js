@@ -4,14 +4,14 @@ import { MainMenuScene } from './scenes/MainMenuScene.js';
 import { GameScene } from './scenes/GameScene.js';
 import { UIScene } from './scenes/UIScene.js';
 import { GameOverScene } from './scenes/GameOverScene.js';
-import { GAME } from './config/GameConfig.js';
+import { GAME, THEME } from './config/GameConfig.js';
 
 const config = {
   type: Phaser.AUTO,
   width: GAME.canvasWidth,
   height: GAME.canvasHeight,
   parent: 'game',
-  backgroundColor: '#0a0a12',
+  backgroundColor: THEME.background,
   scale: {
     mode: Phaser.Scale.FIT,
     autoCenter: Phaser.Scale.CENTER_BOTH,
