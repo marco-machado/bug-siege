@@ -288,7 +288,7 @@ export class GameScene extends Phaser.Scene {
     this.playSfx('sfx_hit');
 
     if (this.coreSprite && this.coreSprite.active) {
-      this.coreSprite.setTintFill(0xff4444);
+      this.coreSprite.setTint(0xff4444);
       this.time.delayedCall(100, () => {
         if (this.coreSprite && this.coreSprite.active) {
           this.coreSprite.clearTint();
