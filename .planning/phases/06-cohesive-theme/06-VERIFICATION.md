@@ -1,8 +1,9 @@
 ---
 phase: 06-cohesive-theme
 verified: 2026-04-18T00:00:00Z
-status: human_needed
-score: 1.5/2 success criteria verified (SC#1 automated-PASS, SC#2 awaits manual smoke-test)
+status: passed
+signed_off: 2026-04-20
+score: 2/2 success criteria verified (SC#1 automated-PASS, SC#2 manual smoke-test signed off 2026-04-20)
 overrides_applied: 0
 re_verification: null
 gaps: []

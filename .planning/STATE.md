@@ -1,13 +1,13 @@
 ---
 gsd_state_version: 1.0
 milestone: v1.0
-milestone_name: milestone
-status: phase_complete_manual_pending
-stopped_at: Phase 6 cohesive-theme — automated gates green (A/B/D/E pass); Gate C visual smoke-test pending manual sign-off
-last_updated: "2026-04-18T12:00:00.000Z"
+milestone_name: Cosmic Polish & Atmosphere
+status: milestone_shipped
+last_shipped: v1.0
+last_updated: "2026-04-20T00:00:00.000Z"
 progress:
   total_phases: 6
-  completed_phases: 5
+  completed_phases: 6
   total_plans: 21
   completed_plans: 21
   percent: 100
@@ -15,15 +15,17 @@ progress:
 
 # Bug Siege — Project State
 
-**Milestone:** Cosmic polish & atmosphere  
-**Current focus:** Phase 6 — cohesive-theme (automated gates PASSED; manual Gate C pending)
-**Status:** phase_complete_manual_pending
+**Milestone:** v1.0 Cosmic Polish & Atmosphere — SHIPPED 2026-04-20
+**Current focus:** Planning next milestone (run `/gsd-new-milestone`)
+**Status:** milestone_shipped
 
 ## Project Reference
 
-**Core value:** A satisfying, juicy tower defense that feels as good to watch as it is to play — every hit, kill, and wave clear delivers visual and audio impact within a cohesive cosmic atmosphere.
+See: .planning/PROJECT.md (updated 2026-04-20 after v1.0 milestone)
 
-**Current milestone goal:** Transform the visual/audio identity from utilitarian sci-fi to a cosmic nebula aesthetic with full juice and atmosphere.
+**Core value:** A satisfying, juicy tower defense that feels as good to watch as it is to play — every hit, kill, and wave clear delivers visual impact within a cohesive cosmic atmosphere.
+
+**Current focus:** Planning next milestone — run `/gsd-new-milestone` to define fresh requirements.
 
 **Constraints:**
 
@@ -36,18 +38,15 @@ progress:
 
 ## Current Position
 
-Phase: 6 (cohesive-theme) — automated gates green; Gate C pending manual sign-off
-Plan: 9 of 9 complete
-**Phase:** 6
-**Plan:** 06-09 complete — D-07 verification gate (grep/build/ceiling/dual-format all PASS)
-**Plan progress:** 100% (9 of 9 plans in phase 6 complete)
-**Status:** Phase 6 automated-complete — awaiting manual visual smoke-test (06-VALIDATION.md §Manual-Only Verifications)
+v1.0 Cosmic Polish & Atmosphere — **SHIPPED 2026-04-20**
+
+All 6 phases / 21 plans complete. Manual Gate C for Phase 6 signed off 2026-04-20 during milestone close.
 
 ```
-[████████████████████] 100% — Phase 6 code complete (manual Gate C pending)
+[████████████████████] 100% — v1.0 shipped
 ```
 
-**Next action:** Run manual Gate C — `npm run dev` → walk Main menu → Build phase menus → Wave → Game over (both paths); verify no green/yellow/cyan chrome remains. Then `/gsd-verify-work` to sign off, or start milestone complete flow.
+**Next action:** Run `/gsd-new-milestone` to define the next milestone cycle (fresh requirements, research, and roadmap).
 
 ## Performance Metrics
 

@@ -1,129 +1,37 @@
-# Bug Siege — Cosmic Polish & Atmosphere Roadmap
+# Roadmap: Bug Siege
 
-**Milestone:** Cosmic polish & atmosphere  
-**Core Value:** A satisfying, juicy tower defense that feels as good to watch as it is to play — every hit, kill, and wave clear delivers visual and audio impact within a cohesive cosmic atmosphere.
+## Milestones
 
-**Granularity:** Standard (7 phases)  
-**Coverage:** 25/25 v1 requirements mapped
+- ✅ **v1.0 Cosmic Polish & Atmosphere** — Phases 1-6 (shipped 2026-04-20) — see [milestones/v1.0-ROADMAP.md](milestones/v1.0-ROADMAP.md)
 
 ## Phases
 
-- [x] **Phase 1: Cosmic Foundation** - Theme config, nebula background, tween safety net (completed 2026-04-15)
-- [x] **Phase 2: Living Entities** - Bug animation, core breathing, turret idle glow (completed 2026-04-16)
-- [x] **Phase 3: Juicy Combat** - Death bursts, muzzle flashes, build sparkle, core shockwave (completed 2026-04-16)
-- [x] **Phase 4: Impactful Effects** - Slowfield aura, zapper trails, screen shake system (completed 2026-04-17, UAT signed off)
-- [x] **Phase 5: Atmospheric Glow** - Post-FX glow/bloom on turrets, vignette framing (completed 2026-04-18)
-- [x] **Phase 6: Cohesive Theme** - Color migration across all UI elements (code-complete 2026-04-18; manual visual smoke-test pending)
+<details>
+<summary>✅ v1.0 Cosmic Polish & Atmosphere (Phases 1-6) — SHIPPED 2026-04-20</summary>
 
-## Phase Details
+- [x] Phase 1: Cosmic Foundation (3/3 plans) — completed 2026-04-15
+- [x] Phase 2: Living Entities (2/2 plans) — completed 2026-04-16
+- [x] Phase 3: Juicy Combat (3/3 plans) — completed 2026-04-16
+- [x] Phase 4: Impactful Effects (3/3 plans) — completed 2026-04-17
+- [x] Phase 5: Atmospheric Glow (4/4 plans) — completed 2026-04-18
+- [x] Phase 6: Cohesive Theme (9/9 plans) — completed 2026-04-18, signed off 2026-04-20
 
-**Plans:** 3 plans
-Plans:
-- [x] 01-01-PLAN.md — Theme config and tween safety net
-- [x] 01-02-PLAN.md — Procedural nebula background
-- [x] 01-03-PLAN.md — Gap closure: correct THEME palette to match UI-SPEC
-**UI hint:** yes
+</details>
 
-### Phase 2: Living Entities
-**Goal:** Bugs animate, core breathes, turrets pulse — everything feels alive
-**Depends on:** Phase 1 (tween safety)
-**Requirements:** ANIM-01, ANIM-02, ANIM-03, ANIM-04
-**Success Criteria** (what must be TRUE):
-  1. Bugs wobble and squash/stretch as they move and take damage
-  2. Command core pulses with breathing animation (sinusoidal scale)
-  3. Turrets have idle glow that pulses slowly at rest
-  4. Different bug types have distinct animation signatures (swarmer jittery, brute heavy, spitter pulsing)
-**Plans:** 2/2 plans complete
-Plans:
-- [x] 02-01-PLAN.md — Bug anim config (GameConfig.js) and sin-wave squash-stretch (Bug.js)
-- [x] 02-02-PLAN.md — Core breathing tween (GameScene.js) and turret idle alpha pulse (Turret.js)
+### 📋 Next Milestone (Not yet planned)
 
-### Phase 3: Juicy Combat
-**Goal:** Key combat events trigger satisfying particle effects
-**Depends on:** Phase 1, 2 (THEME config, file overlap)
-**Requirements:** VFX-01, VFX-02, VFX-03, VFX-05, VFX-07
-**Success Criteria** (what must be TRUE):
-  1. Bug deaths trigger particle bursts (replacing circle+tween pseudo-particles)
-  2. Turret firing shows muzzle flash particles at barrel position
-  3. Turret placement shows sparkle particle effect on grid
-  4. Core damage creates shockwave/ring particle effect radiating outward
-  5. Boss deaths have extra-large, multi-color particle burst
-**Plans:** 3/3 plans complete
-Plans:
-- [x] 03-01-PLAN.md — Particle texture (BootScene) and VFX config (GameConfig.js)
-- [x] 03-02-PLAN.md — GameScene VFX: death bursts, build sparkle, core shockwave
-- [x] 03-03-PLAN.md — Turret muzzle flash particle emitter
-
-### Phase 4: Impactful Effects
-**Goal:** Slowfield has particles, zapper has trail, screen reacts to impacts
-**Depends on:** Phase 3 (VFX foundation)
-**Requirements:** VFX-04, VFX-06, SHAKE-01, SHAKE-02, SHAKE-03, SHAKE-04
-**Success Criteria** (what must be TRUE):
-  1. Slowfield turret has flowing particle aura (visible energy field, not static circle)
-  2. Zapper lightning chain leaves glow trail particles along its path
-  3. Core damage shakes camera with intensity proportional to damage taken
-  4. Turret/wall destruction shakes camera
-  5. Boss hit impacts cause micro-shake
-  6. UIScene HUD remains stable during GameScene camera shake
-**Plans:** 3 plans
-Plans:
-- [x] 04-01-PLAN.md — VFX config extension (SLOWFIELD, ZAPPER_TRAIL, SHAKE) and particle-glow texture
-- [x] 04-02-PLAN.md — Slowfield particle pulse aura and zapper glow trail with trail particles
-- [x] 04-03-PLAN.md — Screen shake system (core damage, turret destruction, boss micro-shake)
-
-### Phase 5: Atmospheric Glow
-**Goal:** Turrets and core glow softly, screen has cinematic framing
-**Depends on:** Phase 1 (THEME config), Phase 2 (turret animation foundation)
-**Requirements:** THEME-04, THEME-05
-**Success Criteria** (what must be TRUE):
-  1. Turrets and command core have soft glow/bloom effect (WebGL only, graceful degradation on Canvas)
-  2. Screen has subtle vignette effect framing the play area
-**Plans:** 4 plans
-Plans:
-- [x] 05-01-PLAN.md — POSTFX frozen config (GLOW + VIGNETTE) in GameConfig.js
-- [x] 05-02-PLAN.md — Turret glow lifecycle (constructor attach, upgrade color swap, destroy clear)
-- [x] 05-03-PLAN.md — GameScene core glow + camera vignette + phase-reactive tween + shutdown cleanup
-- [x] 05-04-PLAN.md — Static vignette on MainMenuScene and GameOverScene
-**UI hint:** yes
-
-### Phase 6: Cohesive Theme
-**Goal:** All UI elements use consistent cosmic color palette
-**Depends on:** 1, 2, 3, 4, 5 (touches many files)
-**Requirements:** THEME-03
-**Success Criteria** (what must be TRUE):
-  1. All hardcoded color values across 6+ files reference THEME config constants
-  2. Menus, HUD, and game-over screen have consistent cosmic nebula palette (no mixed colors)
-**Plans:** 9 plans
-Plans:
-- [x] 06-01-PLAN.md — Expand THEME.ui with 14 semantic keys (GameConfig.js) — Wave 1 gate
-- [x] 06-02-PLAN.md — Migrate MainMenuScene.js (7 literals) — Wave 2
-- [x] 06-03-PLAN.md — Migrate BootScene preloader (3 literals) — Wave 2
-- [x] 06-04-PLAN.md — Migrate UIScene HUD (9 literals incl. HP tier ternary) — Wave 2
-- [x] 06-05-PLAN.md — Migrate GameOverScene (8 literal occurrences) — Wave 2
-- [x] 06-06-PLAN.md — Migrate BuildSystem.js menus (24 replacements / 19 lines) — Wave 2
-- [x] 06-07-PLAN.md — Migrate Turret HP bar (5 literals, lines 53/55/405-407) — Wave 2
-- [x] 06-08-PLAN.md — Integration: main.js backgroundColor + GameScene.js wave announcement — Wave 2
-- [x] 06-09-PLAN.md — D-07 verification gate (grep + build + semantic count + carve-out integrity) — Wave 3
-**UI hint:** yes
+Run `/gsd-new-milestone` to start the next milestone cycle — this defines fresh requirements, research, and roadmap for v1.1+.
 
 ## Progress
 
-| Phase | Plans Complete | Status | Completed |
-|-------|----------------|--------|-----------|
-| 1. Cosmic Foundation | 2/3 | Gap closure | 2026-04-15 |
-| 2. Living Entities | 2/2 | Complete    | 2026-04-16 |
-| 3. Juicy Combat | 3/3 | Complete   | 2026-04-16 |
-| 4. Impactful Effects | 3/3 | Complete | 2026-04-17 |
-| 5. Atmospheric Glow | 4/4 | Complete | 2026-04-18 |
-| 6. Cohesive Theme | 9/9 | Code-complete (manual Gate C pending) | 2026-04-18 |
-
-## Notes
-
-- **Performance budget:** Must maintain 60fps with 60 bugs + 70 bullets + particles on screen
-- **WebGL fallback:** Glow/bloom/vignette effects degrade gracefully on Canvas renderer
-- **Asset licensing:** All audio assets must be CC0 or equivalent
-- **Code style:** Follows AGENTS.md conventions (2-space indent, single quotes, semicolons, .js extensions)
+| Phase             | Milestone | Plans Complete | Status   | Completed  |
+| ----------------- | --------- | -------------- | -------- | ---------- |
+| 1. Cosmic Foundation | v1.0   | 3/3            | Complete | 2026-04-15 |
+| 2. Living Entities | v1.0     | 2/2            | Complete | 2026-04-16 |
+| 3. Juicy Combat | v1.0        | 3/3            | Complete | 2026-04-16 |
+| 4. Impactful Effects | v1.0   | 3/3            | Complete | 2026-04-17 |
+| 5. Atmospheric Glow | v1.0    | 4/4            | Complete | 2026-04-18 |
+| 6. Cohesive Theme | v1.0      | 9/9            | Complete | 2026-04-20 |
 
 ---
-*Roadmap created: 2026-04-15*  
-*Last updated: 2026-04-18 (Phase 6 code-complete — all 9 plans executed; manual Gate C pending)*
+*Last updated: 2026-04-20 at v1.0 milestone close*
