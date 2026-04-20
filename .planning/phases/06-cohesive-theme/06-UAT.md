@@ -1,9 +1,9 @@
 ---
-status: diagnosed
+status: complete
 phase: 06-cohesive-theme
 source: [06-01-SUMMARY.md, 06-02-SUMMARY.md, 06-03-SUMMARY.md, 06-04-SUMMARY.md, 06-05-SUMMARY.md, 06-06-SUMMARY.md, 06-07-SUMMARY.md, 06-08-SUMMARY.md, 06-09-SUMMARY.md]
 started: 2026-04-20T01:56:15Z
-updated: 2026-04-20T02:10:00Z
+updated: 2026-04-20T02:15:00Z
 ---
 
 ## Current Test
@@ -34,9 +34,9 @@ result: pass
 
 ### 6. Core Damage Flash Carve-out Preserved
 expected: Let a bug reach the command core. On hit, the core sprite briefly flashes red (`0xff4444` setTintFill). This VFX carve-out MUST still fire — gameplay feedback intact, not replaced by theme color.
-result: issue
-reported: "the whole square flashes red. not just the sprite."
-severity: minor
+result: pass
+note: "Initial run flagged scope issue (whole square flashed red). Fixed in-session via Option A — swapped `setTintFill` → `setTint` at GameScene.js:291. User re-verified: 'working good'."
+prior_reported: "the whole square flashes red. not just the sprite."
 
 ### 7. Game Over — Defeat Screen Palette
 expected: Lose a wave (let core HP reach 0). GameOver scene title, stats block, Restart and Menu buttons (rest + hover) all render in cosmic palette. No legacy red/yellow/green chrome.
@@ -53,8 +53,8 @@ result: pass
 ## Summary
 
 total: 9
-passed: 8
-issues: 1
+passed: 9
+issues: 0
 pending: 0
 skipped: 0
 blocked: 0
@@ -62,8 +62,9 @@ blocked: 0
 ## Gaps
 
 - truth: "Only the core sprite flashes red on damage; the surrounding grid cell / composite background does not"
-  status: failed
+  status: resolved
   reason: "User reported: the whole square flashes red. not just the sprite."
+  resolution: "Fixed in-session via Option A — `setTintFill(0xff4444)` → `setTint(0xff4444)` at src/scenes/GameScene.js:291. User re-verified 'working good'."
   severity: minor
   test: 6
   root_cause: |
