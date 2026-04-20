@@ -1,9 +1,9 @@
 ---
-status: complete
+status: diagnosed
 phase: 06-cohesive-theme
 source: [06-01-SUMMARY.md, 06-02-SUMMARY.md, 06-03-SUMMARY.md, 06-04-SUMMARY.md, 06-05-SUMMARY.md, 06-06-SUMMARY.md, 06-07-SUMMARY.md, 06-08-SUMMARY.md, 06-09-SUMMARY.md]
 started: 2026-04-20T01:56:15Z
-updated: 2026-04-20T02:05:00Z
+updated: 2026-04-20T02:10:00Z
 ---
 
 ## Current Test
@@ -66,7 +66,35 @@ blocked: 0
   reason: "User reported: the whole square flashes red. not just the sprite."
   severity: minor
   test: 6
-  root_cause: ""
-  artifacts: []
-  missing: []
+  root_cause: |
+    Pre-existing — NOT a Phase 6 regression. `setTintFill(0xff4444)` at
+    GameScene.js:291 was preserved byte-for-byte as a D-01 VFX carve-out.
+    The flash appears "whole square" because:
+    (1) `coreSprite` is the `core.png` asset (loaded in BootScene.js:57 —
+        full-bleed photorealistic PNG from phase 003-hd-photorealistic, no
+        transparent margin around the core shape), and
+    (2) `renderCore()` scales it to `GRID.tileSize × GRID.tileSize` via
+        `setDisplaySize(GRID.tileSize, GRID.tileSize)` (GameScene.js:141).
+    (3) `setTintFill()` replaces every non-transparent pixel with the tint
+        color — since the PNG has no transparent padding, every pixel in the
+        tile-sized sprite turns solid `0xff4444`, reading as "the whole
+        square flashed red."
+    The VFX carve-out was classified "gameplay feedback" and left
+    untouched. The scope issue is an asset + tint-mode interaction that
+    pre-dates Phase 6.
+  artifacts:
+    - path: "src/scenes/GameScene.js"
+      line: 291
+      issue: "setTintFill replaces every non-transparent pixel; combined with full-bleed core.png + tileSize display, the flash covers the entire grid cell"
+    - path: "src/scenes/BootScene.js"
+      line: 57
+      issue: "core.png loaded as full-bleed asset — no transparent margin around the core shape"
+    - path: "src/scenes/GameScene.js"
+      line: 141
+      issue: "setDisplaySize(GRID.tileSize, GRID.tileSize) stretches core.png to fill the full tile"
+  missing:
+    - "Option A (minimum, 1-line): swap `setTintFill(0xff4444)` → `setTint(0xff4444)` at GameScene.js:291 — multiplies rather than replaces pixel color; softens flash but keeps core detail visible and the feedback still reads clearly. Mirror the same change at GameScene.js:294 (clearTint stays the same) — none needed."
+    - "Option B (asset fix): replace core.png with a variant that has a transparent margin so the tinted region is only the core shape; preserves the current setTintFill semantic."
+    - "Option C (scope reduction): shrink `setDisplaySize` to (GRID.tileSize * 0.8) or similar so the tinted bounds sit visually inside the tile without touching the border."
+    - "Recommend Option A for minimum-change polish; triage for a future VFX-polish phase. NOT in-scope for Phase 6's theme migration — ROADMAP.md Phase 6 success criteria are both SATISFIED."
   debug_session: ""
